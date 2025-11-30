@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import "package:global_configuration/global_configuration.dart";
 import "package:oxanime/utilities/logs_manager.dart";
-import "package:oxanime/utilities/configuration.dart";
-import "package:dynamic_color/dynamic_color.dart";
 import "package:logger/logger.dart";
+import "package:shared_preferences/shared_preferences.dart";
 
 Logger logger = Logger();
+final preferences = SharedPreferencesAsync();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,16 +14,11 @@ void main() async {
   } catch (e) {
     logger.e(e);
   }
-  try {
-    await loadConfiguration();
-  } catch (e) {
-    throw ("Configuration Load failed!!!");
-  }
-  if (GlobalConfiguration().getValue("logging") == false) {
+
+  if (await preferences.getBool("logging") == false) {
     logger.i("Disabling Logs");
     logger.close();
   }
-  GlobalConfiguration().updateValue("logging", false);
 }
 
 // class OxAnimeMainApp extends StatelessWidget {

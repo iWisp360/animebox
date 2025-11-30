@@ -21,7 +21,7 @@ class OxAnimeLogger {
         methodCount: 48,
         errorMethodCount: 48,
       ),
-      output: await _getLogOutput(),
+      output: kDebugMode ? ConsoleOutput() : await _getLogOutput(),
     );
   }
 }
