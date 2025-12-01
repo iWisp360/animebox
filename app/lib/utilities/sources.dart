@@ -11,54 +11,58 @@ part "sources.g.dart";
 
 late List<Source> sources;
 
+/// These are all the fields required to get data, such as series names, descriptions and chapters.
 @JsonSerializable()
 class Source {
-  @JsonKey(defaultValue: false)
-  bool? searchSerieUrlResultsAbsolute;
-  @JsonKey(defaultValue: false)
-  bool? searchSerieNameHasSplitPattern;
-  String? searchSerieNameSplitPattern;
+  // serie name fields
+  final String searchSerieNameCSSClass;
   List<String>? searchSerieNameExcludes;
+  // serie description fields
+  final String searchSerieDescriptionCSSClass;
   List<String>? searchSerieDescriptionExcludes;
+  // serie searching fields
+  final String searchSerieUrlCSSClass;
+  final String searchSerieImageCSSClass;
+  // serie chapters fields
+  final String searchSerieChaptersCSSClass;
+  // source configuration fields
   final String name;
   final String mainUrl;
   final String searchUrl;
-  final String searchSerieNameCSSClass;
-  final String searchSerieUrlCSSClass;
-  final String searchSerieImageCSSClass;
-  final String searchSerieChaptersCSSClass;
-  final String searchSerieDescriptionCSSClass;
   @JsonKey(defaultValue: false)
   final bool enabled;
   @JsonKey(disallowNullValue: true)
   final String uuid;
+  @JsonKey(defaultValue: false)
+  bool? searchSerieUrlResultsAbsolute;
 
   Source({
-    this.name = "OxAnime Source",
     this.searchSerieNameExcludes,
-    this.searchSerieUrlResultsAbsolute,
     this.searchSerieNameHasSplitPattern,
     this.searchSerieNameSplitPattern,
     required this.searchSerieNameCSSClass,
-    required this.mainUrl,
-    required this.searchUrl,
     required this.searchSerieUrlCSSClass,
     required this.searchSerieImageCSSClass,
     required this.searchSerieChaptersCSSClass,
     required this.searchSerieDescriptionCSSClass,
     this.searchSerieDescriptionExcludes,
+    this.name = "OxAnime Source",
+    required this.mainUrl,
+    required this.searchUrl,
+    this.searchSerieUrlResultsAbsolute,
     this.enabled = false,
     required this.uuid,
   });
 
   factory Source.fromJson(Map<String, dynamic> json) => _$SourceFromJson(json);
 
+  /// This function should only be used at the startup of the program to serialize the sources.json file. Further access or modification is expected through global variable sources, which can be accessed by importing this module.
   static Future<List<Source>> getSources() async {
-    final sourcesPath = await SourceManager().getSourcesPath();
+    final sourcesPath = await SourceFileManager().getSourcesPath();
 
     try {
       List<Source> sources = [];
-      final String fileContents = await File(sourcesPath).readAsString();
+      final String fileContents = await SourceFileManager().readSourcesFile();
       final serializedContents = jsonDecode(fileContents);
       for (var source in serializedContents) {
         sources.add(Source.fromJson(source));
@@ -70,6 +74,11 @@ class Source {
     }
   }
 
+  /// check if this source is a duplicate of any source found in the given List of sources
+  /// duplicates are found by:
+  /// - name
+  /// - name in mainUrl
+  /// - uuid
   Future<Source?> getDuplicate(List<Source> sources) async {
     for (var source in sources) {
       if (source.name.toLowerCase() == name.toLowerCase() ||
@@ -81,18 +90,21 @@ class Source {
     return null;
   }
 
+  /// get the description by getting the text of a given css class, and remove all words of the description that matches excludes
   Future<String?> getSerieDescription(final String responseBody) async {
     return await (await SourceHtmlParser.create(
       html: responseBody,
     )).getSerieCSSClassText(searchSerieDescriptionCSSClass, searchSerieDescriptionExcludes ?? []);
   }
 
+  /// get the name by getting the text of a given css class, and remove all words of the name that matches excludes
   Future<String?> getSerieName(final String responseBody) async {
     return await (await SourceHtmlParser.create(
       html: responseBody,
     )).getSerieCSSClassText(searchSerieNameCSSClass, searchSerieNameExcludes ?? []);
   }
 
+  /// A source should not be usable if its enabled field is set to false or its uuid is empty
   bool isUsable() {
     bool result = (enabled == true)
         ? (uuid.isNotEmpty)
@@ -103,12 +115,17 @@ class Source {
     return false;
   }
 
+  /// push this Source to the sources.json file and the sources List
   Future push(List<Source> localSources) async {
-    final sourcesPath = await SourceManager().getSourcesPath();
+    final sourcesPath = await SourceFileManager().getSourcesPath();
+    // this source is serialized
+    final serializedSource = toJson();
 
-    try {
-      final serializedSource = toJson();
-      final fileContents = await SourceManager().readSourcesFile();
+    try {  
+      // read the sources.json file
+      final fileContents = await SourceFileManager().readSourcesFile();
+
+      // serialize it into a Map
       List<Map<String, dynamic>> serializedSources = jsonDecode(fileContents);
       final conflict = await getDuplicate(localSources);
       if (conflict != null) {
@@ -116,20 +133,26 @@ class Source {
           "Not adding $name with UUID $name as it is a duplicate of ${conflict.name} with UUID ${conflict.uuid}",
         );
       }
+      // add this source to the global sources List
       sources.add(this);
+      // add this sources as a Map to the serialized sources.json
       serializedSources.add(serializedSource);
+      
       final deserializedSources = jsonEncode(serializedSources);
+      // WIP Use buffered writes
       await File(sourcesPath).writeAsString(deserializedSources);
     } catch (e, s) {
       logger.e("Error while pushing source $name to $sourcesPath\n$s");
       rethrow;
     }
   }
-
+  /// Transform this source into a Map that can be deserialized
   Map<String, dynamic> toJson() => _$SourceToJson(this);
 }
 
-class SourceManager {
+/// get sources.json path located at directories such as
+/// $HOME/.local/share/page.codeberg.oxanime/ on Linux
+class SourceFileManager {
   Future<String> getSourcesPath() async {
     String sourcesPath = path.join(
       await getApplicationSupportDirectory().then((value) => value.path),
@@ -139,6 +162,8 @@ class SourceManager {
     return sourcesPath;
   }
 
+  /// read sources.json
+  // use buffered read to improve performance
   Future<String> readSourcesFile() async {
     try {
       final sourcesPath = await getSourcesPath();

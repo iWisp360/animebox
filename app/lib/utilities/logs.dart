@@ -1,3 +1,5 @@
+// WIP Shorten this
+
 import "dart:io";
 import "package:flutter/foundation.dart";
 import "package:logger/logger.dart";
@@ -5,6 +7,7 @@ import "package:path_provider/path_provider.dart";
 
 Logger logger = Logger();
 
+// is this necessary?
 class LoggerSingleton {
   LoggerSingleton._();
   static final LoggerSingleton _singleton = LoggerSingleton._();
