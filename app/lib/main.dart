@@ -9,7 +9,7 @@ import "package:oxanime/utilities/sources.dart";
 
 void main() async {
   await LoggerSingleton().createLogger();
-  sources = await SourceManager().getSources();
+  sources = await Source.getSources();
   WidgetsFlutterBinding.ensureInitialized();
   try {
     logger.i("Logging to file");

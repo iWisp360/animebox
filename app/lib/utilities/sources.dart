@@ -52,6 +52,35 @@ class Source {
   });
 
   factory Source.fromJson(Map<String, dynamic> json) => _$SourceFromJson(json);
+
+  static Future<List<Source>> getSources() async {
+    final sourcesPath = await SourceManager().getSourcesPath();
+
+    try {
+      List<Source> sources = [];
+      final String fileContents = await File(sourcesPath).readAsString();
+      final serializedContents = jsonDecode(fileContents);
+      for (var source in serializedContents) {
+        sources.add(Source.fromJson(source));
+      }
+      return sources.where((source) => source.isUsable()).toList();
+    } catch (e) {
+      logger.e("Error while reading sources: $e");
+      rethrow;
+    }
+  }
+
+  Future<Source?> getDuplicate(List<Source> sources) async {
+    for (var source in sources) {
+      if (source.name.toLowerCase() == name.toLowerCase() ||
+          source.uuid == uuid ||
+          mainUrl.contains(source.name.toLowerCase())) {
+        return source;
+      }
+    }
+    return null;
+  }
+
   Future<String?> getSerieDescription(final String responseBody) async {
     return await (await SourceHtmlParser.create(
       html: responseBody,
@@ -64,75 +93,64 @@ class Source {
     )).getSerieCSSClassText(searchSerieNameCSSClass, searchSerieNameExcludes ?? []);
   }
 
-  Map<String, dynamic> toJson() => _$SourceToJson(this);
+  bool isUsable() {
+    bool result = (enabled == true)
+        ? (uuid.isNotEmpty)
+              ? true
+              : false
+        : false;
+    logger.i((result == false) ? "$name is not usable" : "$name is usable");
+    return false;
+  }
 
-  Future<String?> getSerieDescription(final String responseBody) async {
-    return await (await SourceHtmlParser.create(
-      html: responseBody,
-    )).getSerieCSSClassText(searchSerieDescriptionCSSClass, searchSerieDescriptionExcludes ?? []);
+  Future push(List<Source> localSources) async {
+    final sourcesPath = await SourceManager().getSourcesPath();
+
+    try {
+      final serializedSource = toJson();
+      final fileContents = await SourceManager().readSourcesFile();
+      List<Map<String, dynamic>> serializedSources = jsonDecode(fileContents);
+      final conflict = await getDuplicate(localSources);
+      if (conflict != null) {
+        throw Exception(
+          "Not adding $name with UUID $name as it is a duplicate of ${conflict.name} with UUID ${conflict.uuid}",
+        );
+      }
+      sources.add(this);
+      serializedSources.add(serializedSource);
+      final deserializedSources = jsonEncode(serializedSources);
+      await File(sourcesPath).writeAsString(deserializedSources);
+    } catch (e, s) {
+      logger.e("Error while pushing source $name to $sourcesPath\n$s");
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toJson() => _$SourceToJson(this);
 }
 
 class SourceManager {
-  Future<List<Source>> getSources() async {
-    final sourcesPath = await getSourcesPath();
-
-    try {
-      List<Source> sources = [];
-      final String fileContents = await File(sourcesPath).readAsString();
-      final serializedContents = jsonDecode(fileContents);
-      for (var source in serializedContents) {
-        sources.add(Source.fromJson(source));
-      }
-      return sources.where((source) {
-        var result = (source.enabled == true)
-            ? (source.uuid.isNotEmpty)
-                  ? true
-                  : false
-            : false;
-        if (result == false) {
-          logger.i(
-            "Source \"${source.name}\" disabled because uuid is empty or enabled is set to false",
-          );
-        }
-        return result;
-      }).toList();
-    } catch (e) {
-      logger.e("Error while reading sources: $e");
-      rethrow;
-    }
-  }
-
   Future<String> getSourcesPath() async {
-    return path.join(
+    String sourcesPath = path.join(
       await getApplicationSupportDirectory().then((value) => value.path),
       "sources.json",
     );
-  }
-
-  Future pushSource(Source source) async {
-    try {
-      final serializedSource = source.toJson();
-      final fileContents = await readSourcesFile();
-      List<Map<String, dynamic>> serializedSources = jsonDecode(fileContents);
-      serializedSources.add(serializedSource);
-      final deserializedSources = jsonEncode(serializedSources);
-      await File(await getSourcesPath()).writeAsString(deserializedSources);
-    } catch (e, s) {
-      logger.e("Error while pushing source ${source.name} to ${await getSourcesPath()}\n$s");
-      rethrow;
-    }
+    logger.i("Sources are located at $sourcesPath");
+    return sourcesPath;
   }
 
   Future<String> readSourcesFile() async {
-    final sourcesPath = await getSourcesPath();
-    final sourcesFile = File(sourcesPath);
-    final StringBuffer fileContents = StringBuffer();
-    await for (var chunk in utf8.decoder.bind(sourcesFile.openRead())) {
-      fileContents.write(chunk);
+    try {
+      final sourcesPath = await getSourcesPath();
+      final sourcesFile = File(sourcesPath);
+      final StringBuffer fileContents = StringBuffer();
+      await for (var chunk in utf8.decoder.bind(sourcesFile.openRead())) {
+        fileContents.write(chunk);
+      }
+      return fileContents.toString();
+    } catch (e) {
+      logger.e("Error while reading sources file: $e");
+      rethrow;
     }
-    return fileContents.toString();
   }
 }
