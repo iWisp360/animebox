@@ -65,6 +65,14 @@ class Source {
   }
 
   Map<String, dynamic> toJson() => _$SourceToJson(this);
+
+  Future<String?> getSerieDescription(final String responseBody) async {
+    return await (await SourceHtmlParser.create(
+      html: responseBody,
+    )).getSerieCSSClassText(searchSerieDescriptionCSSClass, searchSerieDescriptionExcludes ?? []);
+  }
+
+  Map<String, dynamic> toJson() => _$SourceToJson(this);
 }
 
 class SourceManager {
