@@ -10,8 +10,8 @@ import "package:oxanime/utilities/preferences.dart";
 import "package:oxanime/utilities/sources.dart";
 
 void main() async {
-  sources = await Source.getSources();
   WidgetsFlutterBinding.ensureInitialized();
+  sources = await Source.getSources();
   try {
     logger.i("Logging to file");
     await initLogger();
@@ -23,6 +23,11 @@ void main() async {
     logger.i("Disabling Logs");
     logger.close();
   }
+
+  var results = await sources[0].query("Date A Live");
+
+  print(results[0].mainUrl);
+
   runApp(OxAnimeMainApp());
 }
 

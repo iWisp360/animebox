@@ -14,6 +14,15 @@ const sourcesFileName = "sources.json";
 
 late List<Source> sources;
 
+/// Sources may present chapter video links inside javascript 
+/// arrays, which are unreachable by using a css class,
+/// so, parsing the array is necessary. Luckily, arrays
+/// in Javascript has the same structure as a JSON object.
+enum VideoUrlParseMode {
+  parseJavaScript,
+  cssClass,
+}
+
 class SearchResult {
   final String name;
   final String mainUrl;
