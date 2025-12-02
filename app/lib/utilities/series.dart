@@ -2,7 +2,7 @@ import "dart:convert";
 import "dart:io";
 
 import "package:json_annotation/json_annotation.dart";
-import "package:oxanime/utilities/files.dart";
+import "package:oxanime/utilities/files_management.dart";
 import "package:oxanime/utilities/logs.dart";
 
 part "series.g.dart";

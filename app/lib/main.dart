@@ -1,15 +1,17 @@
 // Never gonna give you up
+// WIP: Backup utility & download management
 
 import "package:flutter/material.dart";
-import "package:oxanime/utilities/html.dart";
+import "package:oxanime/ui/home.dart";
+import "package:oxanime/utilities/html_parser.dart";
 import "package:oxanime/utilities/logs.dart";
-import "package:oxanime/utilities/network.dart";
+import "package:oxanime/utilities/networking.dart";
 import "package:oxanime/utilities/preferences.dart";
 import "package:oxanime/utilities/sources.dart";
 
 void main() async {
-  logger = await OxAnimeLogger.makeLogger();
   sources = await Source.getSources();
+  logger = await OxAnimeLogger.makeLogger();
   WidgetsFlutterBinding.ensureInitialized();
   try {
     logger.i("Logging to file");
@@ -22,30 +24,25 @@ void main() async {
     logger.i("Disabling Logs");
     logger.close();
   }
-
-  // UI should be initialized
-  // º
-  // here
+  runApp(OxAnimeMainApp());
 }
 
-// class OxAnimeMainApp extends StatelessWidget {
-//   const OxAnimeMainApp({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: "OxAnime",
-//       theme: ThemeData(colorScheme: )
-//     );
-//   }
-// }
-
-// Future<ColorScheme?> getDynamicColorScheme() async {
-//   final color = await DynamicColorPlugin.getAccentColor();
-//   if (color == null) return null;
-//   final colorScheme = color.harmonizeWith()
-// }
-
 Future<void> initLogger() async {
+  logger.i(
+    "Initializing Logger... What? but this is a logger :/\nxD But a logger that logs to a file",
+  );
   logger = await OxAnimeLogger.makeLogger();
+}
+
+class OxAnimeMainApp extends StatelessWidget {
+  const OxAnimeMainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "OxAnime",
+      home: OxAnimeHomeScreen(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
 }

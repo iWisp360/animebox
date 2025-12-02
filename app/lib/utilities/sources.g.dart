@@ -22,6 +22,13 @@ Source _$SourceFromJson(Map<String, dynamic> json) {
         (json['searchSerieDescriptionExcludes'] as List<dynamic>?)
             ?.map((e) => e as String)
             .toList(),
+    searchSerieImageExcludes:
+        (json['searchSerieImageExcludes'] as List<dynamic>?)
+            ?.map((e) => e as String)
+            .toList(),
+    searchSerieUrlExcludes: (json['searchSerieUrlExcludes'] as List<dynamic>?)
+        ?.map((e) => e as String)
+        .toList(),
     name: json['name'] as String? ?? "OxAnime Source",
     mainUrl: json['mainUrl'] as String,
     searchUrl: json['searchUrl'] as String,
@@ -38,7 +45,9 @@ Map<String, dynamic> _$SourceToJson(Source instance) => <String, dynamic>{
   'searchSerieDescriptionCSSClass': instance.searchSerieDescriptionCSSClass,
   'searchSerieDescriptionExcludes': instance.searchSerieDescriptionExcludes,
   'searchSerieUrlCSSClass': instance.searchSerieUrlCSSClass,
+  'searchSerieUrlExcludes': instance.searchSerieUrlExcludes,
   'searchSerieImageCSSClass': instance.searchSerieImageCSSClass,
+  'searchSerieImageExcludes': instance.searchSerieImageExcludes,
   'searchSerieChaptersCSSClass': instance.searchSerieChaptersCSSClass,
   'name': instance.name,
   'mainUrl': instance.mainUrl,

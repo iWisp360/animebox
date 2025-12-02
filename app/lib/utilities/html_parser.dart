@@ -1,6 +1,9 @@
 import "package:html/dom.dart";
 import "package:oxanime/utilities/logs.dart";
-import "package:oxanime/utilities/network.dart";
+import "package:oxanime/utilities/networking.dart";
+
+const imgHtmlAttribute = "src";
+const urlHtmlAttribute = "href";
 
 class SourceHtmlParser {
   final String html;
@@ -34,20 +37,47 @@ class SourceHtmlParser {
     return parsedResult.trim();
   }
 
-  Future<List<String>> getMultipleCSSClassText(
-    final String queryCSSClass,
-    final List<String> queryExcludes,
+  /// gets multiple attribute values from elements that match cssClass
+  Future<List<String>> getMultipleCSSClassAttrValue(
+    final String cssClass,
+    final List<String> excludes,
+    final String attribute,
   ) async {
-    final serializedElements = serializedHtml.querySelectorAll(queryCSSClass);
+    final serializedElements = serializedHtml.querySelectorAll(cssClass);
+    List<String> parsedAttributeValues = [];
+    for (var element in serializedElements) {
+      if (excludes.any((exclude) => exclude.contains(element.text))) {
+        continue;
+      } else {
+        String elementAttributeValue = element.attributes[attribute] ?? "";
+        if (elementAttributeValue.isEmpty) {
+          logger.w(
+            "Warning: The following element\n${element.innerHtml}\nHas no attribute $attribute",
+          );
+        }
+        parsedAttributeValues.add(elementAttributeValue);
+      }
+    }
+    return parsedAttributeValues;
+  }
+
+  /// Retrieves text from multiple elements that match the provided CSS class
+  /// Which text? For example: <p>the text over here</p>
+
+  Future<List<String>> getMultipleCSSClassText(
+    final String cssClass,
+    final List<String> excludes,
+  ) async {
+    final serializedElements = serializedHtml.querySelectorAll(cssClass);
     List<String> parsedElements = [];
     for (var element in serializedElements) {
-      if (queryExcludes.any((exclude) => exclude.contains(element.text))) {
+      if (excludes.any((exclude) => element.text.contains(exclude))) {
         continue;
       } else {
         parsedElements.add(element.text);
       }
     }
-    logger.d("getMultipleCSSClassText returned a list of ${parsedElements.length}");
+    logger.d("getMultipleCSSClassText returned a list of ${parsedElements.length} elements");
     return parsedElements;
   }
 

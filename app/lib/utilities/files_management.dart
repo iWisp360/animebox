@@ -46,7 +46,7 @@ extension BufferedFileIO on File {
 ///
 Future<String> getDataDirectoryWithJoined(String pattern) async {
   try {
-    return path.join((await getApplicationSupportDirectory()).path + pattern);
+    return path.join((await getApplicationSupportDirectory()).path, pattern);
   } catch (e, s) {
     logger.e("Error while getting Application Support Directory: $e\n$s");
     rethrow;

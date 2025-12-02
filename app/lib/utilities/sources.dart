@@ -2,12 +2,11 @@ import "dart:convert";
 import "dart:io";
 
 import "package:json_annotation/json_annotation.dart";
-import "package:oxanime/utilities/files.dart";
-import "package:oxanime/utilities/html.dart";
+import "package:oxanime/utilities/files_management.dart";
+import "package:oxanime/utilities/html_parser.dart";
 import "package:oxanime/utilities/logs.dart";
-import "package:oxanime/utilities/network.dart";
+import "package:oxanime/utilities/networking.dart";
 import "package:uuid/uuid.dart";
-import "package:oxanime/utilities/series.dart";
 
 part "sources.g.dart";
 
@@ -32,7 +31,9 @@ class Source {
   List<String>? searchSerieDescriptionExcludes;
   // serie searching fields
   final String searchSerieUrlCSSClass;
+  List<String>? searchSerieUrlExcludes;
   final String searchSerieImageCSSClass;
+  List<String>? searchSerieImageExcludes;
   // serie chapters fields
   final String searchSerieChaptersCSSClass;
   // source configuration fields
@@ -54,6 +55,8 @@ class Source {
     required this.searchSerieChaptersCSSClass,
     required this.searchSerieDescriptionCSSClass,
     this.searchSerieDescriptionExcludes,
+    this.searchSerieImageExcludes,
+    this.searchSerieUrlExcludes,
     this.name = "OxAnime Source",
     required this.mainUrl,
     required this.searchUrl,
@@ -62,66 +65,17 @@ class Source {
     required this.uuid,
   });
 
-  Future<List<SearchResult>> query(String query) async {
-    List<SearchResult> results = [];
-    final String responseBody;
-    try {
-      responseBody = await SourceConnection.getBodyFrom(searchUrl + query);
-    } catch (e, s) {
-      logger.e("Error while performing request with query $query: $e\n$s");
-      rethrow;
-    }
-    final sourceHtmlParser = await SourceHtmlParser.create(html: responseBody);
-    final List<String> names = await sourceHtmlParser.getMultipleCSSClassText(
-      searchSerieNameCSSClass,
-      searchSerieNameExcludes ?? [],
-    );
-    // WIP: Get a list of attributes for a CSS class
-    final List<String> mainUrls;
-    final List<String> imageUrls;
-    return results;
-  }
-
   factory Source.fromMap(Map<String, dynamic> json) => _$SourceFromJson(json);
-
-  Future<Source?> getDuplicate(List<Source> sources) async {
-    for (var source in sources) {
-      if (source.name.toLowerCase() == name.toLowerCase() ||
-          source.uuid == uuid ||
-          mainUrl.contains(source.name.toLowerCase())) {
-        return source;
-      }
-    }
-    return null;
-  }
-
-  Future<String?> getSerieDescription(final String responseBody) async {
-    return await (await SourceHtmlParser.create(
-      html: responseBody,
-    )).getSerieCSSClassText(searchSerieDescriptionCSSClass, searchSerieDescriptionExcludes ?? []);
-  }
-
-  Future<String?> getSerieName(final String responseBody) async {
-    return await (await SourceHtmlParser.create(
-      html: responseBody,
-    )).getSerieCSSClassText(searchSerieNameCSSClass, searchSerieNameExcludes ?? []);
-  }
-
-  bool isUsable() {
-    bool result = (enabled == true) && (Uuid.isValidUUID(fromString: uuid));
-    logger.i((result == false) ? "$name is not usable" : "$name is usable");
-    return result;
-  }
 
   Future pushSource() async {
     final sourcesPath = await _getSourcesPath();
-    final serializedSource = toMap();
+    final serializedSource = _toMap();
 
     try {
       final fileContents = await File(await _getSourcesPath()).bufferedRead();
 
       List<Map<String, dynamic>> serializedSources = jsonDecode(fileContents);
-      final conflict = await getDuplicate(sources);
+      final conflict = await _getDuplicate(sources);
       if (conflict != null) {
         throw Exception(
           "Not adding $name with UUID $name as it is a duplicate of ${conflict.name} with UUID ${conflict.uuid}",
@@ -140,17 +94,84 @@ class Source {
     }
   }
 
-  Map<String, dynamic> toMap() => _$SourceToJson(this);
+  Future<List<SearchResult>> query(String query) async {
+    logger.i("Performing search with query $query");
+    List<SearchResult> results = [];
+    final String responseBody;
+    try {
+      responseBody = await SourceConnection.getBodyFrom(searchUrl + query);
+    } catch (e, s) {
+      logger.e("Error while performing request with query $query: $e\n$s");
+      rethrow;
+    }
+    final sourceHtmlParser = await SourceHtmlParser.create(html: responseBody);
+    final List<String> names = await sourceHtmlParser.getMultipleCSSClassText(
+      searchSerieNameCSSClass,
+      searchSerieNameExcludes ?? [],
+    );
+
+    final List<String> mainUrls = await sourceHtmlParser.getMultipleCSSClassAttrValue(
+      searchSerieUrlCSSClass,
+      searchSerieUrlExcludes ?? [],
+      urlHtmlAttribute,
+    );
+
+    final List<String> imageUrls = await sourceHtmlParser.getMultipleCSSClassAttrValue(
+      searchSerieImageCSSClass,
+      searchSerieImageExcludes ?? [],
+      imgHtmlAttribute,
+    );
+
+    for (int i = 0; i < names.length; i++) {
+      results.add(SearchResult(name: names[i], mainUrl: mainUrls[i], imageUrl: imageUrls[i]));
+    }
+    logger.i("Got ${results.length} results");
+    return results;
+  }
+
+  Future<Source?> _getDuplicate(List<Source> sources) async {
+    for (var source in sources) {
+      if (source.name.toLowerCase() == name.toLowerCase() ||
+          source.uuid == uuid ||
+          mainUrl.contains(source.name.toLowerCase())) {
+        return source;
+      }
+    }
+    return null;
+  }
+
+  // ignore: unused_element
+  Future<String?> _getSerieDescription(final String responseBody) async {
+    return await (await SourceHtmlParser.create(
+      html: responseBody,
+    )).getSerieCSSClassText(searchSerieDescriptionCSSClass, searchSerieDescriptionExcludes ?? []);
+  }
+
+  // ignore: unused_element
+  Future<String?> _getSerieName(final String responseBody) async {
+    return await (await SourceHtmlParser.create(
+      html: responseBody,
+    )).getSerieCSSClassText(searchSerieNameCSSClass, searchSerieNameExcludes ?? []);
+  }
+
+  bool _isUsable() {
+    bool result = (enabled == true) && (Uuid.isValidUUID(fromString: uuid));
+    logger.i((result == false) ? "$name is not usable" : "$name is usable");
+    return result;
+  }
+
+  Map<String, dynamic> _toMap() => _$SourceToJson(this);
 
   static Future<List<Source>> getSources() async {
+    logger.i("Initializing sources");
     try {
       List<Source> sources = [];
       final String fileContents = await File(await _getSourcesPath()).bufferedRead();
-      List<Map<String, dynamic>> serializedContents = jsonDecode(fileContents);
+      var serializedContents = jsonDecode(fileContents);
       for (var source in serializedContents) {
         sources.add(Source.fromMap(source));
       }
-      return sources.where((source) => source.isUsable()).toList();
+      return sources.where((source) => source._isUsable()).toList();
     } catch (e, s) {
       logger.e("Error while reading sources: $e\n$s");
       rethrow;
