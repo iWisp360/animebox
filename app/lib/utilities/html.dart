@@ -19,10 +19,12 @@ class SourceHtmlParser {
       parsedText ??= "";
       parsedText += (" ") + element.text;
     }
+
     if (parsedText == null) {
-      logger.e("Error while getting serie css class text: querySelector() returned null");
+      logger.w("Warning while getting serie css class text: querySelector() returned null");
       return null;
     }
+
     String parsedResult = "";
     for (var word in parsedText.split(' ')) {
       if (serieExcludes.any((element) => word.contains(element))) continue;
@@ -30,6 +32,23 @@ class SourceHtmlParser {
       parsedResult += " ";
     }
     return parsedResult.trim();
+  }
+
+  Future<List<String>> getMultipleCSSClassText(
+    final String queryCSSClass,
+    final List<String> queryExcludes,
+  ) async {
+    final serializedElements = serializedHtml.querySelectorAll(queryCSSClass);
+    List<String> parsedElements = [];
+    for (var element in serializedElements) {
+      if (queryExcludes.any((exclude) => exclude.contains(element.text))) {
+        continue;
+      } else {
+        parsedElements.add(element.text);
+      }
+    }
+    logger.d("getMultipleCSSClassText returned a list of ${parsedElements.length}");
+    return parsedElements;
   }
 
   // serialize the response body from a URL into a global variable

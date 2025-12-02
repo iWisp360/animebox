@@ -3,8 +3,9 @@ import "dart:io";
 
 import "package:json_annotation/json_annotation.dart";
 import "package:oxanime/utilities/files.dart";
-import "package:oxanime/utilities/http.dart";
+import "package:oxanime/utilities/html.dart";
 import "package:oxanime/utilities/logs.dart";
+import "package:oxanime/utilities/network.dart";
 import "package:uuid/uuid.dart";
 import "package:oxanime/utilities/series.dart";
 
@@ -13,6 +14,13 @@ part "sources.g.dart";
 const sourcesFileName = "sources.json";
 
 late List<Source> sources;
+
+class SearchResult {
+  final String name;
+  final String mainUrl;
+  String? imageUrl;
+  SearchResult({this.imageUrl, required this.mainUrl, required this.name});
+}
 
 @JsonSerializable()
 class Source {
@@ -54,7 +62,25 @@ class Source {
     required this.uuid,
   });
 
-  // WIP: search series
+  Future<List<SearchResult>> query(String query) async {
+    List<SearchResult> results = [];
+    final String responseBody;
+    try {
+      responseBody = await SourceConnection.getBodyFrom(searchUrl + query);
+    } catch (e, s) {
+      logger.e("Error while performing request with query $query: $e\n$s");
+      rethrow;
+    }
+    final sourceHtmlParser = await SourceHtmlParser.create(html: responseBody);
+    final List<String> names = await sourceHtmlParser.getMultipleCSSClassText(
+      searchSerieNameCSSClass,
+      searchSerieNameExcludes ?? [],
+    );
+    // WIP: Get a list of attributes for a CSS class
+    final List<String> mainUrls;
+    final List<String> imageUrls;
+    return results;
+  }
 
   factory Source.fromMap(Map<String, dynamic> json) => _$SourceFromJson(json);
 

@@ -1,7 +1,7 @@
 // Never gonna give you up
 
 import "package:flutter/material.dart";
-import "package:oxanime/utilities/http.dart";
+import "package:oxanime/utilities/html.dart";
 import "package:oxanime/utilities/logs.dart";
 import "package:oxanime/utilities/network.dart";
 import "package:oxanime/utilities/preferences.dart";
