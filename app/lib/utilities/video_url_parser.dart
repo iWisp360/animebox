@@ -5,31 +5,37 @@ import "package:html/dom.dart";
 class MaRu with VideoSourceParameters {
   @override
   bool get needsAWebView => true;
+  Future<String?> getVideoFromUrl(final String url) async {}
 }
 
-class MegaParser with VideoSourceParameters {
+class Mega with VideoSourceParameters {
   @override
   bool get needsAWebView => true;
+  Future<String?> getVideoFromUrl(final String url) async {}
 }
 
 class Netu with VideoSourceParameters {
   @override
   bool get needsAWebView => false;
+  Future<String?> getVideoFromUrl(final String url) async {}
 }
 
-class OkRuParser with VideoSourceParameters {
+class OkRu with VideoSourceParameters {
   @override
   bool get needsAWebView => false;
+  Future<String?> getVideoFromUrl(final String url) async {}
 }
 
 class StreamTape with VideoSourceParameters {
   @override
   bool get needsAWebView => false;
+  Future<String?> getVideoFromUrl(final String url) async {}
 }
 
 class StreamWish with VideoSourceParameters {
   @override
   bool get needsAWebView => true;
+  Future<String?> getVideoFromUrl(final String url) async {}
 }
 
 // Working
@@ -37,7 +43,8 @@ class YourUpload with VideoSourceParameters {
   @override
   bool get needsAWebView => false;
 
-  static Future<String?> getVideoFromUrl(final String url) async {
+  @override
+  Future<String?> getVideoFromUrl(final String url) async {
     const startMark = "file: '";
     const endMark = "',";
 
@@ -65,6 +72,7 @@ class YourUpload with VideoSourceParameters {
 
 mixin VideoSourceParameters {
   bool get needsAWebView;
+  Future<String?> getVideoFromUrl(final String url);
 }
 
 // In this context, a parser is the utility that brings you the content you need to watch a serie chapter,

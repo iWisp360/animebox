@@ -36,6 +36,8 @@ class Source {
   List<String>? searchSerieImageExcludes;
   // serie chapters fields
   final String searchSerieChaptersCSSClass;
+  // chapters videos fields
+  final List<String> videoSourcesPriority;
   // source configuration fields
   final String name;
   final String mainUrl;
@@ -48,6 +50,7 @@ class Source {
   bool? searchSerieUrlResultsAbsolute;
 
   Source({
+    required this.videoSourcesPriority,
     this.searchSerieNameExcludes,
     required this.searchSerieNameCSSClass,
     required this.searchSerieUrlCSSClass,
