@@ -1,6 +1,33 @@
+import "package:html/dom.dart";
 import "package:html/parser.dart";
 import "package:http/http.dart";
-import "package:html/dom.dart";
+
+mixin VideoSourceParameters {
+  bool get needsAWebView;
+  Future<String?> getVideoFromUrl(final String url);
+}
+
+// In this context, a parser is the utility that brings you the content you need to watch a serie chapter,
+// either by natively streaming it or embedding a webview player if getting a URL is not possible.
+// A parser gets the following contents if available:
+// - URL or a List of URLs of the static content of the video
+// - Video Quality Options
+// - Video Duration
+enum VideoSourceParsers {
+  yourUpload, // sourced from aniyomi
+}
+
+class VideoSources {
+  static String getCompleteUrl(final String domainName) {
+    return "https://$domainName/";
+  }
+
+  static List<String> videoSourcesDomainNames(VideoSourceParsers videoSource) {
+    return switch (videoSource) {
+      VideoSourceParsers.yourUpload => ["yourupload.com"],
+    };
+  }
+}
 
 // Working
 class YourUpload with VideoSourceParameters {
@@ -31,32 +58,5 @@ class YourUpload with VideoSourceParameters {
       int endOfUrlIndex = strData.indexOf(endMark);
       return strData.substring(startOfUrlIndex + startMark.length, endOfUrlIndex);
     }
-  }
-}
-
-mixin VideoSourceParameters {
-  bool get needsAWebView;
-  Future<String?> getVideoFromUrl(final String url);
-}
-
-// In this context, a parser is the utility that brings you the content you need to watch a serie chapter,
-// either by natively streaming it or embedding a webview player if getting a URL is not possible.
-// A parser gets the following contents if available:
-// - URL or a List of URLs of the static content of the video
-// - Video Quality Options
-// - Video Duration
-enum VideoSourceParsers {
-  yourUpload, // sourced from aniyomi
-}
-
-class VideoSources {
-  static String getCompleteUrl(final String domainName) {
-    return "https://$domainName/";
-  }
-
-  static List<String> videoSourcesDomainNames(VideoSourceParsers videoSource) {
-    return switch (videoSource) {
-      VideoSourceParsers.yourUpload => ["yourupload.com"],
-    };
   }
 }

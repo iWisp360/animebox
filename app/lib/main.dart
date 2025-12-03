@@ -2,20 +2,21 @@
 // WIP: Backup utility & download management
 
 import "package:flutter/material.dart";
-import "package:http/http.dart";
 import "package:media_kit/media_kit.dart";
 import "package:oxanime/ui/video.dart";
 import "package:oxanime/utilities/logs.dart";
 import "package:oxanime/utilities/preferences.dart";
 import "package:oxanime/utilities/sources.dart";
-import "package:oxanime/utilities/video_url_parser.dart";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MediaKit.ensureInitialized();
   try {
     sources = await Source.getSources();
-  } catch (e) {}
+  } catch (e) {
+    // WIP: This error isn't recoverable, an UI dialog should show a panic and logs
+    rethrow;
+  }
   try {
     logger.i("Logging to file");
     await initLogger();
@@ -27,11 +28,6 @@ void main() async {
     logger.i("Disabling Logs");
     logger.close();
   }
-
-  var response = await YourUpload.getVideoFromUrl("https://www.yourupload.com/embed/H4a5mQX3H4w5");
-  final headers = <String, String>{};
-  headers["referer"] = "https://www.yourupload.com/";
-  runApp(OxAnimeMainApp(videoUrl: response!, headers: headers));
 }
 
 Future<void> initLogger() async {

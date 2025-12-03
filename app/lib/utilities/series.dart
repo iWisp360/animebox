@@ -3,7 +3,10 @@ import "dart:io";
 
 import "package:json_annotation/json_annotation.dart";
 import "package:oxanime/utilities/files_management.dart";
+import "package:oxanime/utilities/html_parser.dart";
 import "package:oxanime/utilities/logs.dart";
+import "package:oxanime/utilities/networking.dart";
+import "package:oxanime/utilities/sources.dart";
 
 part "series.g.dart";
 
@@ -13,9 +16,9 @@ late final List<Serie> series;
 
 @JsonSerializable()
 class Chapter {
-  final int index;
-  final String uri;
-  Chapter({required this.index, required this.uri});
+  final String identifier;
+  final String url;
+  Chapter({required this.identifier, required this.url});
 
   factory Chapter.fromJson(Map<String, dynamic> map) => _$ChapterFromJson(map);
 
@@ -25,13 +28,56 @@ class Chapter {
 @JsonSerializable()
 class Serie {
   final String name;
+  final String url;
   String? description;
-  final List<Chapter> chapters;
+  List<Chapter> chapters;
   final String sourceUUID;
+  late final Source _source;
 
-  Serie({required this.name, this.description, required this.chapters, required this.sourceUUID});
+  Serie({
+    required this.name,
+    required this.url,
+    this.description,
+    required this.chapters,
+    required this.sourceUUID,
+  });
 
   factory Serie.fromMap(Map<String, dynamic> map) => _$SerieFromJson(map);
+
+  Future<void> assignSource() async {
+    for (var s in sources) {
+      if (s.uuid == sourceUUID) {
+        _source = s;
+      } else {
+        throw Exception("Source not found for serie $name");
+      }
+    }
+  }
+
+  Future<void> getChaptersRemote() async {
+    var sourceRequestDocument = await SourceConnection.parseHtml(
+      await SourceConnection.getBodyFrom(url),
+    );
+
+    var chapterIdentifiers = sourceRequestDocument
+        .querySelectorAll(_source.searchSerieChaptersIdentifiersCSSClass)
+        .map((e) => e.text)
+        .toList();
+
+    var chapterUrls = sourceRequestDocument
+        .querySelectorAll(_source.searchSerieChaptersUrlsCSSClass)
+        .map((e) => e.attributes[urlHtmlAttribute])
+        .toList();
+
+    for (int i = 0; i < chapterIdentifiers.length; i++) {
+      chapters.add(
+        Chapter(
+          identifier: chapterIdentifiers.elementAt(i),
+          url: chapterUrls.elementAtOrNull(i) ?? "",
+        ),
+      );
+    }
+  }
 
   Future<List<Serie>> getSeries() async {
     try {

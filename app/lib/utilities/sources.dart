@@ -14,6 +14,8 @@ const sourcesFileName = "sources.json";
 
 late List<Source> sources;
 
+enum ChaptersVideosUrlParseModes { jsonList }
+
 class SearchResult {
   final String name;
   final String mainUrl;
@@ -35,9 +37,11 @@ class Source {
   final String searchSerieImageCSSClass;
   List<String>? searchSerieImageExcludes;
   // serie chapters fields
-  final String searchSerieChaptersCSSClass;
+  final String searchSerieChaptersIdentifiersCSSClass;
+  final String searchSerieChaptersUrlsCSSClass;
   // chapters videos fields
   final List<String> videoSourcesPriority;
+  final ChaptersVideosUrlParseModes videosUrlParseMode;
   // source configuration fields
   final String name;
   final String mainUrl;
@@ -51,11 +55,13 @@ class Source {
 
   Source({
     required this.videoSourcesPriority,
+    required this.videosUrlParseMode,
     this.searchSerieNameExcludes,
     required this.searchSerieNameCSSClass,
     required this.searchSerieUrlCSSClass,
     required this.searchSerieImageCSSClass,
-    required this.searchSerieChaptersCSSClass,
+    required this.searchSerieChaptersIdentifiersCSSClass,
+    required this.searchSerieChaptersUrlsCSSClass,
     required this.searchSerieDescriptionCSSClass,
     this.searchSerieDescriptionExcludes,
     this.searchSerieImageExcludes,

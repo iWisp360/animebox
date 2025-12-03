@@ -12,13 +12,20 @@ Source _$SourceFromJson(Map<String, dynamic> json) {
     videoSourcesPriority: (json['videoSourcesPriority'] as List<dynamic>)
         .map((e) => e as String)
         .toList(),
+    videosUrlParseMode: $enumDecode(
+      _$ChaptersVideosUrlParseModesEnumMap,
+      json['videosUrlParseMode'],
+    ),
     searchSerieNameExcludes: (json['searchSerieNameExcludes'] as List<dynamic>?)
         ?.map((e) => e as String)
         .toList(),
     searchSerieNameCSSClass: json['searchSerieNameCSSClass'] as String,
     searchSerieUrlCSSClass: json['searchSerieUrlCSSClass'] as String,
     searchSerieImageCSSClass: json['searchSerieImageCSSClass'] as String,
-    searchSerieChaptersCSSClass: json['searchSerieChaptersCSSClass'] as String,
+    searchSerieChaptersIdentifiersCSSClass:
+        json['searchSerieChaptersIdentifiersCSSClass'] as String,
+    searchSerieChaptersUrlsCSSClass:
+        json['searchSerieChaptersUrlsCSSClass'] as String,
     searchSerieDescriptionCSSClass:
         json['searchSerieDescriptionCSSClass'] as String,
     searchSerieDescriptionExcludes:
@@ -51,12 +58,20 @@ Map<String, dynamic> _$SourceToJson(Source instance) => <String, dynamic>{
   'searchSerieUrlExcludes': instance.searchSerieUrlExcludes,
   'searchSerieImageCSSClass': instance.searchSerieImageCSSClass,
   'searchSerieImageExcludes': instance.searchSerieImageExcludes,
-  'searchSerieChaptersCSSClass': instance.searchSerieChaptersCSSClass,
+  'searchSerieChaptersIdentifiersCSSClass':
+      instance.searchSerieChaptersIdentifiersCSSClass,
+  'searchSerieChaptersUrlsCSSClass': instance.searchSerieChaptersUrlsCSSClass,
   'videoSourcesPriority': instance.videoSourcesPriority,
+  'videosUrlParseMode':
+      _$ChaptersVideosUrlParseModesEnumMap[instance.videosUrlParseMode]!,
   'name': instance.name,
   'mainUrl': instance.mainUrl,
   'searchUrl': instance.searchUrl,
   'enabled': instance.enabled,
   'uuid': instance.uuid,
   'searchSerieUrlResultsAbsolute': instance.searchSerieUrlResultsAbsolute,
+};
+
+const _$ChaptersVideosUrlParseModesEnumMap = {
+  ChaptersVideosUrlParseModes.jsonList: 'jsonList',
 };

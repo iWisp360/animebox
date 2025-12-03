@@ -6,16 +6,19 @@ part of 'series.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Chapter _$ChapterFromJson(Map<String, dynamic> json) =>
-    Chapter(index: (json['index'] as num).toInt(), uri: json['uri'] as String);
+Chapter _$ChapterFromJson(Map<String, dynamic> json) => Chapter(
+  identifier: json['identifier'] as String,
+  url: json['url'] as String,
+);
 
 Map<String, dynamic> _$ChapterToJson(Chapter instance) => <String, dynamic>{
-  'index': instance.index,
-  'uri': instance.uri,
+  'identifier': instance.identifier,
+  'url': instance.url,
 };
 
 Serie _$SerieFromJson(Map<String, dynamic> json) => Serie(
   name: json['name'] as String,
+  url: json['url'] as String,
   description: json['description'] as String?,
   chapters: (json['chapters'] as List<dynamic>)
       .map((e) => Chapter.fromJson(e as Map<String, dynamic>))
@@ -25,6 +28,7 @@ Serie _$SerieFromJson(Map<String, dynamic> json) => Serie(
 
 Map<String, dynamic> _$SerieToJson(Serie instance) => <String, dynamic>{
   'name': instance.name,
+  'url': instance.url,
   'description': instance.description,
   'chapters': instance.chapters,
   'sourceUUID': instance.sourceUUID,
