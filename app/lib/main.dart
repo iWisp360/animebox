@@ -2,15 +2,10 @@
 // WIP: Backup utility & download management
 
 import "package:flutter/material.dart";
-import "package:oxanime/ui/home.dart";
-import "package:oxanime/ui/video.dart";
-import "package:http/http.dart";
+import "package:media_kit/media_kit.dart";
 import "package:oxanime/utilities/logs.dart";
-import "package:oxanime/utilities/networking.dart";
-import "package:oxanime/utilities/video_url_parser.dart";
 import "package:oxanime/utilities/preferences.dart";
 import "package:oxanime/utilities/sources.dart";
-import "package:media_kit/media_kit.dart";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -11,32 +11,6 @@ class SourceHtmlParser {
 
   SourceHtmlParser._({required this.html});
 
-  /// fields such as name and description can be obtained from the value of a tag matching a css class
-  Future<String?> getSerieCSSClassText(
-    final String serieCSSClass,
-    final List<String> serieExcludes,
-  ) async {
-    final serializedElements = serializedHtml.querySelectorAll(serieCSSClass);
-    String? parsedText;
-    for (var element in serializedElements) {
-      parsedText ??= "";
-      parsedText += (" ") + element.text;
-    }
-
-    if (parsedText == null) {
-      logger.w("Warning while getting serie css class text: querySelector() returned null");
-      return null;
-    }
-
-    String parsedResult = "";
-    for (var word in parsedText.split(' ')) {
-      if (serieExcludes.any((element) => word.contains(element))) continue;
-      parsedResult += word;
-      parsedResult += " ";
-    }
-    return parsedResult.trim();
-  }
-
   /// gets multiple attribute values from elements that match cssClass
   Future<List<String>> getMultipleCSSClassAttrValue(
     final String cssClass,
@@ -79,6 +53,32 @@ class SourceHtmlParser {
     }
     logger.d("getMultipleCSSClassText returned a list of ${parsedElements.length} elements");
     return parsedElements;
+  }
+
+  /// fields such as name and description can be obtained from the value of a tag matching a css class
+  Future<String?> getSerieCSSClassText(
+    final String serieCSSClass,
+    final List<String> serieExcludes,
+  ) async {
+    final serializedElements = serializedHtml.querySelectorAll(serieCSSClass);
+    String? parsedText;
+    for (var element in serializedElements) {
+      parsedText ??= "";
+      parsedText += (" ") + element.text;
+    }
+
+    if (parsedText == null) {
+      logger.w("Warning while getting serie css class text: querySelector() returned null");
+      return null;
+    }
+
+    String parsedResult = "";
+    for (var word in parsedText.split(' ')) {
+      if (serieExcludes.any((element) => word.contains(element))) continue;
+      parsedResult += word;
+      parsedResult += " ";
+    }
+    return parsedResult.trim();
   }
 
   // serialize the response body from a URL into a global variable
