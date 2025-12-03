@@ -2,6 +2,7 @@ import "dart:convert";
 import "dart:io";
 
 import "package:json_annotation/json_annotation.dart";
+import "package:oxanime/utilities/chapters.dart";
 import "package:oxanime/utilities/files_management.dart";
 import "package:oxanime/utilities/html_parser.dart";
 import "package:oxanime/utilities/logs.dart";
@@ -13,17 +14,6 @@ part "series.g.dart";
 const seriesFileName = "series.json";
 
 late final List<Serie> series;
-
-@JsonSerializable()
-class Chapter {
-  final String identifier;
-  final String url;
-  Chapter({required this.identifier, required this.url});
-
-  factory Chapter.fromJson(Map<String, dynamic> map) => _$ChapterFromJson(map);
-
-  Map<String, dynamic> toMap() => _$ChapterToJson(this);
-}
 
 @JsonSerializable()
 class Serie {

@@ -4,15 +4,15 @@ import "package:media_kit_video/media_kit_video.dart";
 
 class VideoPlayerScreen extends StatefulWidget {
   final String videoUrl;
-  final Map<String, String> headers;
-  const VideoPlayerScreen({super.key, required this.videoUrl, required this.headers});
+  final Map<String, String>? headers;
+  const VideoPlayerScreen({super.key, required this.videoUrl, this.headers});
 
   @override
   State<VideoPlayerScreen> createState() => _VideoPlayerScreenState();
 }
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
-  late final player = Player();
+  final player = Player();
   late final VideoController controller = VideoController(player);
 
   @override

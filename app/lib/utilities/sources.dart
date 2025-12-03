@@ -13,6 +13,7 @@ part "sources.g.dart";
 const sourcesFileName = "sources.json";
 
 late List<Source> sources;
+late bool sourcesInitSuccess;
 
 enum ChaptersVideosUrlParseModes { jsonList }
 

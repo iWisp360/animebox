@@ -1,22 +1,41 @@
 // Never gonna give you up
 // WIP: Backup utility & download management
 
+import "dart:io";
+
 import "package:flutter/material.dart";
 import "package:media_kit/media_kit.dart";
-import "package:oxanime/ui/video.dart";
 import "package:oxanime/utilities/logs.dart";
 import "package:oxanime/utilities/preferences.dart";
 import "package:oxanime/utilities/sources.dart";
+import "package:path/path.dart";
+import "package:path_provider/path_provider.dart";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MediaKit.ensureInitialized();
   try {
     sources = await Source.getSources();
+    sourcesInitSuccess = true;
   } catch (e) {
-    // WIP: This error isn't recoverable, an UI dialog should show a panic and logs
+    if (e != PathNotFoundException) {
+      try {
+        await File(
+          join((await getApplicationSupportDirectory()).path, sourcesFileName),
+        ).create(recursive: true);
+        sources = await Source.getSources();
+        sourcesInitSuccess = true;
+      } catch (e) {
+        logger.e("Sources couldn't be retrieved from local storage: $e");
+        sourcesInitSuccess = false;
+        // WIP: Notify this through UI
+        sources = [];
+      }
+    }
+    // WIP: Here too
     rethrow;
   }
+
   try {
     logger.i("Logging to file");
     await initLogger();
@@ -38,16 +57,10 @@ Future<void> initLogger() async {
 }
 
 class OxAnimeMainApp extends StatelessWidget {
-  const OxAnimeMainApp({super.key, required this.videoUrl, required this.headers});
-  final String videoUrl;
-  final Map<String, String> headers;
+  const OxAnimeMainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "OxAnime",
-      home: VideoPlayerScreen(videoUrl: videoUrl, headers: headers),
-      debugShowCheckedModeBanner: false,
-    );
+    return MaterialApp(title: "OxAnime", home: Placeholder(), debugShowCheckedModeBanner: false);
   }
 }

@@ -6,16 +6,6 @@ part of 'series.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Chapter _$ChapterFromJson(Map<String, dynamic> json) => Chapter(
-  identifier: json['identifier'] as String,
-  url: json['url'] as String,
-);
-
-Map<String, dynamic> _$ChapterToJson(Chapter instance) => <String, dynamic>{
-  'identifier': instance.identifier,
-  'url': instance.url,
-};
-
 Serie _$SerieFromJson(Map<String, dynamic> json) => Serie(
   name: json['name'] as String,
   url: json['url'] as String,
