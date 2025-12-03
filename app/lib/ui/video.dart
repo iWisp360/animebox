@@ -4,7 +4,8 @@ import "package:media_kit_video/media_kit_video.dart";
 
 class VideoPlayerScreen extends StatefulWidget {
   final String videoUrl;
-  const VideoPlayerScreen({super.key, required this.videoUrl});
+  final Map<String, String> headers;
+  const VideoPlayerScreen({super.key, required this.videoUrl, required this.headers});
 
   @override
   State<VideoPlayerScreen> createState() => _VideoPlayerScreenState();
@@ -21,7 +22,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     // Create and store the VideoPlayerController. The VideoPlayerController
     // offers several different constructors to play videos from assets, files,
     // or the internet.
-    player.open(Media(widget.videoUrl));
+    player.open(Media(widget.videoUrl, httpHeaders: widget.headers));
   }
 
   @override

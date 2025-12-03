@@ -1,3 +1,7 @@
+import "package:html/parser.dart";
+import "package:http/http.dart";
+import "package:html/dom.dart";
+
 class MaRu with VideoSourceParameters {
   @override
   bool get needsAWebView => true;
@@ -28,6 +32,37 @@ class StreamWish with VideoSourceParameters {
   bool get needsAWebView => true;
 }
 
+// Working
+class YourUpload with VideoSourceParameters {
+  @override
+  bool get needsAWebView => false;
+
+  static Future<String?> getVideoFromUrl(final String url) async {
+    const startMark = "file: '";
+    const endMark = "',";
+
+    final request = Request("GET", Uri.parse(url));
+    request.headers["referer"] = VideoSources.getCompleteUrl(
+      VideoSources.videoSourcesDomainNames(VideoSourceParsers.yourUpload)[0],
+    );
+
+    final client = Client();
+    final response = await Response.fromStream(await client.send(request));
+    final Element elementSelectFirst = HtmlParser(response.body)
+        .parse()
+        .querySelectorAll("script")
+        .firstWhere((element) => element.text.contains("jwplayerOptions"));
+    final String strData = elementSelectFirst.text;
+    if (strData.isEmpty) {
+      return null;
+    } else {
+      int startOfUrlIndex = strData.indexOf(startMark);
+      int endOfUrlIndex = strData.indexOf(endMark);
+      return strData.substring(startOfUrlIndex + startMark.length, endOfUrlIndex);
+    }
+  }
+}
+
 mixin VideoSourceParameters {
   bool get needsAWebView;
 }
@@ -49,7 +84,11 @@ enum VideoSourceParsers {
 }
 
 class VideoSources {
-  static List<String> getVideoSourceUrl(VideoSourceParsers videoSource) {
+  static String getCompleteUrl(final String domainName) {
+    return "https://$domainName/";
+  }
+
+  static List<String> videoSourcesDomainNames(VideoSourceParsers videoSource) {
     return switch (videoSource) {
       VideoSourceParsers.yourUpload => ["yourupload.com"],
       VideoSourceParsers.mega => ["mega.nz", "mega.co.nz"],
