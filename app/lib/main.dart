@@ -4,7 +4,7 @@
 import "package:flutter/material.dart";
 import "package:oxanime/ui/home.dart";
 import "package:oxanime/ui/video.dart";
-import "package:oxanime/utilities/html_parser.dart";
+import "package:http/http.dart";
 import "package:oxanime/utilities/logs.dart";
 import "package:oxanime/utilities/networking.dart";
 import "package:oxanime/utilities/video_url_parser.dart";
@@ -29,8 +29,6 @@ void main() async {
     logger.i("Disabling Logs");
     logger.close();
   }
-  var url = await SourceStreamWish.getVideoUrl("https://streamwish.to/e/sguk2ap3w5ky");
-  runApp(OxAnimeMainApp(url: url!));
 }
 
 Future<void> initLogger() async {
@@ -41,15 +39,10 @@ Future<void> initLogger() async {
 }
 
 class OxAnimeMainApp extends StatelessWidget {
-  const OxAnimeMainApp({super.key, required this.url});
-  final String url;
+  const OxAnimeMainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "OxAnime",
-      home: VideoPlayerScreen(videoUrl: url),
-      debugShowCheckedModeBanner: false,
-    );
+    return MaterialApp(title: "OxAnime", home: Placeholder(), debugShowCheckedModeBanner: false);
   }
 }
