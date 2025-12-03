@@ -3,15 +3,21 @@
 
 import "package:flutter/material.dart";
 import "package:oxanime/ui/home.dart";
+import "package:oxanime/ui/video.dart";
 import "package:oxanime/utilities/html_parser.dart";
 import "package:oxanime/utilities/logs.dart";
 import "package:oxanime/utilities/networking.dart";
+import "package:oxanime/utilities/video_url_parser.dart";
 import "package:oxanime/utilities/preferences.dart";
 import "package:oxanime/utilities/sources.dart";
+import "package:media_kit/media_kit.dart";
 
 void main() async {
-  sources = await Source.getSources();
   WidgetsFlutterBinding.ensureInitialized();
+  MediaKit.ensureInitialized();
+  try {
+    sources = await Source.getSources();
+  } catch (e) {}
   try {
     logger.i("Logging to file");
     await initLogger();
@@ -23,7 +29,8 @@ void main() async {
     logger.i("Disabling Logs");
     logger.close();
   }
-  runApp(OxAnimeMainApp());
+  var url = await SourceStreamWish.getVideoUrl("https://streamwish.to/e/sguk2ap3w5ky");
+  runApp(OxAnimeMainApp(url: url!));
 }
 
 Future<void> initLogger() async {
@@ -34,13 +41,14 @@ Future<void> initLogger() async {
 }
 
 class OxAnimeMainApp extends StatelessWidget {
-  const OxAnimeMainApp({super.key});
+  const OxAnimeMainApp({super.key, required this.url});
+  final String url;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "OxAnime",
-      home: OxAnimeHomeScreen(),
+      home: VideoPlayerScreen(videoUrl: url),
       debugShowCheckedModeBanner: false,
     );
   }
