@@ -2,42 +2,6 @@ import "package:html/parser.dart";
 import "package:http/http.dart";
 import "package:html/dom.dart";
 
-class MaRu with VideoSourceParameters {
-  @override
-  bool get needsAWebView => true;
-  Future<String?> getVideoFromUrl(final String url) async {}
-}
-
-class Mega with VideoSourceParameters {
-  @override
-  bool get needsAWebView => true;
-  Future<String?> getVideoFromUrl(final String url) async {}
-}
-
-class Netu with VideoSourceParameters {
-  @override
-  bool get needsAWebView => false;
-  Future<String?> getVideoFromUrl(final String url) async {}
-}
-
-class OkRu with VideoSourceParameters {
-  @override
-  bool get needsAWebView => false;
-  Future<String?> getVideoFromUrl(final String url) async {}
-}
-
-class StreamTape with VideoSourceParameters {
-  @override
-  bool get needsAWebView => false;
-  Future<String?> getVideoFromUrl(final String url) async {}
-}
-
-class StreamWish with VideoSourceParameters {
-  @override
-  bool get needsAWebView => true;
-  Future<String?> getVideoFromUrl(final String url) async {}
-}
-
 // Working
 class YourUpload with VideoSourceParameters {
   @override
@@ -83,12 +47,6 @@ mixin VideoSourceParameters {
 // - Video Duration
 enum VideoSourceParsers {
   yourUpload, // sourced from aniyomi
-  streamTape, // sourced from aniyomi
-  okru, // sourced from aniyomi
-  mega, // video playback through webview. Will try downloading
-  maru, // maybe
-  netu, // maybe
-  streamwish, // only webview, an actual implementation of a parser needs features not present in dart
 }
 
 class VideoSources {
@@ -99,12 +57,6 @@ class VideoSources {
   static List<String> videoSourcesDomainNames(VideoSourceParsers videoSource) {
     return switch (videoSource) {
       VideoSourceParsers.yourUpload => ["yourupload.com"],
-      VideoSourceParsers.mega => ["mega.nz", "mega.co.nz"],
-      VideoSourceParsers.okru => ["ok.ru"],
-      VideoSourceParsers.streamTape => ["streamtape.com"],
-      VideoSourceParsers.maru => ["my.mail.ru"],
-      VideoSourceParsers.netu => ["hqq.tv"],
-      VideoSourceParsers.streamwish => ["streamwish.to"],
     };
   }
 }
