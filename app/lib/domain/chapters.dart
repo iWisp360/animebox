@@ -4,9 +4,12 @@ import "package:html/dom.dart";
 import "package:html/parser.dart";
 import "package:http/http.dart";
 import "package:json_annotation/json_annotation.dart";
-import "package:oxanime/utilities/html_parser.dart";
-import "package:oxanime/utilities/logs.dart";
-import "package:oxanime/utilities/sources.dart";
+import "package:oxanime/core/constants.dart";
+import "package:oxanime/core/enums.dart";
+import "package:oxanime/data/html_parser.dart";
+import "package:oxanime/core/logs.dart";
+import "package:oxanime/domain/sources.dart";
+import "package:collection/collection.dart";
 
 part "chapters.g.dart";
 
@@ -15,8 +18,11 @@ class Chapter {
   final String identifier;
   final String url;
   final String sourceUUID;
+  @JsonKey(includeFromJson: false)
   final Source _source;
-  Chapter({required this.identifier, required this.url, required this.sourceUUID, required Source source}): _source = source;
+
+  Chapter({required this.identifier, required this.url, required this.sourceUUID, Source? source})
+    : _source = source ?? PlaceHolders.source;
 
   factory Chapter.fromJson(Map<String, dynamic> map) => _$ChapterFromJson(map);
 
@@ -36,16 +42,16 @@ class Chapter {
       rethrow;
     }
 
-    switch (_source.videosUrlParseMode) {
+    switch (_source.chaptersVideosUrlParseMode) {
       case ChaptersVideosUrlParseModes.jsonList:
-        final element = HtmlParser(responseBody)
+        final Element? element = HtmlParser(responseBody)
             .parse()
             .querySelectorAll(scriptHtmlCSSClass)
-            .cast<Element?>()
-            .firstWhere(
+            .firstWhereOrNull(
               (element) =>
-                  element?.text.contains(_source.chaptersVideosJsonListStartPattern) == true,
-              orElse: () => null,
+                  // Access text directly: 'element' is non-nullable 'Element' here.
+                  element.text.contains(_source.chaptersVideosJsonListStartPattern),
+              // The return type of firstWhere is now correctly Element?
             );
 
         if (element == null) {
@@ -79,7 +85,10 @@ class Chapter {
         }
 
         break;
+      case ChaptersVideosUrlParseModes.empty:
+        return videoUrls;
     }
 
     return videoUrls;
   }
+}

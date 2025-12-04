@@ -5,9 +5,10 @@ import "dart:io";
 
 import "package:flutter/material.dart";
 import "package:media_kit/media_kit.dart";
-import "package:oxanime/utilities/logs.dart";
-import "package:oxanime/utilities/preferences.dart";
-import "package:oxanime/utilities/sources.dart";
+import "package:oxanime/core/constants.dart";
+import "package:oxanime/core/logs.dart";
+import "package:oxanime/core/preferences.dart";
+import "package:oxanime/domain/sources.dart";
 import "package:path/path.dart";
 import "package:path_provider/path_provider.dart";
 
@@ -21,7 +22,7 @@ void main() async {
     if (e != PathNotFoundException) {
       try {
         await File(
-          join((await getApplicationSupportDirectory()).path, sourcesFileName),
+          join((await getApplicationSupportDirectory()).path, FileNames.sourcesJson),
         ).create(recursive: true);
         sources = await Source.getSources();
         sourcesInitSuccess = true;
@@ -29,7 +30,7 @@ void main() async {
         logger.e("Sources couldn't be retrieved from local storage: $e");
         sourcesInitSuccess = false;
         // WIP: Notify this through UI
-        sources = [];
+        sources = [PlaceHolders.source];
       }
     }
     // WIP: Here too
@@ -61,10 +62,6 @@ class OxAnimeMainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "OxAnime",
-      home: Placeholder(),
-      debugShowCheckedModeBanner: false,
-    );
+    return MaterialApp(title: "OxAnime", home: Placeholder(), debugShowCheckedModeBanner: false);
   }
 }

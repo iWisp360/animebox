@@ -1,7 +1,7 @@
 import "package:html/dom.dart";
 import "package:html/parser.dart";
 import "package:http/http.dart" as http;
-import "package:oxanime/utilities/logs.dart";
+import "package:oxanime/core/logs.dart";
 
 class SourceConnection {
   static Future<String> getBodyFrom(String url) async {

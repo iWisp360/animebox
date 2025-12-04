@@ -2,6 +2,27 @@ String _throwError(final Object errorMsg, final StackTrace stackTrace) {
   return "$errorMsg\n$stackTrace";
 }
 
+class SourceException implements Exception {
+  final SourceExceptionKind kind;
+  final Object errorMsg;
+  StackTrace stackTrace;
+  SourceException({
+    required this.errorMsg,
+    required this.stackTrace,
+    this.kind = SourceExceptionKind.otherException,
+  });
+
+  @override
+  String toString() => switch (kind) {
+    SourceExceptionKind.gotPlaceHolderException =>
+      "Error while processing source: Source is a placeholder, "
+          "probably a source couldn't be assigned or getting sources failed"
+          "\n$errorMsg\n$stackTrace",
+
+    SourceExceptionKind.otherException => "Error while processing source",
+  };
+}
+
 class VideoUrlParserException implements Exception {
   final VideoUrlParserExceptionKind kind;
   final Object errorMsg;
@@ -31,3 +52,5 @@ enum VideoUrlParserExceptionKind {
   responseParseException,
   otherException,
 }
+
+enum SourceExceptionKind { gotPlaceHolderException, otherException }

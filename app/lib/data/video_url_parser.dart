@@ -1,9 +1,10 @@
 import "package:html/dom.dart";
 import "package:html/parser.dart";
 import "package:http/http.dart";
-import "package:oxanime/utilities/exceptions.dart";
-import "package:oxanime/utilities/html_parser.dart";
-import "package:oxanime/utilities/logs.dart";
+import "package:oxanime/core/exceptions.dart";
+import "package:oxanime/data/html_parser.dart";
+import "package:oxanime/core/logs.dart";
+import "package:oxanime/core/enums.dart";
 
 mixin VideoSourceParameters {
   bool get needsAWebView;
@@ -16,9 +17,6 @@ mixin VideoSourceParameters {
 // - URL or a List of URLs of the static content of the video
 // - Video Quality Options -> not implemented
 // - Video Duration -> MediaKit does this, so these things actually don't
-enum VideoSourceParsers {
-  yourUpload, // sourced from aniyomi
-}
 
 class VideoSources {
   static String getCompleteUrl(final String domainName) {

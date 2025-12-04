@@ -1,18 +1,20 @@
 import "dart:convert";
 import "dart:io";
 
+import "package:collection/collection.dart";
 import "package:html/dom.dart";
 import "package:json_annotation/json_annotation.dart";
-import "package:oxanime/utilities/chapters.dart";
-import "package:oxanime/utilities/files_management.dart";
-import "package:oxanime/utilities/html_parser.dart";
-import "package:oxanime/utilities/logs.dart";
-import "package:oxanime/utilities/networking.dart";
-import "package:oxanime/utilities/sources.dart";
+import "package:oxanime/core/constants.dart";
+import "package:oxanime/domain/chapters.dart";
+import "package:oxanime/core/files.dart";
+import "package:oxanime/data/html_parser.dart";
+import "package:oxanime/core/logs.dart";
+import "package:oxanime/data/networking.dart";
+import "package:oxanime/domain/sources.dart";
 
 part "series.g.dart";
 
-const seriesFileName = "series.json";
+const seriesFileName = FileNames.seriesJson;
 
 late final List<Serie> series;
 
@@ -102,7 +104,7 @@ class Serie {
         .map((e) => e.attributes[urlHtmlAttribute])
         .map((e) {
           if (_source.searchSerieUrlResultsAbsolute == false) {
-            if (e == null) return "";
+            if (e == null) return PlaceHolders.emptyString;
 
             return SourceConnection.makeUrlFromRelative(_source.mainUrl, e);
           }
@@ -114,7 +116,10 @@ class Serie {
         Chapter(
           sourceUUID: sourceUUID,
           identifier: chapterIdentifiers.elementAt(i),
-          url: chapterUrls.elementAtOrNull(i) ?? "",
+          source:
+              sources.singleWhereOrNull((element) => element.uuid == sourceUUID) ??
+              PlaceHolders.source,
+          url: chapterUrls.elementAtOrNull(i) ?? PlaceHolders.emptyString,
         ),
       );
     }
@@ -161,7 +166,7 @@ class Serie {
 
   static Future<String> _getSeriesPath() async {
     try {
-      return await getDataDirectoryWithJoined("series.json");
+      return await getDataDirectoryWithJoined(FileNames.seriesJson);
     } catch (e, s) {
       logger.e("Error while getting series path: $e\n$s");
       rethrow;

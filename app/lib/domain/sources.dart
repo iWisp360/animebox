@@ -2,29 +2,23 @@ import "dart:convert";
 import "dart:io";
 
 import "package:json_annotation/json_annotation.dart";
-import "package:oxanime/utilities/files_management.dart";
-import "package:oxanime/utilities/html_parser.dart";
-import "package:oxanime/utilities/logs.dart";
-import "package:oxanime/utilities/networking.dart";
-import "package:uuid/uuid.dart";
+import "package:oxanime/core/validations.dart";
+import "package:oxanime/core/files.dart";
+import "package:oxanime/data/html_parser.dart";
+import "package:oxanime/core/logs.dart";
+import "package:oxanime/data/networking.dart";
+import "package:oxanime/core/constants.dart";
+import "package:oxanime/core/enums.dart";
 
 part "sources.g.dart";
-
-const sourcesFileName = "sources.json";
 
 late List<Source> sources;
 late bool sourcesInitSuccess;
 
-enum ChaptersVideosUrlParseModes { jsonList }
-
-/// Sources may present chapter video links inside javascript 
+/// Sources may present chapter video links inside javascript
 /// arrays, which are unreachable by using a css class,
 /// so, parsing the array is necessary. Luckily, arrays
 /// in Javascript has the same structure as a JSON object.
-enum VideoUrlParseMode {
-  parseJavaScript,
-  cssClass,
-}
 
 class SearchResult {
   final String name;
@@ -58,7 +52,8 @@ class Source {
   // chapters videos fields
   @JsonKey(defaultValue: [])
   final List<String> videoSourcesPriority;
-  final ChaptersVideosUrlParseModes videosUrlParseMode;
+  final SourceVideosUrlParseModes sourceVideosUrlParseModes;
+  final ChaptersVideosUrlParseModes chaptersVideosUrlParseMode;
   final String chaptersVideosJsonListStartPattern;
   final String chaptersVideosJsonListEndPattern;
   // source configuration fields
@@ -73,10 +68,11 @@ class Source {
   bool? searchSerieUrlResultsAbsolute;
 
   Source({
+    required this.sourceVideosUrlParseModes,
     required this.chaptersVideosJsonListStartPattern,
     required this.chaptersVideosJsonListEndPattern,
     required this.videoSourcesPriority,
-    required this.videosUrlParseMode,
+    required this.chaptersVideosUrlParseMode,
     this.searchSerieNameExcludes,
     required this.searchSerieNameCSSClass,
     required this.searchSerieUrlCSSClass,
@@ -167,8 +163,8 @@ class Source {
         SearchResult(
           sourceUUID: uuid,
           name: names[i],
-          mainUrl: seriesUrls[i] ?? "",
-          imageUrl: imageUrls[i] ?? "",
+          mainUrl: seriesUrls[i] ?? PlaceHolders.emptyString,
+          imageUrl: imageUrls[i] ?? PlaceHolders.emptyString,
         ),
       );
     }
@@ -188,7 +184,7 @@ class Source {
   }
 
   bool isUsable() {
-    bool result = (enabled == true) && (Uuid.isValidUUID(fromString: uuid));
+    bool result = (enabled == true) && Validate.source(this);
     logger.i((result == false) ? "$name is not usable" : "$name is usable");
     return result;
   }
@@ -214,6 +210,6 @@ class Source {
   /// This function should only be used at the startup of the program to serialize the sources.json file.
   /// Further access or modification is expected through global variable sources, which can be accessed by importing this module.
   static Future<String> _getSourcesPath() async {
-    return await getDataDirectoryWithJoined("sources.json");
+    return await getDataDirectoryWithJoined(FileNames.sourcesJson);
   }
 }

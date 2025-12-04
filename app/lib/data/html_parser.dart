@@ -1,6 +1,6 @@
 import "package:html/dom.dart";
-import "package:oxanime/utilities/logs.dart";
-import "package:oxanime/utilities/networking.dart";
+import "package:oxanime/core/logs.dart";
+import "package:oxanime/data/networking.dart";
 
 const imgHtmlAttribute = "src";
 const urlHtmlAttribute = "href";

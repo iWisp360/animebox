@@ -9,6 +9,10 @@ part of 'sources.dart';
 Source _$SourceFromJson(Map<String, dynamic> json) {
   $checkKeys(json, disallowNullValues: const ['uuid']);
   return Source(
+    sourceVideosUrlParseModes: $enumDecode(
+      _$SourceVideosUrlParseModesEnumMap,
+      json['sourceVideosUrlParseModes'],
+    ),
     chaptersVideosJsonListStartPattern:
         json['chaptersVideosJsonListStartPattern'] as String,
     chaptersVideosJsonListEndPattern:
@@ -18,9 +22,9 @@ Source _$SourceFromJson(Map<String, dynamic> json) {
             ?.map((e) => e as String)
             .toList() ??
         [],
-    videosUrlParseMode: $enumDecode(
+    chaptersVideosUrlParseMode: $enumDecode(
       _$ChaptersVideosUrlParseModesEnumMap,
-      json['videosUrlParseMode'],
+      json['chaptersVideosUrlParseMode'],
     ),
     searchSerieNameExcludes: (json['searchSerieNameExcludes'] as List<dynamic>?)
         ?.map((e) => e as String)
@@ -68,8 +72,11 @@ Map<String, dynamic> _$SourceToJson(Source instance) => <String, dynamic>{
       instance.searchSerieChaptersIdentifiersCSSClass,
   'searchSerieChaptersUrlsCSSClass': instance.searchSerieChaptersUrlsCSSClass,
   'videoSourcesPriority': instance.videoSourcesPriority,
-  'videosUrlParseMode':
-      _$ChaptersVideosUrlParseModesEnumMap[instance.videosUrlParseMode]!,
+  'sourceVideosUrlParseModes':
+      _$SourceVideosUrlParseModesEnumMap[instance.sourceVideosUrlParseModes]!,
+  'chaptersVideosUrlParseMode':
+      _$ChaptersVideosUrlParseModesEnumMap[instance
+          .chaptersVideosUrlParseMode]!,
   'chaptersVideosJsonListStartPattern':
       instance.chaptersVideosJsonListStartPattern,
   'chaptersVideosJsonListEndPattern': instance.chaptersVideosJsonListEndPattern,
@@ -81,6 +88,14 @@ Map<String, dynamic> _$SourceToJson(Source instance) => <String, dynamic>{
   'searchSerieUrlResultsAbsolute': instance.searchSerieUrlResultsAbsolute,
 };
 
+const _$SourceVideosUrlParseModesEnumMap = {
+  SourceVideosUrlParseModes.parseJavaScript: 'parseJavaScript',
+  SourceVideosUrlParseModes.cssClass: 'cssClass',
+  SourceVideosUrlParseModes.none: 'none',
+  SourceVideosUrlParseModes.empty: 'empty',
+};
+
 const _$ChaptersVideosUrlParseModesEnumMap = {
   ChaptersVideosUrlParseModes.jsonList: 'jsonList',
+  ChaptersVideosUrlParseModes.empty: 'empty',
 };
