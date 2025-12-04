@@ -50,6 +50,8 @@ class Source {
   @JsonKey(defaultValue: [])
   final List<String> videoSourcesPriority;
   final ChaptersVideosUrlParseModes videosUrlParseMode;
+  final String chaptersVideosJsonListStartPattern;
+  final String chaptersVideosJsonListEndPattern;
   // source configuration fields
   final String name;
   final String mainUrl;
@@ -62,6 +64,8 @@ class Source {
   bool? searchSerieUrlResultsAbsolute;
 
   Source({
+    required this.chaptersVideosJsonListStartPattern,
+    required this.chaptersVideosJsonListEndPattern,
     required this.videoSourcesPriority,
     required this.videosUrlParseMode,
     this.searchSerieNameExcludes,

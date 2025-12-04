@@ -2,6 +2,8 @@ import "package:html/dom.dart";
 import "package:html/parser.dart";
 import "package:http/http.dart";
 import "package:oxanime/utilities/exceptions.dart";
+import "package:oxanime/utilities/html_parser.dart";
+import "package:oxanime/utilities/logs.dart";
 
 mixin VideoSourceParameters {
   bool get needsAWebView;
@@ -38,8 +40,8 @@ class YourUpload with VideoSourceParameters {
   Future<String?> getVideoFromUrl(final String url) async {
     const startMark = "file: '";
     const endMark = "',";
-    late final Request request;
     late final Client client;
+    late final Request request;
     try {
       client = Client();
       request = Request("GET", Uri.parse(url));
@@ -66,10 +68,24 @@ class YourUpload with VideoSourceParameters {
     }
 
     try {
-      final Element elementSelectFirst = HtmlParser(response.body)
-          .parse()
-          .querySelectorAll("script")
-          .firstWhere((element) => element.text.contains("jwplayerOptions"));
+      late final Element? elementSelectFirst;
+      try {
+        elementSelectFirst = HtmlParser(response.body)
+            .parse()
+            .querySelectorAll(scriptHtmlCSSClass)
+            .cast<Element?>()
+            .firstWhere(
+              (element) => element?.text.contains("jwplayerOptions") == true,
+              orElse: () => null,
+            );
+      } catch (e) {
+        logger.w("elementSelectFirst is empty: $e");
+        elementSelectFirst = null;
+      }
+
+      if (elementSelectFirst == null) {
+        return null;
+      }
 
       final String elementSelectFirstData = elementSelectFirst.text;
 
@@ -78,6 +94,11 @@ class YourUpload with VideoSourceParameters {
       } else {
         int startOfUrlIndex = elementSelectFirstData.indexOf(startMark);
         int endOfUrlIndex = elementSelectFirstData.indexOf(endMark);
+
+        if (startOfUrlIndex == -1 || endOfUrlIndex == -1) {
+          logger.w("No pattern didn't match startMark or endMark, returning null");
+          return null;
+        }
 
         return elementSelectFirstData.substring(startOfUrlIndex + startMark.length, endOfUrlIndex);
       }

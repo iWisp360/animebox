@@ -9,6 +9,10 @@ part of 'sources.dart';
 Source _$SourceFromJson(Map<String, dynamic> json) {
   $checkKeys(json, disallowNullValues: const ['uuid']);
   return Source(
+    chaptersVideosJsonListStartPattern:
+        json['chaptersVideosJsonListStartPattern'] as String,
+    chaptersVideosJsonListEndPattern:
+        json['chaptersVideosJsonListEndPattern'] as String,
     videoSourcesPriority:
         (json['videoSourcesPriority'] as List<dynamic>?)
             ?.map((e) => e as String)
@@ -66,6 +70,9 @@ Map<String, dynamic> _$SourceToJson(Source instance) => <String, dynamic>{
   'videoSourcesPriority': instance.videoSourcesPriority,
   'videosUrlParseMode':
       _$ChaptersVideosUrlParseModesEnumMap[instance.videosUrlParseMode]!,
+  'chaptersVideosJsonListStartPattern':
+      instance.chaptersVideosJsonListStartPattern,
+  'chaptersVideosJsonListEndPattern': instance.chaptersVideosJsonListEndPattern,
   'name': instance.name,
   'mainUrl': instance.mainUrl,
   'searchUrl': instance.searchUrl,

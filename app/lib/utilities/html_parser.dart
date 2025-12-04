@@ -4,6 +4,7 @@ import "package:oxanime/utilities/networking.dart";
 
 const imgHtmlAttribute = "src";
 const urlHtmlAttribute = "href";
+const scriptHtmlCSSClass = "script";
 
 class SourceHtmlParser {
   final String html;
@@ -55,7 +56,6 @@ class SourceHtmlParser {
     return parsedElements;
   }
 
-  /// fields such as name and description can be obtained from the value of a tag matching a css class
   Future<String?> getSerieCSSClassText(
     final String serieCSSClass,
     final List<String> serieExcludes,

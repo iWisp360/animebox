@@ -1,6 +1,7 @@
 import "dart:convert";
 import "dart:io";
 
+import "package:html/dom.dart";
 import "package:json_annotation/json_annotation.dart";
 import "package:oxanime/utilities/chapters.dart";
 import "package:oxanime/utilities/files_management.dart";
@@ -80,9 +81,16 @@ class Serie {
 
   Future<void> getChaptersRemote() async {
     chapters ??= [];
-    var sourceRequestDocument = await SourceConnection.parseHtml(
-      await SourceConnection.getBodyFrom(url),
-    );
+    late Document sourceRequestDocument;
+
+    try {
+      sourceRequestDocument = await SourceConnection.parseHtml(
+        await SourceConnection.getBodyFrom(url),
+      );
+    } catch (e) {
+      logger.e("Error while getting chapters from remote sources: $e");
+      rethrow;
+    }
 
     var chapterIdentifiers = sourceRequestDocument
         .querySelectorAll(_source.searchSerieChaptersIdentifiersCSSClass)
@@ -104,6 +112,7 @@ class Serie {
     for (int i = 0; i < chapterIdentifiers.length; i++) {
       chapters?.add(
         Chapter(
+          sourceUUID: sourceUUID,
           identifier: chapterIdentifiers.elementAt(i),
           url: chapterUrls.elementAtOrNull(i) ?? "",
         ),
