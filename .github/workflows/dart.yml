@@ -13,6 +13,10 @@ on:
 
 jobs:
   build:
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./app
     runs-on: ubuntu-latest
 
     steps:
