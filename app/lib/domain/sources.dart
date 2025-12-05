@@ -16,10 +16,10 @@ part "sources.g.dart";
 late List<Source> sources;
 late bool sourcesInitSuccess;
 
-/// Sources may present chapter video links inside javascript
-/// arrays, which are unreachable by using a css class,
-/// so, parsing the array is necessary. Luckily, arrays
-/// in Javascript has the same structure as a JSON object.
+// Sources may present chapter video links inside javascript
+// arrays, which are unreachable by using a css class,
+// so, parsing the array is necessary. Luckily, arrays
+// in Javascript has the same structure as a JSON object.
 
 class SearchResult {
   final String name;

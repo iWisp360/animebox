@@ -17,6 +17,7 @@ part "chapters.g.dart";
 class Chapter {
   final String identifier;
   final String url;
+  late final List<String> videoUrls;
   final String sourceUUID;
   @JsonKey(includeFromJson: false)
   final Source _source;
@@ -26,6 +27,7 @@ class Chapter {
 
   factory Chapter.fromJson(Map<String, dynamic> map) => _$ChapterFromJson(map);
 
+  // this function should be reverted to 4c4e47110f
   Future<List<String>> getChapterVideoUrls() async {
     List<String> videoUrls = [];
 
@@ -39,7 +41,7 @@ class Chapter {
       logger.e("Connection error while getting chapter video urls: $e");
       rethrow;
     }
-    print(responseBody);
+
     switch (_source.chaptersVideosUrlParseMode) {
       case ChaptersVideosUrlParseModes.jsonList:
         final Element? element = HtmlParser(responseBody)
@@ -78,8 +80,9 @@ class Chapter {
             ),
           );
           for (var object in jsonList) {
-            final videoUrl = object[_source.chaptersVideosJsonListKey];
+            final String? videoUrl = object[_source.chaptersVideosJsonListKey];
             if (videoUrl == null) continue;
+            if (!videoUrl.contains("yourupload.com")) continue; // remove
             videoUrls.add(videoUrl);
           }
         }

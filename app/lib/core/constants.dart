@@ -62,3 +62,8 @@ class RequiredValues {
   Note: If you pass an UUID manually, this UUID should be valid.
   """;
 }
+
+class MagicNumbers {
+  static const double dialogBorderRadius = 16.0;
+  static const double blurSigma = 5.0;
+}

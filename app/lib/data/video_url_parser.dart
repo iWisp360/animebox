@@ -8,7 +8,7 @@ import "package:oxanime/core/enums.dart";
 
 mixin VideoSourceParameters {
   bool get needsAWebView;
-  Future<String?> getVideoFromUrl(final String url);
+  static Future<String?> getVideoFromUrl(final String url) async {}
 }
 
 // In this context, a parser is the utility that brings you the content you need to watch a serie chapter,
@@ -35,7 +35,7 @@ class YourUpload with VideoSourceParameters {
   bool get needsAWebView => false;
 
   @override
-  Future<String?> getVideoFromUrl(final String url) async {
+  static Future<String> getVideoFromUrl(final String url) async {
     const startMark = "file: '";
     const endMark = "',";
     late final Client client;
@@ -82,20 +82,20 @@ class YourUpload with VideoSourceParameters {
       }
 
       if (elementSelectFirst == null) {
-        return null;
+        return "";
       }
 
       final String elementSelectFirstData = elementSelectFirst.text;
 
       if (elementSelectFirstData.isEmpty) {
-        return null;
+        return "";
       } else {
         int startOfUrlIndex = elementSelectFirstData.indexOf(startMark);
         int endOfUrlIndex = elementSelectFirstData.indexOf(endMark);
 
         if (startOfUrlIndex == -1 || endOfUrlIndex == -1) {
           logger.w("No pattern didn't match startMark or endMark, returning null");
-          return null;
+          return "";
         }
 
         return elementSelectFirstData.substring(startOfUrlIndex + startMark.length, endOfUrlIndex);

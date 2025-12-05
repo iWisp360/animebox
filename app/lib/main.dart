@@ -10,6 +10,7 @@ import "package:oxanime/core/logs.dart";
 import "package:oxanime/core/preferences.dart";
 import "package:oxanime/domain/chapters.dart";
 import "package:oxanime/domain/sources.dart";
+import "package:oxanime/presentation/home.dart";
 import "package:path/path.dart";
 import "package:path_provider/path_provider.dart";
 
@@ -72,6 +73,23 @@ class OxAnimeMainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: "OxAnime", home: Placeholder(), debugShowCheckedModeBanner: false);
+    return MaterialApp(
+      title: "OxAnime",
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.blueAccent,
+          dynamicSchemeVariant: DynamicSchemeVariant.expressive,
+        ),
+        useMaterial3: true,
+      ),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.blueAccent,
+          dynamicSchemeVariant: DynamicSchemeVariant.expressive,
+        ),
+        useMaterial3: true,
+      ),
+      home: const OxAnimeHomeScreen(),
+    );
   }
 }

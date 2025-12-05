@@ -20,7 +20,8 @@ late final List<Serie> series;
 
 @JsonSerializable()
 class Serie {
-  static late final Source _source;
+  @JsonKey(includeFromJson: false)
+  final Source source;
   final String name;
   final String url;
   final String imageUrl;
@@ -29,43 +30,48 @@ class Serie {
   final String sourceUUID;
 
   Serie({
+    Source? inputSource,
     required this.name,
     required this.url,
     required this.imageUrl,
     this.description,
     this.chapters,
     required this.sourceUUID,
-  });
+  }) : source = inputSource ?? PlaceHolders.source;
 
   factory Serie.fromMap(Map<String, dynamic> map) => _$SerieFromJson(map);
 
-  Future<void> assignSource() async {
+  static Source assignSource(String sourceUUID) {
+    late Source source;
     for (var s in sources) {
       if (s.uuid == sourceUUID) {
-        _source = s;
+        source = s;
       } else {
-        throw Exception("Source not found for serie $name");
+        throw Exception("Source not found for serie with uuid: $sourceUUID");
       }
     }
+    return source;
   }
 
-  Future<Serie> createSerie(SearchResult result) async {
+  static Future<Serie> createSerie(SearchResult result) async {
     final String? description = await _getSerieDescription(
-      (await SourceConnection.getBodyFrom(url)),
+      (await SourceConnection.getBodyFrom(result.mainUrl)),
+      result.mainUrl,
+      assignSource(result.sourceUUID),
     );
     var serie = Serie(
       name: result.name,
       url: result.mainUrl,
       sourceUUID: result.sourceUUID,
+      inputSource: assignSource(result.sourceUUID),
       description: description ?? "No Description", // should be translated
       imageUrl: result.imageUrl ?? PlaceHolders.emptyString,
     );
-    serie.assignSource();
     return serie;
   }
 
-  Future<void> getChaptersRemote() async {
-    chapters ??= [];
+  Future<List<Chapter>> getChaptersRemote() async {
+    List<Chapter> chapters = [];
     late Document sourceRequestDocument;
 
     try {
@@ -78,34 +84,35 @@ class Serie {
     }
 
     var chapterIdentifiers = sourceRequestDocument
-        .querySelectorAll(_source.searchSerieChaptersIdentifiersCSSClass)
+        .querySelectorAll(source.searchSerieChaptersIdentifiersCSSClass)
         .map((e) => e.text)
         .toList();
 
     var chapterUrls = sourceRequestDocument
-        .querySelectorAll(_source.searchSerieChaptersUrlsCSSClass)
+        .querySelectorAll(source.searchSerieChaptersUrlsCSSClass)
         .map((e) => e.attributes[urlHtmlAttribute])
         .map((e) {
-          if (_source.searchSerieUrlResultsAbsolute == false) {
+          if (source.searchSerieUrlResultsAbsolute == false) {
             if (e == null) return PlaceHolders.emptyString;
 
-            return SourceConnection.makeUrlFromRelative(_source.mainUrl, e);
+            return SourceConnection.makeUrlFromRelative(source.mainUrl, e);
           }
         })
         .toList();
 
     for (int i = 0; i < chapterIdentifiers.length; i++) {
-      chapters?.add(
-        Chapter(
-          sourceUUID: sourceUUID,
-          identifier: chapterIdentifiers.elementAt(i),
-          source:
-              sources.singleWhereOrNull((element) => element.uuid == sourceUUID) ??
-              PlaceHolders.source,
-          url: chapterUrls.elementAtOrNull(i) ?? PlaceHolders.emptyString,
-        ),
+      var chapter = Chapter(
+        sourceUUID: sourceUUID,
+        identifier: chapterIdentifiers.elementAt(i),
+        source:
+            sources.singleWhereOrNull((element) => element.uuid == sourceUUID) ??
+            PlaceHolders.source,
+        url: chapterUrls.elementAtOrNull(i) ?? PlaceHolders.emptyString,
       );
+      chapter.videoUrls = await chapter.getChapterVideoUrls();
+      chapters.add(chapter);
     }
+    return chapters;
   }
 
   Future<List<Serie>> getSeries() async {
@@ -147,9 +154,13 @@ class Serie {
 
   Map<String, dynamic> toMap() => _$SerieToJson(this);
 
-  Future<String?> _getSerieDescription(final String responseBody) async {
-    if (_source.searchSerieDescriptionCSSClass == null ||
-        _source.searchSerieDescriptionCSSClass == PlaceHolders.emptyString) {
+  static Future<String?> _getSerieDescription(
+    final String responseBody,
+    final String url,
+    Source source,
+  ) async {
+    if (source.searchSerieDescriptionCSSClass == null ||
+        source.searchSerieDescriptionCSSClass == PlaceHolders.emptyString) {
       logger.w("searchSerieDescriptionCSSClass is null or empty. Returning fallback description");
       return "No Description";
     }
@@ -160,11 +171,11 @@ class Serie {
           await (await SourceHtmlParser.create(
             html: await SourceConnection.getBodyFrom(url),
           )).getSerieCSSClassText(
-            _source.searchSerieDescriptionCSSClass!,
-            _source.searchSerieDescriptionExcludes ?? [],
+            source.searchSerieDescriptionCSSClass!,
+            source.searchSerieDescriptionExcludes ?? [],
           );
     } catch (e) {
-      logger.e("Couldn't get description of serie $name: $e");
+      logger.e("Couldn't get description of serie: $e");
       return null;
     }
     return description;
