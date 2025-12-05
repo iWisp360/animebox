@@ -3,13 +3,13 @@ import "dart:io";
 
 import "package:collection/collection.dart";
 import "package:json_annotation/json_annotation.dart";
-import "package:oxanime/core/validations.dart";
-import "package:oxanime/core/files.dart";
-import "package:oxanime/data/html_parser.dart";
-import "package:oxanime/core/logs.dart";
-import "package:oxanime/data/networking.dart";
 import "package:oxanime/core/constants.dart";
 import "package:oxanime/core/enums.dart";
+import "package:oxanime/core/files.dart";
+import "package:oxanime/core/logs.dart";
+import "package:oxanime/core/validations.dart";
+import "package:oxanime/data/html_parser.dart";
+import "package:oxanime/data/networking.dart";
 
 part "sources.g.dart";
 
@@ -101,6 +101,33 @@ class Source {
 
   factory Source.fromMap(Map<String, dynamic> json) => _$SourceFromJson(json);
 
+  bool isUsable() {
+    bool result = (enabled == true) && Validate.source(this);
+    logger.i((result == false) ? "$name is not usable" : "$name is usable");
+    return result;
+  }
+
+  Future<void> pop() async {
+    final sourceCache = sources.singleWhereOrNull((source) => source.uuid == uuid);
+    if (sourceCache == null) {
+      logger.e("Couldn't cache the source to remove: .singleWhereOrNull() returned a null value");
+      return;
+    }
+
+    logger.i("Removing source with name $name");
+    final File file = File(await _getSourcesPath());
+    sources.removeWhere((source) => source.uuid == uuid);
+    final deserializedSources = jsonEncode(sources);
+
+    try {
+      await file.bufferedWrite(deserializedSources);
+    } catch (e, s) {
+      logger.e("Couldn't remove sources from ${FileNames.sourcesJson}: $e\n$s");
+      sources.add(sourceCache);
+      rethrow;
+    }
+  }
+
   Future push() async {
     final sourcesPath = await _getSourcesPath();
     final serializedSource = _toMap();
@@ -124,27 +151,6 @@ class Source {
       await File(sourcesPath).bufferedWrite(deserializedSources);
     } catch (e, s) {
       logger.e("Error while pushing source $name to $sourcesPath\n$s");
-      rethrow;
-    }
-  }
-
-  Future<void> pop() async {
-    final sourceCache = sources.singleWhereOrNull((source) => source.uuid == uuid);
-    if (sourceCache == null) {
-      logger.e("Couldn't cache the source to remove: .singleWhereOrNull() returned a null value");
-      return;
-    }
-
-    logger.i("Removing source with name $name");
-    final File file = File(await _getSourcesPath());
-    sources.removeWhere((source) => source.uuid == uuid);
-    final deserializedSources = jsonEncode(sources);
-
-    try {
-      await file.bufferedWrite(deserializedSources);
-    } catch (e, s) {
-      logger.e("Couldn't remove sources from ${FileNames.sourcesJson}: $e\n$s");
-      sources.add(sourceCache);
       rethrow;
     }
   }
@@ -216,12 +222,6 @@ class Source {
       }
     }
     return null;
-  }
-
-  bool isUsable() {
-    bool result = (enabled == true) && Validate.source(this);
-    logger.i((result == false) ? "$name is not usable" : "$name is usable");
-    return result;
   }
 
   Map<String, dynamic> _toMap() => _$SourceToJson(this);

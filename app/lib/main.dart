@@ -10,7 +10,6 @@ import "package:oxanime/core/logs.dart";
 import "package:oxanime/core/preferences.dart";
 import "package:oxanime/domain/chapters.dart";
 import "package:oxanime/domain/sources.dart";
-import "package:oxanime/widgets/testing.dart";
 import "package:path/path.dart";
 import "package:path_provider/path_provider.dart";
 
@@ -57,8 +56,6 @@ void main() async {
     url: "https://m.animeflv.net/ver/sakamoto-days-1",
     sourceUUID: sources[0].uuid,
   );
-  final videoUrls = await chapter.getChapterVideoUrls();
-  print(videoUrls);
 
   runApp(OxAnimeMainApp());
 }
@@ -75,6 +72,6 @@ class OxAnimeMainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: "OxAnime", home: TestScaffold(), debugShowCheckedModeBanner: false);
+    return MaterialApp(title: "OxAnime", home: Placeholder(), debugShowCheckedModeBanner: false);
   }
 }

@@ -23,6 +23,8 @@ class SourceException implements Exception {
   };
 }
 
+enum SourceExceptionKind { gotPlaceHolderException, otherException }
+
 class VideoUrlParserException implements Exception {
   final VideoUrlParserExceptionKind kind;
   final Object errorMsg;
@@ -52,5 +54,3 @@ enum VideoUrlParserExceptionKind {
   responseParseException,
   otherException,
 }
-
-enum SourceExceptionKind { gotPlaceHolderException, otherException }

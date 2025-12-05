@@ -1,15 +1,15 @@
 import "dart:convert";
 
+import "package:collection/collection.dart";
 import "package:html/dom.dart";
 import "package:html/parser.dart";
 import "package:http/http.dart";
 import "package:json_annotation/json_annotation.dart";
 import "package:oxanime/core/constants.dart";
 import "package:oxanime/core/enums.dart";
-import "package:oxanime/data/html_parser.dart";
 import "package:oxanime/core/logs.dart";
+import "package:oxanime/data/html_parser.dart";
 import "package:oxanime/domain/sources.dart";
-import "package:collection/collection.dart";
 
 part "chapters.g.dart";
 
@@ -25,8 +25,6 @@ class Chapter {
     : _source = source ?? PlaceHolders.source;
 
   factory Chapter.fromJson(Map<String, dynamic> map) => _$ChapterFromJson(map);
-
-  Map<String, dynamic> toMap() => _$ChapterToJson(this);
 
   Future<List<String>> getChapterVideoUrls() async {
     List<String> videoUrls = [];
@@ -93,4 +91,6 @@ class Chapter {
 
     return videoUrls;
   }
+
+  Map<String, dynamic> toMap() => _$ChapterToJson(this);
 }

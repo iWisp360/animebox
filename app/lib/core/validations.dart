@@ -1,8 +1,8 @@
 import 'package:oxanime/core/constants.dart';
+import "package:oxanime/core/enums.dart";
 import 'package:oxanime/core/logs.dart';
 import 'package:oxanime/domain/sources.dart';
 import 'package:uuid/uuid.dart';
-import "package:oxanime/core/enums.dart";
 
 class Validate {
   static bool source(Source source) {

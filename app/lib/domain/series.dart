@@ -5,11 +5,11 @@ import "package:collection/collection.dart";
 import "package:html/dom.dart";
 import "package:json_annotation/json_annotation.dart";
 import "package:oxanime/core/constants.dart";
-import "package:oxanime/domain/chapters.dart";
 import "package:oxanime/core/files.dart";
-import "package:oxanime/data/html_parser.dart";
 import "package:oxanime/core/logs.dart";
+import "package:oxanime/data/html_parser.dart";
 import "package:oxanime/data/networking.dart";
+import "package:oxanime/domain/chapters.dart";
 import "package:oxanime/domain/sources.dart";
 
 part "series.g.dart";
@@ -20,13 +20,13 @@ late final List<Serie> series;
 
 @JsonSerializable()
 class Serie {
+  static late final Source _source;
   final String name;
   final String url;
   final String imageUrl;
   String? description;
   List<Chapter>? chapters;
   final String sourceUUID;
-  static late final Source _source;
 
   Serie({
     required this.name,
@@ -38,6 +38,16 @@ class Serie {
   });
 
   factory Serie.fromMap(Map<String, dynamic> map) => _$SerieFromJson(map);
+
+  Future<void> assignSource() async {
+    for (var s in sources) {
+      if (s.uuid == sourceUUID) {
+        _source = s;
+      } else {
+        throw Exception("Source not found for serie $name");
+      }
+    }
+  }
 
   Future<Serie> createSerie(SearchResult result) async {
     final String? description = await _getSerieDescription(
@@ -52,39 +62,6 @@ class Serie {
     );
     serie.assignSource();
     return serie;
-  }
-
-  Future<String?> _getSerieDescription(final String responseBody) async {
-    if (_source.searchSerieDescriptionCSSClass == null ||
-        _source.searchSerieDescriptionCSSClass == PlaceHolders.emptyString) {
-      logger.w("searchSerieDescriptionCSSClass is null or empty. Returning fallback description");
-      return "No Description";
-    }
-
-    late final String? description;
-    try {
-      description =
-          await (await SourceHtmlParser.create(
-            html: await SourceConnection.getBodyFrom(url),
-          )).getSerieCSSClassText(
-            _source.searchSerieDescriptionCSSClass!,
-            _source.searchSerieDescriptionExcludes ?? [],
-          );
-    } catch (e) {
-      logger.e("Couldn't get description of serie $name: $e");
-      return null;
-    }
-    return description;
-  }
-
-  Future<void> assignSource() async {
-    for (var s in sources) {
-      if (s.uuid == sourceUUID) {
-        _source = s;
-      } else {
-        throw Exception("Source not found for serie $name");
-      }
-    }
   }
 
   Future<void> getChaptersRemote() async {
@@ -169,6 +146,29 @@ class Serie {
   }
 
   Map<String, dynamic> toMap() => _$SerieToJson(this);
+
+  Future<String?> _getSerieDescription(final String responseBody) async {
+    if (_source.searchSerieDescriptionCSSClass == null ||
+        _source.searchSerieDescriptionCSSClass == PlaceHolders.emptyString) {
+      logger.w("searchSerieDescriptionCSSClass is null or empty. Returning fallback description");
+      return "No Description";
+    }
+
+    late final String? description;
+    try {
+      description =
+          await (await SourceHtmlParser.create(
+            html: await SourceConnection.getBodyFrom(url),
+          )).getSerieCSSClassText(
+            _source.searchSerieDescriptionCSSClass!,
+            _source.searchSerieDescriptionExcludes ?? [],
+          );
+    } catch (e) {
+      logger.e("Couldn't get description of serie $name: $e");
+      return null;
+    }
+    return description;
+  }
 
   static Future<String> _getSeriesPath() async {
     try {
