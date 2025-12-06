@@ -13,7 +13,7 @@
     "useFvm": true,
     "flutterMode": "debug",
     "flutterPlatform": "linux",
-    "args": ["--hot"]
+    "toolArgs": ["--hot"]
   },
   {
     "label": "Debug Android",
@@ -25,7 +25,7 @@
     "useFvm": true,
     "flutterMode": "debug",
     "flutterPlatform": "android",
-    "args": ["--hot"],
+    "toolArgs": ["--hot"],
     "env": { "ANDROID_HOME": "/home/iwisp360/Documents/Code/Android/Sdk" }
   }
 ]
