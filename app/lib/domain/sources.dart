@@ -31,10 +31,19 @@ class SearchResult {
 
 @JsonSerializable(explicitToJson: true)
 class Source {
+  @JsonKey(defaultValue: SourceSerieFields.new)
   final SourceSerieFields serieFields;
+
+  @JsonKey(defaultValue: SourceSearchFields.new)
   final SourceSearchFields searchFields;
+
+  @JsonKey(defaultValue: SourceVideosFields.new)
   final SourceVideosFields videosFields;
+
+  @JsonKey(defaultValue: SourceChaptersFields.new)
   final SourceChaptersFields chaptersFields;
+
+  @JsonKey(defaultValue: SourceConfigurationFields.new)
   final SourceConfigurationFields configurationFields;
 
   Source({
@@ -48,7 +57,7 @@ class Source {
   factory Source.fromMap(Map<String, dynamic> json) => _$SourceFromJson(json);
 
   bool isUsable() {
-    bool result = (configurationFields.enabled == true) && Validate.source(this);
+    bool result = ValidateSource.validate(this);
     logger.i(
       (result == false)
           ? "${configurationFields.name} is not usable"
@@ -61,7 +70,7 @@ class Source {
     final sourceCache = sources.singleWhereOrNull(
       (source) => source.configurationFields.uuid == configurationFields.uuid,
     );
-    
+
     if (sourceCache == null) {
       logger.e("Couldn't cache the source to remove: .singleWhereOrNull() returned a null value");
       return;

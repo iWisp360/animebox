@@ -23,6 +23,9 @@ void main() async {
   } catch (e) {
     if (e != PathNotFoundException) {
       try {
+        logger.e(
+          "First attempt of getting sources failed, trying to create the file and trying again",
+        );
         await File(
           join((await getApplicationSupportDirectory()).path, FileNames.sourcesJson),
         ).create(recursive: true);
@@ -35,8 +38,6 @@ void main() async {
         sources = [Placeholders.source];
       }
     }
-    // WIP: Here too
-    rethrow;
   }
 
   try {

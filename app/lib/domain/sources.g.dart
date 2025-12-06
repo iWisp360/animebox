@@ -7,21 +7,29 @@ part of 'sources.dart';
 // **************************************************************************
 
 Source _$SourceFromJson(Map<String, dynamic> json) => Source(
-  serieFields: SourceSerieFields.fromJson(
-    json['serieFields'] as Map<String, dynamic>,
-  ),
-  searchFields: SourceSearchFields.fromJson(
-    json['searchFields'] as Map<String, dynamic>,
-  ),
-  videosFields: SourceVideosFields.fromJson(
-    json['videosFields'] as Map<String, dynamic>,
-  ),
-  chaptersFields: SourceChaptersFields.fromJson(
-    json['chaptersFields'] as Map<String, dynamic>,
-  ),
-  configurationFields: SourceConfigurationFields.fromJson(
-    json['configurationFields'] as Map<String, dynamic>,
-  ),
+  serieFields: json['serieFields'] == null
+      ? SourceSerieFields()
+      : SourceSerieFields.fromJson(json['serieFields'] as Map<String, dynamic>),
+  searchFields: json['searchFields'] == null
+      ? SourceSearchFields()
+      : SourceSearchFields.fromJson(
+          json['searchFields'] as Map<String, dynamic>,
+        ),
+  videosFields: json['videosFields'] == null
+      ? SourceVideosFields()
+      : SourceVideosFields.fromJson(
+          json['videosFields'] as Map<String, dynamic>,
+        ),
+  chaptersFields: json['chaptersFields'] == null
+      ? SourceChaptersFields()
+      : SourceChaptersFields.fromJson(
+          json['chaptersFields'] as Map<String, dynamic>,
+        ),
+  configurationFields: json['configurationFields'] == null
+      ? SourceConfigurationFields()
+      : SourceConfigurationFields.fromJson(
+          json['configurationFields'] as Map<String, dynamic>,
+        ),
 );
 
 Map<String, dynamic> _$SourceToJson(Source instance) => <String, dynamic>{
