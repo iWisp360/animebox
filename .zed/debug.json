@@ -12,8 +12,7 @@
     "program": "lib/main.dart",
     "useFvm": true,
     "flutterMode": "debug",
-    "flutterPlatform": "linux",
-    "toolArgs": ["--hot"]
+    "flutterPlatform": "linux"
   },
   {
     "label": "Debug Android",
@@ -25,7 +24,6 @@
     "useFvm": true,
     "flutterMode": "debug",
     "flutterPlatform": "android",
-    "toolArgs": ["--hot"],
     "env": { "ANDROID_HOME": "/home/iwisp360/Documents/Code/Android/Sdk" }
   }
 ]
