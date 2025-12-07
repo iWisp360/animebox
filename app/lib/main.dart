@@ -8,7 +8,6 @@ import "package:media_kit/media_kit.dart";
 import "package:animebox/core/constants.dart";
 import "package:animebox/core/logs.dart";
 import "package:animebox/core/preferences.dart";
-import "package:animebox/data/video_url_parsers.dart";
 import "package:animebox/domain/sources.dart";
 import "package:animebox/presentation/home.dart";
 import "package:path/path.dart";
@@ -51,7 +50,6 @@ void main() async {
     logger.i("Disabling Logs");
     logger.close();
   }
-  StreamWish.getVideoFromUrl("https://streamwish.to/e/sguk2ap3w5ky");
 
   runApp(OxAnimeMainApp());
 }
