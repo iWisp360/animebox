@@ -166,7 +166,7 @@ class StreamWish with VideoSourceParameters {
     final request = Request("GET", Uri.parse(url));
 
     request.headers["user-agent"] = HttpValues.userAgent;
-    request.headers["referer"] = "https://streamwish.to";
+    request.headers["referer"] = "https://streamwish.to/";
 
     final elementSelectFirst = await Response.fromStream(await client.send(request));
 

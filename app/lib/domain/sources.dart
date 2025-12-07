@@ -196,6 +196,10 @@ class Source {
     try {
       List<Source> sources = [];
       final String fileContents = await File(await _getSourcesPath()).bufferedRead();
+      if (fileContents.isEmpty) {
+        await File(await _getSourcesPath()).bufferedWrite("[]");
+      }
+
       var serializedContents = jsonDecode(fileContents);
       for (var source in serializedContents) {
         sources.add(Source.fromMap(source));
