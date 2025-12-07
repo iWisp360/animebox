@@ -4,13 +4,13 @@ import "dart:io";
 import "package:collection/collection.dart";
 import "package:html/dom.dart";
 import "package:json_annotation/json_annotation.dart";
-import "package:oxanime/core/constants.dart";
-import "package:oxanime/core/files.dart";
-import "package:oxanime/core/logs.dart";
-import "package:oxanime/data/html_parser.dart";
-import "package:oxanime/data/networking.dart";
-import "package:oxanime/domain/chapters.dart";
-import "package:oxanime/domain/sources.dart";
+import "package:animebox/core/constants.dart";
+import "package:animebox/core/files.dart";
+import "package:animebox/core/logs.dart";
+import "package:animebox/data/html_parser.dart";
+import "package:animebox/data/networking.dart";
+import "package:animebox/domain/chapters.dart";
+import "package:animebox/domain/sources.dart";
 
 part "series.g.dart";
 

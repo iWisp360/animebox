@@ -5,12 +5,12 @@ import "dart:io";
 
 import "package:flutter/material.dart";
 import "package:media_kit/media_kit.dart";
-import "package:oxanime/core/constants.dart";
-import "package:oxanime/core/logs.dart";
-import "package:oxanime/core/preferences.dart";
-import "package:oxanime/data/video_url_parsers.dart";
-import "package:oxanime/domain/sources.dart";
-import "package:oxanime/presentation/home.dart";
+import "package:animebox/core/constants.dart";
+import "package:animebox/core/logs.dart";
+import "package:animebox/core/preferences.dart";
+import "package:animebox/data/video_url_parsers.dart";
+import "package:animebox/domain/sources.dart";
+import "package:animebox/presentation/home.dart";
 import "package:path/path.dart";
 import "package:path_provider/path_provider.dart";
 

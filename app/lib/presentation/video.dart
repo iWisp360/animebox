@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:media_kit/media_kit.dart";
 import "package:media_kit_video/media_kit_video.dart";
-import "package:oxanime/data/video_url_parsers.dart";
+import "package:animebox/data/video_url_parsers.dart";
 
 class VideoPlayerScreen extends StatefulWidget {
   final String videoUrl;
@@ -16,10 +16,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   final player = Player();
   late final VideoController controller = VideoController(player);
   @override
-  void initState() {
-    super.initState();
-
-    playVideo();
+  Widget build(BuildContext context) {
+    return Center(child: Video(controller: controller));
   }
 
   @override
@@ -29,8 +27,10 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Center(child: Video(controller: controller));
+  void initState() {
+    super.initState();
+
+    playVideo();
   }
 
   Future<void> playVideo() async {

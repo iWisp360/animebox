@@ -1,9 +1,9 @@
 import "package:flutter/material.dart";
-import "package:oxanime/domain/series.dart";
-import "package:oxanime/domain/sources.dart";
-import "package:oxanime/presentation/serie.dart";
-import "package:oxanime/presentation/views.dart";
-import "package:oxanime/widgets/search.dart";
+import "package:animebox/domain/series.dart";
+import "package:animebox/domain/sources.dart";
+import "package:animebox/presentation/serie.dart";
+import "package:animebox/presentation/views.dart";
+import "package:animebox/widgets/search.dart";
 
 class OxAnimeHomeScreen extends StatefulWidget {
   const OxAnimeHomeScreen({super.key});

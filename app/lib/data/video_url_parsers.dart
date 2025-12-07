@@ -2,12 +2,12 @@ import "package:collection/collection.dart";
 import "package:html/dom.dart";
 import "package:html/parser.dart";
 import "package:http/http.dart";
-import "package:oxanime/core/constants.dart";
-import "package:oxanime/core/enums.dart";
-import "package:oxanime/core/exceptions.dart";
-import "package:oxanime/core/logs.dart";
-import "package:oxanime/data/html_parser.dart";
-import "package:oxanime/data/networking.dart";
+import "package:animebox/core/constants.dart";
+import "package:animebox/core/enums.dart";
+import "package:animebox/core/exceptions.dart";
+import "package:animebox/core/logs.dart";
+import "package:animebox/data/html_parser.dart";
+import "package:animebox/data/networking.dart";
 
 class StreamTape with VideoSourceParameters {
   static Future<String> getVideoFromUrl(final String url) async {

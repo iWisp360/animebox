@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:oxanime/core/constants.dart';
-import "package:oxanime/domain/sources.dart";
+import 'package:animebox/core/constants.dart';
+import "package:animebox/domain/sources.dart";
 
 class AnimeResults extends SearchDelegate {
   @override

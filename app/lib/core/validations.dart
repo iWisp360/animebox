@@ -1,7 +1,7 @@
-import 'package:oxanime/core/constants.dart';
-import 'package:oxanime/core/enums.dart';
-import 'package:oxanime/core/logs.dart';
-import 'package:oxanime/domain/sources.dart';
+import 'package:animebox/core/constants.dart';
+import 'package:animebox/core/enums.dart';
+import 'package:animebox/core/logs.dart';
+import 'package:animebox/domain/sources.dart';
 
 class ValidateSource {
   final Map<String, List<String>> validationErrors = {};

@@ -1,26 +1,4 @@
-import 'package:oxanime/domain/sources.dart';
-
-class AdviceMessages {
-  static const forSourceSerieFields = """
-
-  """;
-
-  static const forSourceConfigurationFields = """
-
-  """;
-
-  static const forSourceSearchFields = """
-
-  """;
-
-  static const forSourceVideosFields = """
-
-  """;
-
-  static const forSourceChaptersFields = """
-
-  """;
-}
+import 'package:animebox/domain/sources.dart';
 
 class FileNames {
   static const sourcesJson = "sources.json";

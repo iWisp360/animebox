@@ -1,7 +1,7 @@
-import 'package:oxanime/core/constants.dart';
-import 'package:oxanime/domain/series.dart';
 import "package:flutter/material.dart";
-import 'package:oxanime/presentation/video.dart';
+import 'package:animebox/core/constants.dart';
+import 'package:animebox/domain/series.dart';
+import 'package:animebox/presentation/video.dart';
 
 const headers = {"referer": "https://www.yourupload.com/"};
 
