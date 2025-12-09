@@ -3,7 +3,7 @@
 
 import "dart:io";
 
-import "package:dynamic_color/dynamic_color.dart";
+import "package:animebox/presentation/app.dart";
 import "package:flutter/material.dart";
 import "package:media_kit/media_kit.dart";
 import "package:animebox/core/constants.dart";
@@ -50,6 +50,8 @@ void main() async {
     logger.i("Disabling Logs");
     logger.close();
   }
+
+  runApp(AnimeBoxApp());
 }
 
 Future<void> initLogger() async {
