@@ -4,18 +4,23 @@
 import "dart:io";
 
 import "package:animebox/presentation/app.dart";
+import "package:animebox/widgets/themes.dart";
 import "package:flutter/material.dart";
-import "package:media_kit/media_kit.dart";
 import "package:animebox/core/constants.dart";
 import "package:animebox/core/logs.dart";
 import "package:animebox/core/preferences.dart";
 import "package:animebox/domain/sources.dart";
 import "package:path/path.dart";
 import "package:path_provider/path_provider.dart";
+import "package:provider/provider.dart";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  MediaKit.ensureInitialized();
+
+  final themeController = ThemeController();
+
+  await themeController.load();
+
   try {
     sources = await Source.getSources();
     sourcesInitSuccess = true;
@@ -51,7 +56,7 @@ void main() async {
     logger.close();
   }
 
-  runApp(AnimeBoxApp());
+  runApp(ChangeNotifierProvider.value(value: themeController, child: AnimeBoxApp()));
 }
 
 Future<void> initLogger() async {
