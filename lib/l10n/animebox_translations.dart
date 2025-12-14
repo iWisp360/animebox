@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// No description provided for @navBarDest0.
   ///
   /// In en, this message translates to:
-  /// **'Home'**
+  /// **'Browse'**
   String get navBarDest0;
 
   /// No description provided for @navBarDest1.
@@ -109,6 +109,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'My Anime'**
   String get navBarDest1;
+
+  /// No description provided for @more.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get more;
 }
 
 class _AppLocalizationsDelegate

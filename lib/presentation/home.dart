@@ -1,6 +1,5 @@
 import 'package:animebox/l10n/animebox_translations.dart';
 import 'package:flutter/material.dart';
-import 'package:animebox/presentation/pages.dart';
 
 class AnimeBoxHome extends StatefulWidget {
   const AnimeBoxHome({super.key});
@@ -11,18 +10,24 @@ class AnimeBoxHome extends StatefulWidget {
 
 class HomeElements {
   static List<NavigationDestination> getDestinations(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     return [
-      NavigationDestination(
-        icon: Icon(Icons.home_outlined),
-        selectedIcon: Icon(Icons.home),
-        label: l10n!.navBarDest0,
-      ),
-
       NavigationDestination(
         icon: Icon(Icons.video_collection_outlined),
         selectedIcon: Icon(Icons.video_collection),
         label: l10n.navBarDest1,
+      ),
+
+      NavigationDestination(
+        icon: Icon(Icons.search_outlined),
+        selectedIcon: Icon(Icons.search),
+        label: l10n.navBarDest0,
+      ),
+
+      NavigationDestination(
+        icon: Icon(Icons.more_horiz_outlined),
+        selectedIcon: Icon(Icons.more_horiz),
+        label: l10n.more,
       ),
     ];
   }
@@ -30,31 +35,40 @@ class HomeElements {
 
 class _AnimeBoxHomeState extends State<AnimeBoxHome> {
   int currentPageIndex = 0;
-  var controller = PageController();
 
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.onlyShowSelected;
 
   @override
   void dispose() {
-    controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(title: Text("Anime Box")),
-      body: PageView(
-        scrollDirection: Axis.horizontal,
-        controller: controller,
-        onPageChanged: (newIndex) {
-          setState(() {
-            currentPageIndex = newIndex;
-          });
-        },
-        children: pages,
-      ),
+      body: [
+        Padding(
+          padding: EdgeInsets.all(30),
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+
+                child: Text(
+                  l10n.navBarDest1,
+                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Center(),
+        Center(),
+      ][currentPageIndex],
 
       backgroundColor: Theme.of(context).colorScheme.surface,
       bottomNavigationBar: NavigationBar(
@@ -65,11 +79,6 @@ class _AnimeBoxHomeState extends State<AnimeBoxHome> {
         onDestinationSelected: (int index) {
           setState(() {
             currentPageIndex = index;
-            controller.animateToPage(
-              index,
-              duration: Duration(milliseconds: 500),
-              curve: Curves.easeOut,
-            );
           });
         },
       ),

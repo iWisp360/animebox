@@ -9,8 +9,11 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
-  String get navBarDest0 => 'Inicio';
+  String get navBarDest0 => 'Navegar';
 
   @override
   String get navBarDest1 => 'Mi Anime';
+
+  @override
+  String get more => 'Más';
 }
