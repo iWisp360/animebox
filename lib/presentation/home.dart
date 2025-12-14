@@ -1,5 +1,6 @@
 import 'package:animebox/l10n/animebox_translations.dart';
 import 'package:flutter/material.dart';
+import 'package:animebox/presentation/pages.dart';
 
 class AnimeBoxHome extends StatefulWidget {
   const AnimeBoxHome({super.key});
@@ -29,15 +30,32 @@ class HomeElements {
 
 class _AnimeBoxHomeState extends State<AnimeBoxHome> {
   int currentPageIndex = 0;
+  var controller = PageController();
 
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.onlyShowSelected;
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Anime Box")),
-      body: Placeholder(),
+      body: PageView(
+        scrollDirection: Axis.horizontal,
+        controller: controller,
+        onPageChanged: (newIndex) {
+          setState(() {
+            currentPageIndex = newIndex;
+          });
+        },
+        children: pages,
+      ),
+
       backgroundColor: Theme.of(context).colorScheme.surface,
       bottomNavigationBar: NavigationBar(
         animationDuration: Duration(seconds: 1),
@@ -47,6 +65,11 @@ class _AnimeBoxHomeState extends State<AnimeBoxHome> {
         onDestinationSelected: (int index) {
           setState(() {
             currentPageIndex = index;
+            controller.animateToPage(
+              index,
+              duration: Duration(milliseconds: 500),
+              curve: Curves.easeOut,
+            );
           });
         },
       ),
