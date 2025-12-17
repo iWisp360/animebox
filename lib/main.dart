@@ -56,6 +56,7 @@ void main() async {
     logger.close();
   }
 
+  logger.i("Welcome to Anime Box!");
   runApp(ChangeNotifierProvider.value(value: themeController, child: AnimeBoxApp()));
 }
 

@@ -27,7 +27,7 @@ class ThemeController with ChangeNotifier {
   ThemeMode _mode = ThemeMode.system;
   ThemeMode get mode => _mode;
 
-  SupportedThemes _themeId = SupportedThemes.dynamic;
+  SupportedThemes _themeId = SupportedThemes.dynamicColors;
   SupportedThemes get themeId => _themeId;
 
   Future<void> load() async {
@@ -71,8 +71,8 @@ SupportedThemes _parseThemeId(String? themeId) {
       return theme;
     }
   }
-  preferences.setString("currentTheme", SupportedThemes.dynamic.name);
-  return SupportedThemes.dynamic;
+  preferences.setString("currentTheme", SupportedThemes.dynamicColors.name);
+  return SupportedThemes.dynamicColors;
 }
 
 ThemeData catppuccinTheme(Flavor flavor) {

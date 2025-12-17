@@ -17,7 +17,7 @@ class AnimeBoxApp extends StatelessWidget {
       builder: (lightDynamic, darkDynamic) {
         ThemePair theme;
 
-        if (themeController.themeId == SupportedThemes.dynamic &&
+        if (themeController.themeId == SupportedThemes.dynamicColors &&
             lightDynamic != null &&
             darkDynamic != null) {
           theme = ThemePair(

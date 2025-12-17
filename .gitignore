@@ -47,6 +47,7 @@ app.*.map.json
 
 # iWisp360
 tmp.js
+\#*\#
 tmp.html
 testing.dart
 /logos
