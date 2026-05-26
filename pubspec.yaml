@@ -1,0 +1,43 @@
+name: animebox
+description: "A new Flutter project."
+publish_to: 'none' 
+
+version: 0.1.0+1
+
+assets:
+  - logo.png
+
+environment:
+  sdk: ^3.11.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  rust_lib_animebox:
+    path: rust_builder
+  flutter_rust_bridge: 2.12.0
+  flutter_inappwebview: ^6.1.5
+  dynamic_color: ^1.6.7
+  logger: ^2.7.0
+  path_provider: ^2.1.5
+  path: ^1.9.1
+  settings_ui: ^3.0.1
+
+  flutter_localizations:
+    sdk: flutter
+  file_picker: ^11.0.2
+  media_kit: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+  integration_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  generate: true
+
