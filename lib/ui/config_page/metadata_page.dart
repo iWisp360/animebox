@@ -23,9 +23,11 @@ class _MetadataPageState extends State<MetadataPage> {
           icon: const Icon(Icons.arrow_back),
         ),
         title: Text(l10n.metadataSettingsHeader),
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       ),
       body: SettingsList(
+        darkTheme: SettingsThemeData(
+          settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
+        ),
         sections: [
           SettingsSection(
             title: const Text("Metadata Sources"),

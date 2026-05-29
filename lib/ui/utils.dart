@@ -12,3 +12,19 @@ EdgeInsets calculateDefaultPadding(BuildContext context) {
     return const EdgeInsets.symmetric(vertical: 0);
   }
 }
+
+Function(BuildContext) globalKeyListener(GlobalKey globalKey) => (context) {
+  GestureDetector? detector;
+  void findGestureDetector(Element element) {
+    if (element.widget is GestureDetector) {
+      detector = element.widget as GestureDetector;
+      return;
+    }
+    element.visitChildren(findGestureDetector);
+  }
+
+  final dropdownElement = globalKey.currentContext as Element?;
+
+  dropdownElement?.visitChildren(findGestureDetector);
+  detector?.onTap?.call();
+};

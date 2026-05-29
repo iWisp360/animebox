@@ -10,7 +10,6 @@ class VideoProviders {
         InAppWebViewController? inAppWebViewController;
         Completer completer = Completer();
         HeadlessInAppWebView inAppWebView = HeadlessInAppWebView(
-          initialSettings: InAppWebViewSettings(javaScriptEnabled: true),
           onWebViewCreated: (controller) {
             inAppWebViewController = controller;
           },

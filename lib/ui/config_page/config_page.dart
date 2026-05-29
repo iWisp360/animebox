@@ -37,9 +37,11 @@ class _ConfigPageState extends State<ConfigPage> {
             icon: const Icon(Icons.info),
           ),
         ],
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       ),
       body: SettingsList(
+        darkTheme: SettingsThemeData(
+          settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
+        ),
         sections: [
           SettingsSection(
             tiles: [

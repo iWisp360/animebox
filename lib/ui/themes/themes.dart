@@ -6,21 +6,39 @@ import 'package:flutter/material.dart';
 ThemeManager? themeManager;
 
 ThemeData? darkTheme;
+ThemeData? pitchBlackTheme;
 ThemeData? lightTheme;
 
-class ThemeManager {
-  Color accentColorDark;
-  Color accentColorLight;
+class ThemeManager extends ChangeNotifier {
+  final Color accentColorDark;
+  final Color accentColorLight;
 
   final ValueNotifier<ThemeMode> themeModeNotifier;
+  final ValueNotifier<bool> usePitchBlack;
 
-  ThemeData getTheme({bool? useDark}) {
+  ThemeData getTheme({bool? useDark, bool? isPitchBlack}) {
     bool isDark = useDark ?? themeModeNotifier.value == ThemeMode.dark;
+    bool pitchBlack = isPitchBlack ?? usePitchBlack.value;
 
-    return ThemeData.from(
+    final themeData = ThemeData.from(
       colorScheme: ColorScheme.fromSeed(
         seedColor: isDark ? accentColorDark : accentColorLight,
         brightness: isDark ? Brightness.dark : Brightness.light,
+      ),
+    );
+
+    return themeData.copyWith(
+      scaffoldBackgroundColor: pitchBlack
+          ? Colors.black
+          : themeData.colorScheme.surface,
+
+      appBarTheme: AppBarTheme(
+        backgroundColor: pitchBlack
+            ? Colors.black
+            : themeData.colorScheme.surface,
+
+        elevation: 0,
+        scrolledUnderElevation: 0,
       ),
     );
   }
@@ -29,15 +47,21 @@ class ThemeManager {
     themeModeNotifier.value = mode;
   }
 
+  void setPitchBlack(final bool value) {
+    usePitchBlack.value = value;
+  }
+
   void setGlobalThemes() {
-    lightTheme = getTheme(useDark: false);
+    lightTheme = getTheme(useDark: false, isPitchBlack: false);
     darkTheme = getTheme(useDark: true);
+    pitchBlackTheme = getTheme(useDark: true, isPitchBlack: true);
   }
 
   ThemeManager({
     required this.accentColorLight,
     required this.accentColorDark,
     required this.themeModeNotifier,
+    required this.usePitchBlack,
   });
 
   static Future<void> init() async {
@@ -60,13 +84,15 @@ class ThemeManager {
           : colorScheme.primary,
 
       themeModeNotifier: ValueNotifier(initialThemeMode),
+      usePitchBlack: ValueNotifier(config.appearance.pitchBlack),
     );
   }
 }
 
 class ThemedApp extends StatefulWidget {
   final Widget child;
-  const ThemedApp({super.key, required this.child});
+  final bool isPitchBlack;
+  const ThemedApp({super.key, required this.child, required this.isPitchBlack});
 
   @override
   State<ThemedApp> createState() => _ThemedAppState();
@@ -84,6 +110,7 @@ class _ThemedAppState extends State<ThemedApp> {
             ThemeMode.light => false,
             ThemeMode.system => null,
           },
+          isPitchBlack: widget.isPitchBlack,
         ),
         child: child!,
       ),

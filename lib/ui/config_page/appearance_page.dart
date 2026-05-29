@@ -3,8 +3,8 @@ import 'package:animebox/main.dart';
 import 'package:animebox/src/rust/api/app/languages.dart';
 import 'package:animebox/src/rust/api/app/sections.dart';
 import 'package:animebox/src/rust/api/app/themes.dart';
-import 'package:animebox/ui/config_page/utils.dart';
 import 'package:animebox/ui/themes/themes.dart';
+import 'package:animebox/ui/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
 
@@ -29,9 +29,11 @@ class _AppearancePageState extends State<AppearancePage> {
           icon: const Icon(Icons.arrow_back),
         ),
         title: Text(l10n.appearanceSettingsHeader),
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       ),
       body: SettingsList(
+        darkTheme: SettingsThemeData(
+          settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
+        ),
         sections: [
           SettingsSection(
             title: const Text("Theme"),
@@ -72,28 +74,32 @@ class _AppearancePageState extends State<AppearancePage> {
                       ),
                     ],
                     onSelectionChanged: (newThemeMode) {
+                      final brightness = switch (newThemeMode.first) {
+                        ThemeModes.dark => Brightness.dark,
+                        ThemeModes.light => Brightness.light,
+                        ThemeModes.system => MediaQuery.platformBrightnessOf(
+                          context,
+                        ),
+                      };
+
+                      final allowedThemes =
+                          switch (brightness) {
+                            Brightness.dark => darkThemes,
+                            Brightness.light => lightThemes,
+                          } +
+                          multiThemes;
+
                       setState(() {
-                        final brightness = switch (newThemeMode.first) {
-                          ThemeModes.dark => Brightness.dark,
-                          ThemeModes.light => Brightness.light,
-                          ThemeModes.system => MediaQuery.platformBrightnessOf(
-                            context,
-                          ),
-                        };
-
-                        var allowedThemes =
-                            switch (brightness) {
-                              Brightness.dark => darkThemes,
-                              Brightness.light => lightThemes,
-                            } +
-                            multiThemes;
-
                         if (!allowedThemes.contains(config.appearance.theme)) {
                           config.appearance.theme = Themes.dynamic_;
                         }
-
                         config.appearance.mode = newThemeMode.first;
-                        config.update();
+
+                        if (brightness == Brightness.light) {
+                          config.appearance.pitchBlack = false;
+                          config.update();
+                          themeManager?.setPitchBlack(false);
+                        }
 
                         themeManager?.setTheme(switch (newThemeMode.first) {
                           ThemeModes.system => ThemeMode.system,
@@ -101,6 +107,8 @@ class _AppearancePageState extends State<AppearancePage> {
                           ThemeModes.light => ThemeMode.light,
                         });
                       });
+
+                      config.update();
                     },
                     selected: {config.appearance.mode},
                   ),
@@ -136,6 +144,7 @@ class _AppearancePageState extends State<AppearancePage> {
               ),
 
               SettingsTile.switchTile(
+                enabled: Theme.of(context).brightness == Brightness.dark,
                 title: Text(l10n.amoledBackground),
                 description: const Text(
                   "Use black background to save battery on AMOLED screens",
@@ -144,6 +153,8 @@ class _AppearancePageState extends State<AppearancePage> {
                 onToggle: (enabled) => setState(() {
                   config.appearance.pitchBlack = enabled;
                   config.update();
+
+                  themeManager?.setPitchBlack(enabled);
                 }),
               ),
             ],

@@ -39,7 +39,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
   default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -110574113;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -813406824;
 
 // Section: executor
 
@@ -685,6 +685,45 @@ fn wire__crate__api__app__configuration__models__playback_config_default_impl(
             Result::<_, ()>::Ok(crate::api::app::configuration::models::PlaybackConfig::default())?;
           Ok(output_ok)
         })())
+      }
+    },
+  )
+}
+fn wire__crate__api__server__handler__search_impl(
+  port_: flutter_rust_bridge::for_generated::MessagePort,
+  ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+  rust_vec_len_: i32,
+  data_len_: i32,
+) {
+  FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+    flutter_rust_bridge::for_generated::TaskInfo {
+      debug_name: "search",
+      port: Some(port_),
+      mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+    },
+    move || {
+      let message = unsafe {
+        flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+          ptr_,
+          rust_vec_len_,
+          data_len_,
+        )
+      };
+      let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+      let api_server_url = <String>::sse_decode(&mut deserializer);
+      let api_pattern = <String>::sse_decode(&mut deserializer);
+      let api_source_id = <String>::sse_decode(&mut deserializer);
+      deserializer.end();
+      move |context| async move {
+        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+          (move || async move {
+            let output_ok =
+              crate::api::server::handler::search(api_server_url, api_pattern, api_source_id)
+                .await?;
+            Ok(output_ok)
+          })()
+          .await,
+        )
       }
     },
   )
@@ -1478,6 +1517,20 @@ impl SseDecode for Vec<(String, String)> {
   }
 }
 
+impl SseDecode for Vec<crate::api::data::models::SearchResult> {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut len_ = <i32>::sse_decode(deserializer);
+    let mut ans_ = Vec::with_capacity(len_ as usize);
+    for idx_ in 0..len_ {
+      ans_.push(<crate::api::data::models::SearchResult>::sse_decode(
+        deserializer,
+      ));
+    }
+    return ans_;
+  }
+}
+
 impl SseDecode for Vec<crate::api::data::models::SlimSerieMetadata> {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1659,6 +1712,20 @@ impl SseDecode for (String, String) {
     let mut var_field0 = <String>::sse_decode(deserializer);
     let mut var_field1 = <String>::sse_decode(deserializer);
     return (var_field0, var_field1);
+  }
+}
+
+impl SseDecode for crate::api::data::models::SearchResult {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut var_name = <Option<String>>::sse_decode(deserializer);
+    let mut var_url = <Option<String>>::sse_decode(deserializer);
+    let mut var_image = <Option<String>>::sse_decode(deserializer);
+    return crate::api::data::models::SearchResult {
+      name: var_name,
+      url: var_url,
+      image: var_image,
+    };
   }
 }
 
@@ -1975,59 +2042,60 @@ fn pde_ffi_dispatcher_primary_impl(
       rust_vec_len,
       data_len,
     ),
-    27 => wire__crate__api__data__metadata__utils__search_metadata_impl(
+    27 => wire__crate__api__server__handler__search_impl(port, ptr, rust_vec_len, data_len),
+    28 => wire__crate__api__data__metadata__utils__search_metadata_impl(
       port,
       ptr,
       rust_vec_len,
       data_len,
     ),
-    28 => wire__crate__api__data__models__serie_meta_confidence_default_impl(
+    29 => wire__crate__api__data__models__serie_meta_confidence_default_impl(
       port,
       ptr,
       rust_vec_len,
       data_len,
     ),
-    29 => {
+    30 => {
       wire__crate__api__data__models__serie_metadata_default_impl(port, ptr, rust_vec_len, data_len)
     }
-    30 => {
+    31 => {
       wire__crate__api__data__models__serie_status_default_impl(port, ptr, rust_vec_len, data_len)
     }
-    31 => wire__crate__api__app__configuration__models__servers_config_default_impl(
+    32 => wire__crate__api__app__configuration__models__servers_config_default_impl(
       port,
       ptr,
       rust_vec_len,
       data_len,
     ),
-    32 => wire__crate__api__data__video_providers__streamtape__stream_tape_get_direct_video_impl(
+    33 => wire__crate__api__data__video_providers__streamtape__stream_tape_get_direct_video_impl(
       port,
       ptr,
       rust_vec_len,
       data_len,
     ),
-    33 => wire__crate__api__data__video_providers__streamwish__stream_wish_get_content_impl(
+    34 => wire__crate__api__data__video_providers__streamwish__stream_wish_get_content_impl(
       port,
       ptr,
       rust_vec_len,
       data_len,
     ),
-    34 => wire__crate__api__data__video_providers__streamwish__stream_wish_get_direct_video_impl(
+    35 => wire__crate__api__data__video_providers__streamwish__stream_wish_get_direct_video_impl(
       port,
       ptr,
       rust_vec_len,
       data_len,
     ),
-    35 => {
+    36 => {
       wire__crate__api__app__themes__theme_modes_default_impl(port, ptr, rust_vec_len, data_len)
     }
-    36 => wire__crate__api__app__themes__themes_default_impl(port, ptr, rust_vec_len, data_len),
-    37 => wire__crate__api__app__configuration__models__update_params_default_impl(
+    37 => wire__crate__api__app__themes__themes_default_impl(port, ptr, rust_vec_len, data_len),
+    38 => wire__crate__api__app__configuration__models__update_params_default_impl(
       port,
       ptr,
       rust_vec_len,
       data_len,
     ),
-    39 => wire__crate__api__data__video_providers__yourupload__your_upload_get_direct_video_impl(
+    40 => wire__crate__api__data__video_providers__yourupload__your_upload_get_direct_video_impl(
       port,
       ptr,
       rust_vec_len,
@@ -2045,7 +2113,7 @@ fn pde_ffi_dispatcher_sync_impl(
 ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
   // Codec=Pde (Serialization + dispatch), see doc to use other codecs
   match func_id {
-    38 => wire__crate__api__server__handler__validate_url_impl(ptr, rust_vec_len, data_len),
+    39 => wire__crate__api__server__handler__validate_url_impl(ptr, rust_vec_len, data_len),
     _ => unreachable!(),
   }
 }
@@ -2418,6 +2486,28 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::app::configuration::models::P
   for crate::api::app::configuration::models::PlaybackConfig
 {
   fn into_into_dart(self) -> crate::api::app::configuration::models::PlaybackConfig {
+    self
+  }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::data::models::SearchResult {
+  fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+    [
+      self.name.into_into_dart().into_dart(),
+      self.url.into_into_dart().into_dart(),
+      self.image.into_into_dart().into_dart(),
+    ]
+    .into_dart()
+  }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+  for crate::api::data::models::SearchResult
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::data::models::SearchResult>
+  for crate::api::data::models::SearchResult
+{
+  fn into_into_dart(self) -> crate::api::data::models::SearchResult {
     self
   }
 }
@@ -2932,6 +3022,16 @@ impl SseEncode for Vec<(String, String)> {
   }
 }
 
+impl SseEncode for Vec<crate::api::data::models::SearchResult> {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    <i32>::sse_encode(self.len() as _, serializer);
+    for item in self {
+      <crate::api::data::models::SearchResult>::sse_encode(item, serializer);
+    }
+  }
+}
+
 impl SseEncode for Vec<crate::api::data::models::SlimSerieMetadata> {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -3088,6 +3188,15 @@ impl SseEncode for (String, String) {
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
     <String>::sse_encode(self.0, serializer);
     <String>::sse_encode(self.1, serializer);
+  }
+}
+
+impl SseEncode for crate::api::data::models::SearchResult {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    <Option<String>>::sse_encode(self.name, serializer);
+    <Option<String>>::sse_encode(self.url, serializer);
+    <Option<String>>::sse_encode(self.image, serializer);
   }
 }
 

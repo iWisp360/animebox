@@ -99,6 +99,7 @@ class AnimeBox extends StatefulWidget {
 
 class _AnimeBoxState extends State<AnimeBox> {
   ThemeMode? themeMode;
+  bool? isPitchBlack;
 
   @override
   void initState() {
@@ -109,6 +110,11 @@ class _AnimeBoxState extends State<AnimeBox> {
       themeManager?.themeModeNotifier.addListener(
         () => setState(() {
           themeMode = themeManager?.themeModeNotifier.value;
+        }),
+      );
+      themeManager?.usePitchBlack.addListener(
+        () => setState(() {
+          isPitchBlack = themeManager?.usePitchBlack.value;
         }),
       );
     }
@@ -124,19 +130,25 @@ class _AnimeBoxState extends State<AnimeBox> {
               stackTrace: initStackTrace,
             ),
             theme: lightTheme,
-            darkTheme: darkTheme,
+            darkTheme: isPitchBlack ?? config.appearance.pitchBlack
+                ? pitchBlackTheme
+                : darkTheme,
             themeMode: themeMode,
           )
         : ThemedApp(
-            child: MaterialApp(
-              home: const TranslatedApp(child: HomePage()),
-              debugShowCheckedModeBanner: false,
-              navigatorKey: navigatorKey,
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              theme: lightTheme,
-              darkTheme: darkTheme,
-              themeMode: themeMode,
+            isPitchBlack: isPitchBlack ?? false,
+            child: TooltipVisibility(
+              visible: false,
+              child: MaterialApp(
+                home: const TranslatedApp(child: HomePage()),
+                debugShowCheckedModeBanner: false,
+                navigatorKey: navigatorKey,
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocalizations.supportedLocales,
+                theme: lightTheme,
+                darkTheme: isPitchBlack ?? false ? pitchBlackTheme : darkTheme,
+                themeMode: themeMode,
+              ),
             ),
           );
   }

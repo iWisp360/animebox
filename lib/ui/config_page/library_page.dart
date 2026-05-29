@@ -1,6 +1,6 @@
 import 'package:animebox/core/config.dart';
 import 'package:animebox/main.dart';
-import 'package:animebox/ui/config_page/utils.dart';
+import 'package:animebox/ui/widgets/clickable_dropdown_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
 
@@ -23,9 +23,11 @@ class _LibraryPageState extends State<LibraryPage> {
           icon: const Icon(Icons.arrow_back),
         ),
         title: Text(l10n.librarySettingsHeader),
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       ),
       body: SettingsList(
+        darkTheme: SettingsThemeData(
+          settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
+        ),
         sections: [
           SettingsSection(
             title: Text(l10n.categoriesSection),

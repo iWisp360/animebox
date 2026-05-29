@@ -19,11 +19,15 @@ class _PlaybackPageState extends State<PlaybackPage> {
           icon: const Icon(Icons.arrow_back),
         ),
         title: Text(l10n.playbackSettingsHeader),
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       ),
 
-      // TODO, I don't feel like doing this now
-      body: const SettingsList(sections: [SettingsSection(tiles: [])]),
+      // I don't feel like doing this now
+      body: SettingsList(
+        darkTheme: SettingsThemeData(
+          settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
+        ),
+        sections: const [SettingsSection(tiles: [])],
+      ),
     );
   }
 }

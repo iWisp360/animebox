@@ -1,6 +1,6 @@
 import 'package:animebox/core/config.dart';
 import 'package:animebox/main.dart';
-import 'package:animebox/ui/config_page/utils.dart';
+import 'package:animebox/ui/widgets/textform_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -22,9 +22,11 @@ class _AdvancedPageState extends State<AdvancedPage> {
           icon: const Icon(Icons.arrow_back),
         ),
         title: Text(l10n.advancedSettingsHeader),
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       ),
       body: SettingsList(
+        darkTheme: SettingsThemeData(
+          settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
+        ),
         sections: [
           SettingsSection(
             tiles: [
@@ -54,7 +56,7 @@ class _AdvancedPageState extends State<AdvancedPage> {
                 initialValue: config.advanced.debugLogs || kDebugMode,
                 enabled: !kDebugMode,
                 description: const Text(
-                  "Increase verbosity of the logs. This may reduce performance. ${kDebugMode ? "Always enabled because build type is Debug" : null}",
+                  "Increase verbosity of the logs. This may reduce performance.${kDebugMode ? " Always enabled because build type is Debug" : ""}",
                 ),
                 onToggle: (value) => setState(() {
                   config.advanced.debugLogs = value;

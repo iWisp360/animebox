@@ -83,6 +83,8 @@
           buildInputs = with pkgs; [
             android-studio
             glib
+            mpv
+            libepoxy
             pkgs-stable.chromium
             pango
             pkg-config

@@ -7,7 +7,7 @@ import '../../frb_generated.dart';
 import 'metadata/utils.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `AnimeSource`, `ChapterRef`, `ChapterVideos`, `Language`, `SearchResult`, `Search`, `Serie`, `VideoRef`
+// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `AnimeSource`, `ChapterRef`, `ChapterVideos`, `Language`, `Search`, `Serie`, `VideoRef`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`
 
 class DateObject {
@@ -28,6 +28,26 @@ class DateObject {
           year == other.year &&
           month == other.month &&
           day == other.day;
+}
+
+class SearchResult {
+  final String? name;
+  final String? url;
+  final String? image;
+
+  const SearchResult({this.name, this.url, this.image});
+
+  @override
+  int get hashCode => name.hashCode ^ url.hashCode ^ image.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SearchResult &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          url == other.url &&
+          image == other.image;
 }
 
 enum SerieMetaConfidence {

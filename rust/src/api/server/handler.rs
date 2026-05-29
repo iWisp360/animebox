@@ -1,6 +1,11 @@
-use crate::api::server::{
-  graphql::{SERVER_INFO_QUERY, ServerInfoResponse},
-  models::ConfigServer,
+use crate::api::{
+  data::models::SearchResult,
+  server::{
+    graphql::{
+      SEARCH_QUERY, SERVER_INFO_QUERY, SearchResponse, SearchVariables, ServerInfoResponse,
+    },
+    models::ConfigServer,
+  },
 };
 use flutter_rust_bridge::frb;
 use gql_client::Client;
@@ -31,4 +36,24 @@ pub async fn get_server(url: String) -> anyhow::Result<ConfigServer> {
     }),
     None => Err(anyhow::anyhow!("This is not a valid server")),
   }
+}
+
+pub async fn search(
+  server_url: String,
+  pattern: String,
+  source_id: String,
+) -> anyhow::Result<Vec<SearchResult>> {
+  let response = Client::new(server_url.as_str())
+    .query_with_vars::<SearchResponse, SearchVariables>(
+      SEARCH_QUERY,
+      SearchVariables { pattern, source_id },
+    )
+    .await
+    .map_err(|e| anyhow::anyhow!(e))?;
+
+  Ok(if let Some(response) = response {
+    response.search.results
+  } else {
+    vec![]
+  })
 }

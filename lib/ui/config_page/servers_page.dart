@@ -30,10 +30,12 @@ class _ServersPageState extends State<ServersPage> {
             icon: const Icon(Icons.arrow_back),
           ),
           title: Text(l10n.serversSettingsHeader),
-          backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
         ),
 
         body: SettingsList(
+          darkTheme: SettingsThemeData(
+            settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
+          ),
           sections: [
             SettingsSection(
               title: const Text("Servers"),

@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 iWisp360
 
 use crate::api::data::{metadata::utils::MetadataSources, video_providers::utils::VideoProvider};
-use url::Url;
+use serde::{Deserialize, Serialize};
 
 pub struct AnimeSource {
   pub pretty_name: String,
@@ -20,15 +20,18 @@ pub enum Language {
   EN,
 }
 
-#[derive(Clone)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct SearchResult {
   pub name: Option<String>,
-  pub url: Option<Url>,
-  pub image: Option<Url>,
+  pub url: Option<String>,
+  pub image: Option<String>,
 }
 
+#[derive(Serialize, Deserialize)]
 pub struct Search {
+  #[serde(rename = "data")]
   pub results: Vec<SearchResult>,
+  #[serde(rename = "fetchDate")]
   pub fetch_date: i64,
 }
 
