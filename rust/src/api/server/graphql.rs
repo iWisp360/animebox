@@ -20,6 +20,7 @@ pub struct ServerInfoTiny {
   #[serde(rename = "logoUrl")]
   pub logo_url: Option<String>,
   pub version: u32,
+  pub uuid: String,
   #[serde(rename = "minCompat")]
   pub min_compat: u32,
 }
@@ -29,8 +30,26 @@ pub static SERVER_INFO_QUERY: &str = "
     ServerInfo { 
       name 
       version 
+      uuid
       minCompat 
       logoUrl 
+    }
+  }
+";
+
+pub static SERVER_SUPPORTED_SOURCES_QUERY: &str = "
+  query {
+    ServerInfo {
+      supportedAnimeSources {
+        prettyName
+        id
+        url
+        otherUrls
+        noMetaProvider
+        recommendations
+        isHentaiSource
+        lang
+      }
     }
   }
 ";

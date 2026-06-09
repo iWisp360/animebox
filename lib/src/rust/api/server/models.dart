@@ -10,12 +10,14 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 class ConfigServer {
   bool enabled;
+  final String uuid;
   final String? name;
   final String url;
   final String? logoUrl;
 
   ConfigServer({
     required this.enabled,
+    required this.uuid,
     this.name,
     required this.url,
     this.logoUrl,
@@ -23,7 +25,11 @@ class ConfigServer {
 
   @override
   int get hashCode =>
-      enabled.hashCode ^ name.hashCode ^ url.hashCode ^ logoUrl.hashCode;
+      enabled.hashCode ^
+      uuid.hashCode ^
+      name.hashCode ^
+      url.hashCode ^
+      logoUrl.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -31,6 +37,7 @@ class ConfigServer {
       other is ConfigServer &&
           runtimeType == other.runtimeType &&
           enabled == other.enabled &&
+          uuid == other.uuid &&
           name == other.name &&
           url == other.url &&
           logoUrl == other.logoUrl;

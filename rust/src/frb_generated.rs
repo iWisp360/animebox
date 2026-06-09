@@ -26,9 +26,14 @@
 
 // Section: imports
 
+use crate::api::data::caching::anime_sources::AnimeSources;
+use crate::api::data::caching::anime_sources::*;
+use crate::api::data::caching::utils::CacheSource;
+use crate::api::data::caching::utils::Expirable;
+use crate::api::data::caching::utils::ReadWrite;
 use crate::api::data::video_providers::utils::VideoProviderImpl;
 use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
-use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
+use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
 use flutter_rust_bridge::{Handler, IntoIntoDart};
 
 // Section: boilerplate
@@ -39,7 +44,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
   default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -813406824;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 2013153059;
 
 // Section: executor
 
@@ -47,6 +52,603 @@ flutter_rust_bridge::frb_generated_default_handler!();
 
 // Section: wire_funcs
 
+fn wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_auto_accessor_get_last_update_impl(
+  ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+  rust_vec_len_: i32,
+  data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+  FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+    flutter_rust_bridge::for_generated::TaskInfo {
+      debug_name: "AnimeSourcesCacheManager_auto_accessor_get_last_update",
+      port: None,
+      mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+    },
+    move || {
+      let message = unsafe {
+        flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+          ptr_,
+          rust_vec_len_,
+          data_len_,
+        )
+      };
+      let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+      let api_that = <RustOpaqueMoi<
+        flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>,
+      >>::sse_decode(&mut deserializer);
+      deserializer.end();
+      transform_result_sse::<_, ()>((move || {
+        let mut api_that_guard = None;
+        let decode_indices_ =
+          flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+            flutter_rust_bridge::for_generated::LockableOrderInfo::new(&api_that, 0, false),
+          ]);
+        for i in decode_indices_ {
+          match i {
+            0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+            _ => unreachable!(),
+          }
+        }
+        let api_that_guard = api_that_guard.unwrap();
+        let output_ok = Result::<_, ()>::Ok(api_that_guard.last_update.clone())?;
+        Ok(output_ok)
+      })())
+    },
+  )
+}
+fn wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_auto_accessor_get_sources_impl(
+  ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+  rust_vec_len_: i32,
+  data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+  FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+    flutter_rust_bridge::for_generated::TaskInfo {
+      debug_name: "AnimeSourcesCacheManager_auto_accessor_get_sources",
+      port: None,
+      mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+    },
+    move || {
+      let message = unsafe {
+        flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+          ptr_,
+          rust_vec_len_,
+          data_len_,
+        )
+      };
+      let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+      let api_that = <RustOpaqueMoi<
+        flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>,
+      >>::sse_decode(&mut deserializer);
+      deserializer.end();
+      transform_result_sse::<_, ()>((move || {
+        let mut api_that_guard = None;
+        let decode_indices_ =
+          flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+            flutter_rust_bridge::for_generated::LockableOrderInfo::new(&api_that, 0, false),
+          ]);
+        for i in decode_indices_ {
+          match i {
+            0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+            _ => unreachable!(),
+          }
+        }
+        let api_that_guard = api_that_guard.unwrap();
+        let output_ok = Result::<_, ()>::Ok(api_that_guard.sources.clone())?;
+        Ok(output_ok)
+      })())
+    },
+  )
+}
+fn wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_auto_accessor_set_last_update_impl(
+  ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+  rust_vec_len_: i32,
+  data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+  FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+    flutter_rust_bridge::for_generated::TaskInfo {
+      debug_name: "AnimeSourcesCacheManager_auto_accessor_set_last_update",
+      port: None,
+      mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+    },
+    move || {
+      let message = unsafe {
+        flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+          ptr_,
+          rust_vec_len_,
+          data_len_,
+        )
+      };
+      let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+      let api_that = <RustOpaqueMoi<
+        flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>,
+      >>::sse_decode(&mut deserializer);
+      let api_last_update = <i64>::sse_decode(&mut deserializer);
+      deserializer.end();
+      transform_result_sse::<_, ()>((move || {
+        let mut api_that_guard = None;
+        let decode_indices_ =
+          flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+            flutter_rust_bridge::for_generated::LockableOrderInfo::new(&api_that, 0, true),
+          ]);
+        for i in decode_indices_ {
+          match i {
+            0 => api_that_guard = Some(api_that.lockable_decode_sync_ref_mut()),
+            _ => unreachable!(),
+          }
+        }
+        let mut api_that_guard = api_that_guard.unwrap();
+        let output_ok = Result::<_, ()>::Ok({
+          {
+            api_that_guard.last_update = api_last_update;
+          };
+        })?;
+        Ok(output_ok)
+      })())
+    },
+  )
+}
+fn wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_auto_accessor_set_sources_impl(
+  ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+  rust_vec_len_: i32,
+  data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+  FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+    flutter_rust_bridge::for_generated::TaskInfo {
+      debug_name: "AnimeSourcesCacheManager_auto_accessor_set_sources",
+      port: None,
+      mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+    },
+    move || {
+      let message = unsafe {
+        flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+          ptr_,
+          rust_vec_len_,
+          data_len_,
+        )
+      };
+      let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+      let api_that = <RustOpaqueMoi<
+        flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>,
+      >>::sse_decode(&mut deserializer);
+      let api_sources = <std::collections::HashMap<
+        String,
+        Vec<crate::api::data::models::AnimeSource>,
+      >>::sse_decode(&mut deserializer);
+      deserializer.end();
+      transform_result_sse::<_, ()>((move || {
+        let mut api_that_guard = None;
+        let decode_indices_ =
+          flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+            flutter_rust_bridge::for_generated::LockableOrderInfo::new(&api_that, 0, true),
+          ]);
+        for i in decode_indices_ {
+          match i {
+            0 => api_that_guard = Some(api_that.lockable_decode_sync_ref_mut()),
+            _ => unreachable!(),
+          }
+        }
+        let mut api_that_guard = api_that_guard.unwrap();
+        let output_ok = Result::<_, ()>::Ok({
+          {
+            api_that_guard.sources = api_sources;
+          };
+        })?;
+        Ok(output_ok)
+      })())
+    },
+  )
+}
+fn wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_default_impl(
+  port_: flutter_rust_bridge::for_generated::MessagePort,
+  ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+  rust_vec_len_: i32,
+  data_len_: i32,
+) {
+  FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+    flutter_rust_bridge::for_generated::TaskInfo {
+      debug_name: "AnimeSourcesCacheManager_default",
+      port: Some(port_),
+      mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+    },
+    move || {
+      let message = unsafe {
+        flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+          ptr_,
+          rust_vec_len_,
+          data_len_,
+        )
+      };
+      let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+      deserializer.end();
+      move |context| {
+        transform_result_sse::<_, ()>((move || {
+          let output_ok = Result::<_, ()>::Ok(
+            crate::api::data::caching::anime_sources::AnimeSourcesCacheManager::default(),
+          )?;
+          Ok(output_ok)
+        })())
+      }
+    },
+  )
+}
+fn wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_get_expiration_date_impl(
+  port_: flutter_rust_bridge::for_generated::MessagePort,
+  ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+  rust_vec_len_: i32,
+  data_len_: i32,
+) {
+  FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+    flutter_rust_bridge::for_generated::TaskInfo {
+      debug_name: "AnimeSourcesCacheManager_get_expiration_date",
+      port: Some(port_),
+      mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+    },
+    move || {
+      let message = unsafe {
+        flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+          ptr_,
+          rust_vec_len_,
+          data_len_,
+        )
+      };
+      let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+      let api_that = <RustOpaqueMoi<
+        flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>,
+      >>::sse_decode(&mut deserializer);
+      deserializer.end();
+      move |context| {
+        transform_result_sse::<_, ()>((move || {
+          let mut api_that_guard = None;
+          let decode_indices_ =
+            flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+              flutter_rust_bridge::for_generated::LockableOrderInfo::new(&api_that, 0, false),
+            ]);
+          for i in decode_indices_ {
+            match i {
+              0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+              _ => unreachable!(),
+            }
+          }
+          let api_that_guard = api_that_guard.unwrap();
+          let output_ok = Result::<_, ()>::Ok(
+            crate::api::data::caching::anime_sources::AnimeSourcesCacheManager::get_expiration_date(
+              &*api_that_guard,
+            ),
+          )?;
+          Ok(output_ok)
+        })())
+      }
+    },
+  )
+}
+fn wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_get_sources_impl(
+  port_: flutter_rust_bridge::for_generated::MessagePort,
+  ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+  rust_vec_len_: i32,
+  data_len_: i32,
+) {
+  FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+    flutter_rust_bridge::for_generated::TaskInfo {
+      debug_name: "AnimeSourcesCacheManager_get_sources",
+      port: Some(port_),
+      mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+    },
+    move || {
+      let message = unsafe {
+        flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+          ptr_,
+          rust_vec_len_,
+          data_len_,
+        )
+      };
+      let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+      let api_that = <RustOpaqueMoi<
+        flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>,
+      >>::sse_decode(&mut deserializer);
+      deserializer.end();
+      move |context| {
+        transform_result_sse::<_, ()>((move || {
+          let mut api_that_guard = None;
+          let decode_indices_ =
+            flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+              flutter_rust_bridge::for_generated::LockableOrderInfo::new(&api_that, 0, false),
+            ]);
+          for i in decode_indices_ {
+            match i {
+              0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+              _ => unreachable!(),
+            }
+          }
+          let api_that_guard = api_that_guard.unwrap();
+          let output_ok = Result::<_, ()>::Ok(
+            crate::api::data::caching::anime_sources::AnimeSourcesCacheManager::get_sources(
+              &*api_that_guard,
+            ),
+          )?;
+          Ok(output_ok)
+        })())
+      }
+    },
+  )
+}
+fn wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_init_impl(
+  port_: flutter_rust_bridge::for_generated::MessagePort,
+  ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+  rust_vec_len_: i32,
+  data_len_: i32,
+) {
+  FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+    flutter_rust_bridge::for_generated::TaskInfo {
+      debug_name: "AnimeSourcesCacheManager_init",
+      port: Some(port_),
+      mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+    },
+    move || {
+      let message = unsafe {
+        flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+          ptr_,
+          rust_vec_len_,
+          data_len_,
+        )
+      };
+      let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+      deserializer.end();
+      move |context| {
+        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>((move || {
+          let output_ok =
+            crate::api::data::caching::anime_sources::AnimeSourcesCacheManager::init()?;
+          Ok(output_ok)
+        })())
+      }
+    },
+  )
+}
+fn wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_is_expired_impl(
+  port_: flutter_rust_bridge::for_generated::MessagePort,
+  ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+  rust_vec_len_: i32,
+  data_len_: i32,
+) {
+  FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+    flutter_rust_bridge::for_generated::TaskInfo {
+      debug_name: "AnimeSourcesCacheManager_is_expired",
+      port: Some(port_),
+      mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+    },
+    move || {
+      let message = unsafe {
+        flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+          ptr_,
+          rust_vec_len_,
+          data_len_,
+        )
+      };
+      let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+      let api_that = <RustOpaqueMoi<
+        flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>,
+      >>::sse_decode(&mut deserializer);
+      deserializer.end();
+      move |context| {
+        transform_result_sse::<_, ()>((move || {
+          let mut api_that_guard = None;
+          let decode_indices_ =
+            flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+              flutter_rust_bridge::for_generated::LockableOrderInfo::new(&api_that, 0, false),
+            ]);
+          for i in decode_indices_ {
+            match i {
+              0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+              _ => unreachable!(),
+            }
+          }
+          let api_that_guard = api_that_guard.unwrap();
+          let output_ok = Result::<_, ()>::Ok(
+            crate::api::data::caching::anime_sources::AnimeSourcesCacheManager::is_expired(
+              &*api_that_guard,
+            ),
+          )?;
+          Ok(output_ok)
+        })())
+      }
+    },
+  )
+}
+fn wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_read_from_file_impl(
+  port_: flutter_rust_bridge::for_generated::MessagePort,
+  ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+  rust_vec_len_: i32,
+  data_len_: i32,
+) {
+  FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+    flutter_rust_bridge::for_generated::TaskInfo {
+      debug_name: "AnimeSourcesCacheManager_read_from_file",
+      port: Some(port_),
+      mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+    },
+    move || {
+      let message = unsafe {
+        flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+          ptr_,
+          rust_vec_len_,
+          data_len_,
+        )
+      };
+      let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+      deserializer.end();
+      move |context| {
+        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>((move || {
+          let output_ok =
+            crate::api::data::caching::anime_sources::AnimeSourcesCacheManager::read_from_file()?;
+          Ok(output_ok)
+        })())
+      }
+    },
+  )
+}
+fn wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_refresh_sources_impl(
+  port_: flutter_rust_bridge::for_generated::MessagePort,
+  ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+  rust_vec_len_: i32,
+  data_len_: i32,
+) {
+  FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+    flutter_rust_bridge::for_generated::TaskInfo {
+      debug_name: "AnimeSourcesCacheManager_refresh_sources",
+      port: Some(port_),
+      mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+    },
+    move || {
+      let message = unsafe {
+        flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+          ptr_,
+          rust_vec_len_,
+          data_len_,
+        )
+      };
+      let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+      let api_that = <RustOpaqueMoi<
+        flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>,
+      >>::sse_decode(&mut deserializer);
+      let api_force_fetch = <bool>::sse_decode(&mut deserializer);
+      let api_no_fetch = <bool>::sse_decode(&mut deserializer);
+      let api_only_missing = <bool>::sse_decode(&mut deserializer);
+      let api_progress_sink = <StreamSink<
+        crate::api::data::caching::anime_sources::RefreshJob,
+        flutter_rust_bridge::for_generated::SseCodec,
+      >>::sse_decode(&mut deserializer);
+      let api_servers =
+        <Vec<crate::api::server::models::ConfigServer>>::sse_decode(&mut deserializer);
+      deserializer.end();
+      move |context| async move {
+        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+          (move || async move {
+            let mut api_that_guard = None;
+            let decode_indices_ =
+              flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                flutter_rust_bridge::for_generated::LockableOrderInfo::new(&api_that, 0, true),
+              ]);
+            for i in decode_indices_ {
+              match i {
+                0 => api_that_guard = Some(api_that.lockable_decode_async_ref_mut().await),
+                _ => unreachable!(),
+              }
+            }
+            let mut api_that_guard = api_that_guard.unwrap();
+            let output_ok =
+              crate::api::data::caching::anime_sources::AnimeSourcesCacheManager::refresh_sources(
+                &mut *api_that_guard,
+                api_force_fetch,
+                api_no_fetch,
+                api_only_missing,
+                api_progress_sink,
+                api_servers,
+              )
+              .await?;
+            Ok(output_ok)
+          })()
+          .await,
+        )
+      }
+    },
+  )
+}
+fn wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_update_impl(
+  port_: flutter_rust_bridge::for_generated::MessagePort,
+  ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+  rust_vec_len_: i32,
+  data_len_: i32,
+) {
+  FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+    flutter_rust_bridge::for_generated::TaskInfo {
+      debug_name: "AnimeSourcesCacheManager_update",
+      port: Some(port_),
+      mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+    },
+    move || {
+      let message = unsafe {
+        flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+          ptr_,
+          rust_vec_len_,
+          data_len_,
+        )
+      };
+      let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+      let api_that = <RustOpaqueMoi<
+        flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>,
+      >>::sse_decode(&mut deserializer);
+      deserializer.end();
+      move |context| {
+        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>((move || {
+          let mut api_that_guard = None;
+          let decode_indices_ =
+            flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+              flutter_rust_bridge::for_generated::LockableOrderInfo::new(&api_that, 0, false),
+            ]);
+          for i in decode_indices_ {
+            match i {
+              0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+              _ => unreachable!(),
+            }
+          }
+          let api_that_guard = api_that_guard.unwrap();
+          let output_ok =
+            crate::api::data::caching::anime_sources::AnimeSourcesCacheManager::update(
+              &*api_that_guard,
+            )?;
+          Ok(output_ok)
+        })())
+      }
+    },
+  )
+}
+fn wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_write_to_file_impl(
+  port_: flutter_rust_bridge::for_generated::MessagePort,
+  ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+  rust_vec_len_: i32,
+  data_len_: i32,
+) {
+  FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+    flutter_rust_bridge::for_generated::TaskInfo {
+      debug_name: "AnimeSourcesCacheManager_write_to_file",
+      port: Some(port_),
+      mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+    },
+    move || {
+      let message = unsafe {
+        flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+          ptr_,
+          rust_vec_len_,
+          data_len_,
+        )
+      };
+      let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+      let api_that = <RustOpaqueMoi<
+        flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>,
+      >>::sse_decode(&mut deserializer);
+      deserializer.end();
+      move |context| {
+        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>((move || {
+          let mut api_that_guard = None;
+          let decode_indices_ =
+            flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+              flutter_rust_bridge::for_generated::LockableOrderInfo::new(&api_that, 0, false),
+            ]);
+          for i in decode_indices_ {
+            match i {
+              0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+              _ => unreachable!(),
+            }
+          }
+          let api_that_guard = api_that_guard.unwrap();
+          let output_ok =
+            crate::api::data::caching::anime_sources::AnimeSourcesCacheManager::write_to_file(
+              &*api_that_guard,
+            )?;
+          Ok(output_ok)
+        })())
+      }
+    },
+  )
+}
 fn wire__crate__api__app__configuration__models__advanced_config_default_impl(
   port_: flutter_rust_bridge::for_generated::MessagePort,
   ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -409,44 +1011,6 @@ fn wire__crate__api__app__logging__init_logger_impl(
       move |context| {
         transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>((move || {
           let output_ok = crate::api::app::logging::init_logger(api_settings)?;
-          Ok(output_ok)
-        })())
-      }
-    },
-  )
-}
-fn wire__crate__api__data__video_providers__streamwish__init_streamwish_fetcher_function_impl(
-  port_: flutter_rust_bridge::for_generated::MessagePort,
-  ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
-  rust_vec_len_: i32,
-  data_len_: i32,
-) {
-  FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
-    flutter_rust_bridge::for_generated::TaskInfo {
-      debug_name: "init_streamwish_fetcher_function",
-      port: Some(port_),
-      mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
-    },
-    move || {
-      let message = unsafe {
-        flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
-          ptr_,
-          rust_vec_len_,
-          data_len_,
-        )
-      };
-      let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
-      let api_fetcher = decode_DartFn_Inputs_String_Output_String_AnyhowException(
-        <flutter_rust_bridge::DartOpaque>::sse_decode(&mut deserializer),
-      );
-      deserializer.end();
-      move |context| {
-        transform_result_sse::<_, ()>((move || {
-          let output_ok = Result::<_, ()>::Ok({
-            crate::api::data::video_providers::streamwish::init_streamwish_fetcher_function(
-              api_fetcher,
-            );
-          })?;
           Ok(output_ok)
         })())
       }
@@ -1189,35 +1753,9 @@ fn wire__crate__api__data__video_providers__yourupload__your_upload_get_direct_v
 
 // Section: related_funcs
 
-fn decode_DartFn_Inputs_String_Output_String_AnyhowException(
-  dart_opaque: flutter_rust_bridge::DartOpaque,
-) -> impl Fn(String) -> flutter_rust_bridge::DartFnFuture<String> {
-  use flutter_rust_bridge::IntoDart;
-
-  async fn body(dart_opaque: flutter_rust_bridge::DartOpaque, arg0: String) -> String {
-    let args = vec![arg0.into_into_dart().into_dart()];
-    let message = FLUTTER_RUST_BRIDGE_HANDLER
-      .dart_fn_invoke(dart_opaque, args)
-      .await;
-
-    let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
-    let action = deserializer.cursor.read_u8().unwrap();
-    let ans = match action {
-      0 => std::result::Result::Ok(<String>::sse_decode(&mut deserializer)),
-      1 => std::result::Result::Err(
-        <flutter_rust_bridge::for_generated::anyhow::Error>::sse_decode(&mut deserializer),
-      ),
-      _ => unreachable!(),
-    };
-    deserializer.end();
-    let ans = ans.expect("Dart throws exception but Rust side assume it is not failable");
-    ans
-  }
-
-  move |arg0: String| {
-    flutter_rust_bridge::for_generated::convert_into_dart_fn_future(body(dart_opaque.clone(), arg0))
-  }
-}
+flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
+  flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>
+);
 
 // Section: dart2rust
 
@@ -1229,11 +1767,13 @@ impl SseDecode for flutter_rust_bridge::for_generated::anyhow::Error {
   }
 }
 
-impl SseDecode for flutter_rust_bridge::DartOpaque {
+impl SseDecode for AnimeSourcesCacheManager {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-    let mut inner = <usize>::sse_decode(deserializer);
-    return unsafe { flutter_rust_bridge::for_generated::sse_decode_dart_opaque(inner) };
+    let mut inner = <RustOpaqueMoi<
+      flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>,
+    >>::sse_decode(deserializer);
+    return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
   }
 }
 
@@ -1242,6 +1782,53 @@ impl SseDecode for std::collections::HashMap<String, String> {
   fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
     let mut inner = <Vec<(String, String)>>::sse_decode(deserializer);
     return inner.into_iter().collect();
+  }
+}
+
+impl SseDecode
+  for std::collections::HashMap<String, crate::api::data::caching::anime_sources::CacheRefreshError>
+{
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut inner = <Vec<(
+      String,
+      crate::api::data::caching::anime_sources::CacheRefreshError,
+    )>>::sse_decode(deserializer);
+    return inner.into_iter().collect();
+  }
+}
+
+impl SseDecode for std::collections::HashMap<String, Vec<crate::api::data::models::AnimeSource>> {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut inner =
+      <Vec<(String, Vec<crate::api::data::models::AnimeSource>)>>::sse_decode(deserializer);
+    return inner.into_iter().collect();
+  }
+}
+
+impl SseDecode
+  for RustOpaqueMoi<
+    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>,
+  >
+{
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut inner = <usize>::sse_decode(deserializer);
+    return decode_rust_opaque_moi(inner);
+  }
+}
+
+impl SseDecode
+  for StreamSink<
+    crate::api::data::caching::anime_sources::RefreshJob,
+    flutter_rust_bridge::for_generated::SseCodec,
+  >
+{
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut inner = <String>::sse_decode(deserializer);
+    return StreamSink::deserialize(inner);
   }
 }
 
@@ -1299,6 +1886,30 @@ impl SseDecode for crate::api::app::configuration::models::AnimeBoxConfig {
   }
 }
 
+impl SseDecode for crate::api::data::models::AnimeSource {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut var_prettyName = <String>::sse_decode(deserializer);
+    let mut var_id = <String>::sse_decode(deserializer);
+    let mut var_url = <String>::sse_decode(deserializer);
+    let mut var_otherUrls = <Vec<String>>::sse_decode(deserializer);
+    let mut var_noMeta = <bool>::sse_decode(deserializer);
+    let mut var_recommendations = <Option<String>>::sse_decode(deserializer);
+    let mut var_isHentaiSource = <bool>::sse_decode(deserializer);
+    let mut var_lang = <crate::api::data::models::Language>::sse_decode(deserializer);
+    return crate::api::data::models::AnimeSource {
+      pretty_name: var_prettyName,
+      id: var_id,
+      url: var_url,
+      other_urls: var_otherUrls,
+      no_meta: var_noMeta,
+      recommendations: var_recommendations,
+      is_hentai_source: var_isHentaiSource,
+      lang: var_lang,
+    };
+  }
+}
+
 impl SseDecode for crate::api::app::languages::AppLanguages {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1342,15 +1953,36 @@ impl SseDecode for bool {
   }
 }
 
+impl SseDecode for crate::api::data::caching::anime_sources::CacheRefreshError {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut tag_ = <i32>::sse_decode(deserializer);
+    match tag_ {
+      0 => {
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        return crate::api::data::caching::anime_sources::CacheRefreshError::ConnectionOrDeserializationFailed(var_field0);
+      }
+      1 => {
+        return crate::api::data::caching::anime_sources::CacheRefreshError::InvalidData;
+      }
+      _ => {
+        unimplemented!("");
+      }
+    }
+  }
+}
+
 impl SseDecode for crate::api::server::models::ConfigServer {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
     let mut var_enabled = <bool>::sse_decode(deserializer);
+    let mut var_uuid = <String>::sse_decode(deserializer);
     let mut var_name = <Option<String>>::sse_decode(deserializer);
     let mut var_url = <String>::sse_decode(deserializer);
     let mut var_logoUrl = <Option<String>>::sse_decode(deserializer);
     return crate::api::server::models::ConfigServer {
       enabled: var_enabled,
+      uuid: var_uuid,
       name: var_name,
       url: var_url,
       logo_url: var_logoUrl,
@@ -1432,10 +2064,15 @@ impl SseDecode for i64 {
   }
 }
 
-impl SseDecode for isize {
+impl SseDecode for crate::api::data::models::Language {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-    deserializer.cursor.read_i64::<NativeEndian>().unwrap() as _
+    let mut inner = <i32>::sse_decode(deserializer);
+    return match inner {
+      0 => crate::api::data::models::Language::ES,
+      1 => crate::api::data::models::Language::EN,
+      _ => unreachable!("Invalid variant for Language: {}", inner),
+    };
   }
 }
 
@@ -1461,6 +2098,20 @@ impl SseDecode for Vec<String> {
     let mut ans_ = Vec::with_capacity(len_ as usize);
     for idx_ in 0..len_ {
       ans_.push(<String>::sse_decode(deserializer));
+    }
+    return ans_;
+  }
+}
+
+impl SseDecode for Vec<crate::api::data::models::AnimeSource> {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut len_ = <i32>::sse_decode(deserializer);
+    let mut ans_ = Vec::with_capacity(len_ as usize);
+    for idx_ in 0..len_ {
+      ans_.push(<crate::api::data::models::AnimeSource>::sse_decode(
+        deserializer,
+      ));
     }
     return ans_;
   }
@@ -1500,6 +2151,38 @@ impl SseDecode for Vec<u8> {
     let mut ans_ = Vec::with_capacity(len_ as usize);
     for idx_ in 0..len_ {
       ans_.push(<u8>::sse_decode(deserializer));
+    }
+    return ans_;
+  }
+}
+
+impl SseDecode
+  for Vec<(
+    String,
+    crate::api::data::caching::anime_sources::CacheRefreshError,
+  )>
+{
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut len_ = <i32>::sse_decode(deserializer);
+    let mut ans_ = Vec::with_capacity(len_ as usize);
+    for idx_ in 0..len_ {
+      ans_.push(<(
+        String,
+        crate::api::data::caching::anime_sources::CacheRefreshError,
+      )>::sse_decode(deserializer));
+    }
+    return ans_;
+  }
+}
+
+impl SseDecode for Vec<(String, Vec<crate::api::data::models::AnimeSource>)> {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut len_ = <i32>::sse_decode(deserializer);
+    let mut ans_ = Vec::with_capacity(len_ as usize);
+    for idx_ in 0..len_ {
+      ans_.push(<(String, Vec<crate::api::data::models::AnimeSource>)>::sse_decode(deserializer));
     }
     return ans_;
   }
@@ -1706,12 +2389,57 @@ impl SseDecode for crate::api::app::configuration::models::PlaybackConfig {
   }
 }
 
+impl SseDecode
+  for (
+    String,
+    crate::api::data::caching::anime_sources::CacheRefreshError,
+  )
+{
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut var_field0 = <String>::sse_decode(deserializer);
+    let mut var_field1 =
+      <crate::api::data::caching::anime_sources::CacheRefreshError>::sse_decode(deserializer);
+    return (var_field0, var_field1);
+  }
+}
+
+impl SseDecode for (String, Vec<crate::api::data::models::AnimeSource>) {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut var_field0 = <String>::sse_decode(deserializer);
+    let mut var_field1 = <Vec<crate::api::data::models::AnimeSource>>::sse_decode(deserializer);
+    return (var_field0, var_field1);
+  }
+}
+
 impl SseDecode for (String, String) {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
     let mut var_field0 = <String>::sse_decode(deserializer);
     let mut var_field1 = <String>::sse_decode(deserializer);
     return (var_field0, var_field1);
+  }
+}
+
+impl SseDecode for crate::api::data::caching::anime_sources::RefreshJob {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut var_runningOn = <Vec<String>>::sse_decode(deserializer);
+    let mut var_errors = <std::collections::HashMap<
+      String,
+      crate::api::data::caching::anime_sources::CacheRefreshError,
+    >>::sse_decode(deserializer);
+    let mut var_success = <u32>::sse_decode(deserializer);
+    let mut var_error = <u32>::sse_decode(deserializer);
+    let mut var_total = <u32>::sse_decode(deserializer);
+    return crate::api::data::caching::anime_sources::RefreshJob {
+      running_on: var_runningOn,
+      errors: var_errors,
+      success: var_success,
+      error: var_error,
+      total: var_total,
+    };
   }
 }
 
@@ -1942,167 +2670,48 @@ fn pde_ffi_dispatcher_primary_impl(
 ) {
   // Codec=Pde (Serialization + dispatch), see doc to use other codecs
   match func_id {
-    8 => wire__crate__api__app__configuration__models__advanced_config_default_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    9 => wire__crate__api__app__configuration__models__anime_box_config_default_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    10 => wire__crate__api__app__configuration__models__anime_box_config_init_config_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    11 => wire__crate__api__app__configuration__models__anime_box_config_update_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    12 => wire__crate__api__app__languages__app_languages_default_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    13 => wire__crate__api__app__configuration__models__appearance_config_default_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    14 => wire__crate__api__app__configuration__models__downloads_config_default_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    15 => {
-      wire__crate__api__data__metadata__utils__get_metadata_impl(port, ptr, rust_vec_len, data_len)
-    }
-    16 => wire__crate__api__server__handler__get_server_impl(port, ptr, rust_vec_len, data_len),
-    17 => {
-      wire__crate__api__app__sections__home_tabs_default_impl(port, ptr, rust_vec_len, data_len)
-    }
-    18 => wire__crate__api__app__logging__init_logger_impl(port, ptr, rust_vec_len, data_len),
-    19 => {
-      wire__crate__api__data__video_providers__streamwish__init_streamwish_fetcher_function_impl(
-        port,
-        ptr,
-        rust_vec_len,
-        data_len,
-      )
-    }
-    20 => wire__crate__api__app__configuration__models__library_config_default_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    21 => wire__crate__api__app__configuration__models__local_storage_config_default_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    22 => wire__crate__api__data__metadata__myanimelist__match_confidence_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    23 => wire__crate__api__app__configuration__models__metadata_config_default_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    24 => wire__crate__api__data__metadata__utils__metadata_sources_default_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    25 => wire__crate__api__data__video_providers__mp4upload__mp_4_upload_get_direct_video_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    26 => wire__crate__api__app__configuration__models__playback_config_default_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    27 => wire__crate__api__server__handler__search_impl(port, ptr, rust_vec_len, data_len),
-    28 => wire__crate__api__data__metadata__utils__search_metadata_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    29 => wire__crate__api__data__models__serie_meta_confidence_default_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    30 => {
-      wire__crate__api__data__models__serie_metadata_default_impl(port, ptr, rust_vec_len, data_len)
-    }
-    31 => {
-      wire__crate__api__data__models__serie_status_default_impl(port, ptr, rust_vec_len, data_len)
-    }
-    32 => wire__crate__api__app__configuration__models__servers_config_default_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    33 => wire__crate__api__data__video_providers__streamtape__stream_tape_get_direct_video_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    34 => wire__crate__api__data__video_providers__streamwish__stream_wish_get_content_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    35 => wire__crate__api__data__video_providers__streamwish__stream_wish_get_direct_video_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    36 => {
-      wire__crate__api__app__themes__theme_modes_default_impl(port, ptr, rust_vec_len, data_len)
-    }
-    37 => wire__crate__api__app__themes__themes_default_impl(port, ptr, rust_vec_len, data_len),
-    38 => wire__crate__api__app__configuration__models__update_params_default_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    40 => wire__crate__api__data__video_providers__yourupload__your_upload_get_direct_video_impl(
-      port,
-      ptr,
-      rust_vec_len,
-      data_len,
-    ),
-    _ => unreachable!(),
-  }
+                        5 => wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_default_impl(port, ptr, rust_vec_len, data_len),
+6 => wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_get_expiration_date_impl(port, ptr, rust_vec_len, data_len),
+7 => wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_get_sources_impl(port, ptr, rust_vec_len, data_len),
+8 => wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_init_impl(port, ptr, rust_vec_len, data_len),
+9 => wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_is_expired_impl(port, ptr, rust_vec_len, data_len),
+10 => wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_read_from_file_impl(port, ptr, rust_vec_len, data_len),
+11 => wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_refresh_sources_impl(port, ptr, rust_vec_len, data_len),
+12 => wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_update_impl(port, ptr, rust_vec_len, data_len),
+13 => wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_write_to_file_impl(port, ptr, rust_vec_len, data_len),
+28 => wire__crate__api__app__configuration__models__advanced_config_default_impl(port, ptr, rust_vec_len, data_len),
+29 => wire__crate__api__app__configuration__models__anime_box_config_default_impl(port, ptr, rust_vec_len, data_len),
+30 => wire__crate__api__app__configuration__models__anime_box_config_init_config_impl(port, ptr, rust_vec_len, data_len),
+31 => wire__crate__api__app__configuration__models__anime_box_config_update_impl(port, ptr, rust_vec_len, data_len),
+32 => wire__crate__api__app__languages__app_languages_default_impl(port, ptr, rust_vec_len, data_len),
+33 => wire__crate__api__app__configuration__models__appearance_config_default_impl(port, ptr, rust_vec_len, data_len),
+34 => wire__crate__api__app__configuration__models__downloads_config_default_impl(port, ptr, rust_vec_len, data_len),
+35 => wire__crate__api__data__metadata__utils__get_metadata_impl(port, ptr, rust_vec_len, data_len),
+36 => wire__crate__api__server__handler__get_server_impl(port, ptr, rust_vec_len, data_len),
+37 => wire__crate__api__app__sections__home_tabs_default_impl(port, ptr, rust_vec_len, data_len),
+38 => wire__crate__api__app__logging__init_logger_impl(port, ptr, rust_vec_len, data_len),
+39 => wire__crate__api__app__configuration__models__library_config_default_impl(port, ptr, rust_vec_len, data_len),
+40 => wire__crate__api__app__configuration__models__local_storage_config_default_impl(port, ptr, rust_vec_len, data_len),
+41 => wire__crate__api__data__metadata__myanimelist__match_confidence_impl(port, ptr, rust_vec_len, data_len),
+42 => wire__crate__api__app__configuration__models__metadata_config_default_impl(port, ptr, rust_vec_len, data_len),
+43 => wire__crate__api__data__metadata__utils__metadata_sources_default_impl(port, ptr, rust_vec_len, data_len),
+44 => wire__crate__api__data__video_providers__mp4upload__mp_4_upload_get_direct_video_impl(port, ptr, rust_vec_len, data_len),
+45 => wire__crate__api__app__configuration__models__playback_config_default_impl(port, ptr, rust_vec_len, data_len),
+46 => wire__crate__api__server__handler__search_impl(port, ptr, rust_vec_len, data_len),
+47 => wire__crate__api__data__metadata__utils__search_metadata_impl(port, ptr, rust_vec_len, data_len),
+48 => wire__crate__api__data__models__serie_meta_confidence_default_impl(port, ptr, rust_vec_len, data_len),
+49 => wire__crate__api__data__models__serie_metadata_default_impl(port, ptr, rust_vec_len, data_len),
+50 => wire__crate__api__data__models__serie_status_default_impl(port, ptr, rust_vec_len, data_len),
+51 => wire__crate__api__app__configuration__models__servers_config_default_impl(port, ptr, rust_vec_len, data_len),
+52 => wire__crate__api__data__video_providers__streamtape__stream_tape_get_direct_video_impl(port, ptr, rust_vec_len, data_len),
+53 => wire__crate__api__data__video_providers__streamwish__stream_wish_get_content_impl(port, ptr, rust_vec_len, data_len),
+54 => wire__crate__api__data__video_providers__streamwish__stream_wish_get_direct_video_impl(port, ptr, rust_vec_len, data_len),
+55 => wire__crate__api__app__themes__theme_modes_default_impl(port, ptr, rust_vec_len, data_len),
+56 => wire__crate__api__app__themes__themes_default_impl(port, ptr, rust_vec_len, data_len),
+57 => wire__crate__api__app__configuration__models__update_params_default_impl(port, ptr, rust_vec_len, data_len),
+59 => wire__crate__api__data__video_providers__yourupload__your_upload_get_direct_video_impl(port, ptr, rust_vec_len, data_len),
+                        _ => unreachable!(),
+                    }
 }
 
 fn pde_ffi_dispatcher_sync_impl(
@@ -2113,12 +2722,35 @@ fn pde_ffi_dispatcher_sync_impl(
 ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
   // Codec=Pde (Serialization + dispatch), see doc to use other codecs
   match func_id {
-    39 => wire__crate__api__server__handler__validate_url_impl(ptr, rust_vec_len, data_len),
-    _ => unreachable!(),
-  }
+                        1 => wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_auto_accessor_get_last_update_impl(ptr, rust_vec_len, data_len),
+2 => wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_auto_accessor_get_sources_impl(ptr, rust_vec_len, data_len),
+3 => wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_auto_accessor_set_last_update_impl(ptr, rust_vec_len, data_len),
+4 => wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_auto_accessor_set_sources_impl(ptr, rust_vec_len, data_len),
+58 => wire__crate__api__server__handler__validate_url_impl(ptr, rust_vec_len, data_len),
+                        _ => unreachable!(),
+                    }
 }
 
 // Section: rust2dart
+
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<AnimeSourcesCacheManager> {
+  fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+    flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self.0).into_dart()
+  }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+  for FrbWrapper<AnimeSourcesCacheManager>
+{
+}
+
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<AnimeSourcesCacheManager>>
+  for AnimeSourcesCacheManager
+{
+  fn into_into_dart(self) -> FrbWrapper<AnimeSourcesCacheManager> {
+    self.into()
+  }
+}
 
 // Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::app::configuration::models::AdvancedConfig {
@@ -2166,6 +2798,33 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::app::configuration::models::A
   for crate::api::app::configuration::models::AnimeBoxConfig
 {
   fn into_into_dart(self) -> crate::api::app::configuration::models::AnimeBoxConfig {
+    self
+  }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::data::models::AnimeSource {
+  fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+    [
+      self.pretty_name.into_into_dart().into_dart(),
+      self.id.into_into_dart().into_dart(),
+      self.url.into_into_dart().into_dart(),
+      self.other_urls.into_into_dart().into_dart(),
+      self.no_meta.into_into_dart().into_dart(),
+      self.recommendations.into_into_dart().into_dart(),
+      self.is_hentai_source.into_into_dart().into_dart(),
+      self.lang.into_into_dart().into_dart(),
+    ]
+    .into_dart()
+  }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+  for crate::api::data::models::AnimeSource
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::data::models::AnimeSource>
+  for crate::api::data::models::AnimeSource
+{
+  fn into_into_dart(self) -> crate::api::data::models::AnimeSource {
     self
   }
 }
@@ -2220,10 +2879,31 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::app::configuration::models::A
   }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::data::caching::anime_sources::CacheRefreshError {
+  fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+    match self {crate::api::data::caching::anime_sources::CacheRefreshError::ConnectionOrDeserializationFailed(field0) => { [0.into_dart(),
+field0.into_into_dart().into_dart()].into_dart() }
+crate::api::data::caching::anime_sources::CacheRefreshError::InvalidData => { [1.into_dart()].into_dart() }
+ _ => { unimplemented!(""); }}
+  }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+  for crate::api::data::caching::anime_sources::CacheRefreshError
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::data::caching::anime_sources::CacheRefreshError>
+  for crate::api::data::caching::anime_sources::CacheRefreshError
+{
+  fn into_into_dart(self) -> crate::api::data::caching::anime_sources::CacheRefreshError {
+    self
+  }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::server::models::ConfigServer {
   fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
     [
       self.enabled.into_into_dart().into_dart(),
+      self.uuid.into_into_dart().into_dart(),
       self.name.into_into_dart().into_dart(),
       self.url.into_into_dart().into_dart(),
       self.logo_url.into_into_dart().into_dart(),
@@ -2326,6 +3006,27 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::app::sections::HomeTabs>
   for crate::api::app::sections::HomeTabs
 {
   fn into_into_dart(self) -> crate::api::app::sections::HomeTabs {
+    self
+  }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::data::models::Language {
+  fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+    match self {
+      Self::ES => 0.into_dart(),
+      Self::EN => 1.into_dart(),
+      _ => unreachable!(),
+    }
+  }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+  for crate::api::data::models::Language
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::data::models::Language>
+  for crate::api::data::models::Language
+{
+  fn into_into_dart(self) -> crate::api::data::models::Language {
     self
   }
 }
@@ -2486,6 +3187,30 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::app::configuration::models::P
   for crate::api::app::configuration::models::PlaybackConfig
 {
   fn into_into_dart(self) -> crate::api::app::configuration::models::PlaybackConfig {
+    self
+  }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::data::caching::anime_sources::RefreshJob {
+  fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+    [
+      self.running_on.into_into_dart().into_dart(),
+      self.errors.into_into_dart().into_dart(),
+      self.success.into_into_dart().into_dart(),
+      self.error.into_into_dart().into_dart(),
+      self.total.into_into_dart().into_dart(),
+    ]
+    .into_dart()
+  }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+  for crate::api::data::caching::anime_sources::RefreshJob
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::data::caching::anime_sources::RefreshJob>
+  for crate::api::data::caching::anime_sources::RefreshJob
+{
+  fn into_into_dart(self) -> crate::api::data::caching::anime_sources::RefreshJob {
     self
   }
 }
@@ -2784,10 +3509,15 @@ impl SseEncode for flutter_rust_bridge::for_generated::anyhow::Error {
   }
 }
 
-impl SseEncode for flutter_rust_bridge::DartOpaque {
+impl SseEncode for AnimeSourcesCacheManager {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-    <usize>::sse_encode(self.encode(), serializer);
+    <RustOpaqueMoi<
+      flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>,
+    >>::sse_encode(
+      flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self),
+      serializer,
+    );
   }
 }
 
@@ -2795,6 +3525,53 @@ impl SseEncode for std::collections::HashMap<String, String> {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
     <Vec<(String, String)>>::sse_encode(self.into_iter().collect(), serializer);
+  }
+}
+
+impl SseEncode
+  for std::collections::HashMap<String, crate::api::data::caching::anime_sources::CacheRefreshError>
+{
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    <Vec<(
+      String,
+      crate::api::data::caching::anime_sources::CacheRefreshError,
+    )>>::sse_encode(self.into_iter().collect(), serializer);
+  }
+}
+
+impl SseEncode for std::collections::HashMap<String, Vec<crate::api::data::models::AnimeSource>> {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    <Vec<(String, Vec<crate::api::data::models::AnimeSource>)>>::sse_encode(
+      self.into_iter().collect(),
+      serializer,
+    );
+  }
+}
+
+impl SseEncode
+  for RustOpaqueMoi<
+    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>,
+  >
+{
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    let (ptr, size) = self.sse_encode_raw();
+    <usize>::sse_encode(ptr, serializer);
+    <i32>::sse_encode(size, serializer);
+  }
+}
+
+impl SseEncode
+  for StreamSink<
+    crate::api::data::caching::anime_sources::RefreshJob,
+    flutter_rust_bridge::for_generated::SseCodec,
+  >
+{
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    unimplemented!("")
   }
 }
 
@@ -2837,6 +3614,20 @@ impl SseEncode for crate::api::app::configuration::models::AnimeBoxConfig {
   }
 }
 
+impl SseEncode for crate::api::data::models::AnimeSource {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    <String>::sse_encode(self.pretty_name, serializer);
+    <String>::sse_encode(self.id, serializer);
+    <String>::sse_encode(self.url, serializer);
+    <Vec<String>>::sse_encode(self.other_urls, serializer);
+    <bool>::sse_encode(self.no_meta, serializer);
+    <Option<String>>::sse_encode(self.recommendations, serializer);
+    <bool>::sse_encode(self.is_hentai_source, serializer);
+    <crate::api::data::models::Language>::sse_encode(self.lang, serializer);
+  }
+}
+
 impl SseEncode for crate::api::app::languages::AppLanguages {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -2876,10 +3667,21 @@ impl SseEncode for bool {
   }
 }
 
+impl SseEncode for crate::api::data::caching::anime_sources::CacheRefreshError {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    match self {crate::api::data::caching::anime_sources::CacheRefreshError::ConnectionOrDeserializationFailed(field0) => { <i32>::sse_encode(0, serializer); <String>::sse_encode(field0, serializer);
+ }
+crate::api::data::caching::anime_sources::CacheRefreshError::InvalidData => { <i32>::sse_encode(1, serializer);  }
+ _ => { unimplemented!(""); }}
+  }
+}
+
 impl SseEncode for crate::api::server::models::ConfigServer {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
     <bool>::sse_encode(self.enabled, serializer);
+    <String>::sse_encode(self.uuid, serializer);
     <Option<String>>::sse_encode(self.name, serializer);
     <String>::sse_encode(self.url, serializer);
     <Option<String>>::sse_encode(self.logo_url, serializer);
@@ -2950,13 +3752,19 @@ impl SseEncode for i64 {
   }
 }
 
-impl SseEncode for isize {
+impl SseEncode for crate::api::data::models::Language {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-    serializer
-      .cursor
-      .write_i64::<NativeEndian>(self as _)
-      .unwrap();
+    <i32>::sse_encode(
+      match self {
+        crate::api::data::models::Language::ES => 0,
+        crate::api::data::models::Language::EN => 1,
+        _ => {
+          unimplemented!("");
+        }
+      },
+      serializer,
+    );
   }
 }
 
@@ -2978,6 +3786,16 @@ impl SseEncode for Vec<String> {
     <i32>::sse_encode(self.len() as _, serializer);
     for item in self {
       <String>::sse_encode(item, serializer);
+    }
+  }
+}
+
+impl SseEncode for Vec<crate::api::data::models::AnimeSource> {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    <i32>::sse_encode(self.len() as _, serializer);
+    for item in self {
+      <crate::api::data::models::AnimeSource>::sse_encode(item, serializer);
     }
   }
 }
@@ -3008,6 +3826,34 @@ impl SseEncode for Vec<u8> {
     <i32>::sse_encode(self.len() as _, serializer);
     for item in self {
       <u8>::sse_encode(item, serializer);
+    }
+  }
+}
+
+impl SseEncode
+  for Vec<(
+    String,
+    crate::api::data::caching::anime_sources::CacheRefreshError,
+  )>
+{
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    <i32>::sse_encode(self.len() as _, serializer);
+    for item in self {
+      <(
+        String,
+        crate::api::data::caching::anime_sources::CacheRefreshError,
+      )>::sse_encode(item, serializer);
+    }
+  }
+}
+
+impl SseEncode for Vec<(String, Vec<crate::api::data::models::AnimeSource>)> {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    <i32>::sse_encode(self.len() as _, serializer);
+    for item in self {
+      <(String, Vec<crate::api::data::models::AnimeSource>)>::sse_encode(item, serializer);
     }
   }
 }
@@ -3183,11 +4029,43 @@ impl SseEncode for crate::api::app::configuration::models::PlaybackConfig {
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {}
 }
 
+impl SseEncode
+  for (
+    String,
+    crate::api::data::caching::anime_sources::CacheRefreshError,
+  )
+{
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    <String>::sse_encode(self.0, serializer);
+    <crate::api::data::caching::anime_sources::CacheRefreshError>::sse_encode(self.1, serializer);
+  }
+}
+
+impl SseEncode for (String, Vec<crate::api::data::models::AnimeSource>) {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    <String>::sse_encode(self.0, serializer);
+    <Vec<crate::api::data::models::AnimeSource>>::sse_encode(self.1, serializer);
+  }
+}
+
 impl SseEncode for (String, String) {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
     <String>::sse_encode(self.0, serializer);
     <String>::sse_encode(self.1, serializer);
+  }
+}
+
+impl SseEncode for crate::api::data::caching::anime_sources::RefreshJob {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    <Vec<String>>::sse_encode(self.running_on, serializer);
+    <std::collections::HashMap<String, crate::api::data::caching::anime_sources::CacheRefreshError>>::sse_encode(self.errors, serializer);
+    <u32>::sse_encode(self.success, serializer);
+    <u32>::sse_encode(self.error, serializer);
+    <u32>::sse_encode(self.total, serializer);
   }
 }
 
@@ -3387,14 +4265,33 @@ mod io {
   // Section: imports
 
   use super::*;
+  use crate::api::data::caching::anime_sources::AnimeSources;
+  use crate::api::data::caching::anime_sources::*;
+  use crate::api::data::caching::utils::CacheSource;
+  use crate::api::data::caching::utils::Expirable;
+  use crate::api::data::caching::utils::ReadWrite;
   use crate::api::data::video_providers::utils::VideoProviderImpl;
   use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
-  use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
+  use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
   use flutter_rust_bridge::{Handler, IntoIntoDart};
 
   // Section: boilerplate
 
   flutter_rust_bridge::frb_generated_boilerplate_io!();
+
+  #[unsafe(no_mangle)]
+  pub extern "C" fn frbgen_animebox_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    ptr: *const std::ffi::c_void,
+  ) {
+    MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>>::increment_strong_count(ptr as _);
+  }
+
+  #[unsafe(no_mangle)]
+  pub extern "C" fn frbgen_animebox_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    ptr: *const std::ffi::c_void,
+  ) {
+    MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>>::decrement_strong_count(ptr as _);
+  }
 }
 #[cfg(not(target_family = "wasm"))]
 pub use io::*;
@@ -3408,16 +4305,35 @@ mod web {
   // Section: imports
 
   use super::*;
+  use crate::api::data::caching::anime_sources::AnimeSources;
+  use crate::api::data::caching::anime_sources::*;
+  use crate::api::data::caching::utils::CacheSource;
+  use crate::api::data::caching::utils::Expirable;
+  use crate::api::data::caching::utils::ReadWrite;
   use crate::api::data::video_providers::utils::VideoProviderImpl;
   use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
   use flutter_rust_bridge::for_generated::wasm_bindgen;
   use flutter_rust_bridge::for_generated::wasm_bindgen::prelude::*;
-  use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
+  use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
   use flutter_rust_bridge::{Handler, IntoIntoDart};
 
   // Section: boilerplate
 
   flutter_rust_bridge::frb_generated_boilerplate_web!();
+
+  #[wasm_bindgen]
+  pub fn rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    ptr: *const std::ffi::c_void,
+  ) {
+    MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>>::increment_strong_count(ptr as _);
+  }
+
+  #[wasm_bindgen]
+  pub fn rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    ptr: *const std::ffi::c_void,
+  ) {
+    MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>>::decrement_strong_count(ptr as _);
+  }
 }
 #[cfg(target_family = "wasm")]
 pub use web::*;

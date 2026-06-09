@@ -1,25 +1,18 @@
 // SPDX-FileCopyrightText: 2026 iWisp360
 // SPDX-License-Identifier: AGPL-3.0-only
 
-use std::sync::OnceLock;
-
-use crate::api::{
-  data::video_providers::utils::{Video, VideoProviderImpl, dumb_fetcher, headermap_to_hashmap},
-  webview,
+use crate::api::data::video_providers::utils::{
+  CLIENT, Video, VideoProviderImpl, headermap_to_hashmap,
 };
 use anyhow::Error;
-use flutter_rust_bridge::{DartFnFuture, frb};
 use js_unpack::JsUnpack;
-use log::debug;
+use rand::{rng, seq::SliceRandom};
 use regex::Regex;
-use reqwest::header::{HeaderMap, HeaderValue, REFERER};
+use reqwest::header::{HeaderMap, HeaderValue, ORIGIN, REFERER, USER_AGENT};
+use std::sync::LazyLock;
+use url::Url;
 
 pub struct StreamWish {}
-
-#[frb(ignore)]
-pub static STREAMWISH_CONTENT_FETCHER: OnceLock<
-  Box<dyn Fn(String) -> DartFnFuture<String> + Send + Sync>,
-> = OnceLock::new();
 
 impl VideoProviderImpl for StreamWish {
   async fn get_direct_video(&self, url: String) -> Result<Video, Error> {
@@ -36,7 +29,7 @@ impl VideoProviderImpl for StreamWish {
     let packed_script: String = scripts
       .map(|capture| capture[1].to_string())
       .find(|element| element.contains("eval(function(p,a,c"))
-      .unwrap();
+      .ok_or(anyhow::anyhow!("packed script is not found"))?;
 
     let unpacked_script = JsUnpack::new(packed_script.as_str())
       .unpack()
@@ -56,22 +49,60 @@ impl VideoProviderImpl for StreamWish {
   where
     Self: Sized,
   {
-    #[cfg(not(target_os = "linux"))]
-    if let Some(fetcher) = STREAMWISH_CONTENT_FETCHER.get() {
-      webview::fetch::get_content(url, fetcher).await
-    } else {
-      Err(anyhow::anyhow!("STREAMWISH_CONTENT_FETCHER isn't set"))
+    let parsed_url = Url::parse(url.as_str())?;
+    let path = parsed_url
+      .path_segments()
+      .ok_or(anyhow::anyhow!("Url without path segments"))?
+      .next_back()
+      .unwrap_or_default();
+
+    let mut shuffled_domains_indexes = (0..DOMAINS.len()).collect::<Vec<usize>>();
+    shuffled_domains_indexes.shuffle(&mut rng());
+
+    let mut errors = String::new();
+
+    for i in shuffled_domains_indexes {
+      match CLIENT
+        .get(format!("https://{}/e/{path}", DOMAINS[i]))
+        .headers(HEADERS.clone())
+        .send()
+        .await
+      {
+        Ok(contents) => match contents.text().await {
+          Ok(contents) => return Ok(contents),
+          Err(error) => {
+            errors.push_str(format!("{error}\n").as_str());
+            continue;
+          }
+        },
+        Err(error) => {
+          errors.push_str(format!("{error}\n").as_str());
+          continue;
+        }
+      };
     }
 
-    #[cfg(target_os = "linux")]
-    webview::fetch::get_content(url, Box::new(dumb_fetcher)).await
+    Err(anyhow::anyhow!(errors))
   }
 }
 
-pub fn init_streamwish_fetcher_function(
-  fetcher: impl Fn(String) -> DartFnFuture<String> + Send + Sync + 'static,
-) {
-  if STREAMWISH_CONTENT_FETCHER.set(Box::new(fetcher)).is_err() {
-    debug!("STREAMWISH_CONTENT_FETCHER was already set");
-  };
-}
+const DOMAINS: &[&str] = &[
+  "playnixes.com",
+  "hgplaycdn.com",
+  "medixiru.com",
+  "hglamioz.com",
+  "niramirus.com",
+];
+
+static HEADERS: LazyLock<HeaderMap> = LazyLock::new(|| {
+  let mut map = HeaderMap::new();
+  map.insert(REFERER, HeaderValue::from_static("https://streamwish.to"));
+  map.insert(ORIGIN, HeaderValue::from_static("https://streamwish.to"));
+  map.insert(
+    USER_AGENT,
+    HeaderValue::from_static(
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0",
+    ),
+  );
+  map
+});

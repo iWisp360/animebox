@@ -7,8 +7,57 @@ import '../../frb_generated.dart';
 import 'metadata/utils.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `AnimeSource`, `ChapterRef`, `ChapterVideos`, `Language`, `Search`, `Serie`, `VideoRef`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`
+// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `ChapterRef`, `ChapterVideos`, `Search`, `Serie`, `VideoRef`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `assert_fields_are_eq`, `clone`, `clone`, `clone`, `eq`, `eq`
+
+class AnimeSource {
+  final String prettyName;
+  final String id;
+  final String url;
+  final List<String> otherUrls;
+
+  /// disables metadata search on the client. Useful for donghua or sources with bad serie names
+  final bool noMeta;
+  final String? recommendations;
+  final bool isHentaiSource;
+  final Language lang;
+
+  const AnimeSource({
+    required this.prettyName,
+    required this.id,
+    required this.url,
+    required this.otherUrls,
+    required this.noMeta,
+    this.recommendations,
+    required this.isHentaiSource,
+    required this.lang,
+  });
+
+  @override
+  int get hashCode =>
+      prettyName.hashCode ^
+      id.hashCode ^
+      url.hashCode ^
+      otherUrls.hashCode ^
+      noMeta.hashCode ^
+      recommendations.hashCode ^
+      isHentaiSource.hashCode ^
+      lang.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AnimeSource &&
+          runtimeType == other.runtimeType &&
+          prettyName == other.prettyName &&
+          id == other.id &&
+          url == other.url &&
+          otherUrls == other.otherUrls &&
+          noMeta == other.noMeta &&
+          recommendations == other.recommendations &&
+          isHentaiSource == other.isHentaiSource &&
+          lang == other.lang;
+}
 
 class DateObject {
   final int? year;
@@ -29,6 +78,8 @@ class DateObject {
           month == other.month &&
           day == other.day;
 }
+
+enum Language { es, en }
 
 class SearchResult {
   final String? name;

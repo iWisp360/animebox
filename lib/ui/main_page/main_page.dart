@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:animebox/anime_sources.dart';
 import 'package:animebox/core/config.dart';
 import 'package:animebox/src/rust/api/app/sections.dart';
 import 'package:animebox/ui/config_page/config_page.dart';
@@ -9,7 +10,6 @@ import 'package:animebox/ui/main_page/library_tab.dart';
 import 'package:animebox/ui/main_page/search_tab.dart';
 import 'package:animebox/ui/main_page/trackers_tab.dart';
 import 'package:flutter/material.dart';
-import 'package:gradient_blur/gradient_blur.dart';
 
 List<Widget> navigationDestinations = [
   const NavigationDestination(
@@ -132,18 +132,26 @@ class _HomePageState extends State<HomePage>
                   ),
                 ),
           actions: [
-            IconButton(
-              onPressed: searching
-                  ? null
-                  : () => setState(() {
-                      searching = true;
-                      _animationController.forward();
-                    }),
-              icon: Icon(
-                Icons.search_rounded,
-                color: !searching
-                    ? Theme.of(context).colorScheme.onSurfaceVariant
-                    : Colors.transparent,
+            ValueListenableBuilder(
+              valueListenable: animeSourcesController.isRefreshing,
+              builder: (context, isRefreshing, child) => IconButton(
+                onPressed:
+                    searching ||
+                        animeSourcesController.cacheManager.sources.isEmpty ||
+                        isRefreshing
+                    ? null
+                    : () => setState(() {
+                        searching = true;
+                        _animationController.forward();
+                      }),
+                icon: Icon(
+                  Icons.search_rounded,
+                  color: animeSourcesController.cacheManager.sources.isEmpty
+                      ? Theme.of(context).disabledColor
+                      : !searching
+                      ? Theme.of(context).colorScheme.onSurfaceVariant
+                      : Colors.transparent,
+                ),
               ),
             ),
             !searching
@@ -230,27 +238,31 @@ class _HomePageState extends State<HomePage>
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    height: 40,
+                    height: 15,
                     child: IgnorePointer(
-                      child: GradientBlur(
-                        direction: GradientBlurDirection.bottomToTop,
-                        curve: Curves.easeInSine,
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.transparent,
-                            config.appearance.pitchBlack
-                                ? Theme.of(
-                                    context,
-                                  ).colorScheme.surfaceContainerLowest
-                                : Theme.of(
-                                    context,
-                                  ).colorScheme.surfaceContainer,
-                          ],
-                          begin: AlignmentGeometry.topCenter,
-                          end: AlignmentGeometry.bottomCenter,
-                          stops: const [0, 1],
-                        ),
-                        child: const SizedBox.shrink(),
+                      child: Builder(
+                        builder: (context) {
+                          final baseColor = config.appearance.pitchBlack
+                              ? Theme.of(
+                                  context,
+                                ).colorScheme.surfaceContainerLowest
+                              : Theme.of(context).colorScheme.surfaceContainer;
+
+                          return Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  baseColor.withValues(alpha: 0),
+                                  baseColor,
+                                ],
+                                begin: AlignmentGeometry.topCenter,
+                                end: AlignmentGeometry.bottomCenter,
+                                stops: const [0, 1],
+                              ),
+                            ),
+                            child: const SizedBox.shrink(),
+                          );
+                        },
                       ),
                     ),
                   ),

@@ -8,6 +8,7 @@ import 'api/app/languages.dart';
 import 'api/app/logging.dart';
 import 'api/app/sections.dart';
 import 'api/app/themes.dart';
+import 'api/data/caching/anime_sources.dart';
 import 'api/data/caching/utils.dart';
 import 'api/data/metadata/myanimelist.dart';
 import 'api/data/metadata/utils.dart';
@@ -79,7 +80,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => -813406824;
+  int get rustContentHash => 2013153059;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -91,6 +92,70 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 }
 
 abstract class RustLibApi extends BaseApi {
+  PlatformInt64
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerAutoAccessorGetLastUpdate({
+    required AnimeSourcesCacheManager that,
+  });
+
+  Map<String, List<AnimeSource>>
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerAutoAccessorGetSources({
+    required AnimeSourcesCacheManager that,
+  });
+
+  void
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerAutoAccessorSetLastUpdate({
+    required AnimeSourcesCacheManager that,
+    required PlatformInt64 lastUpdate,
+  });
+
+  void
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerAutoAccessorSetSources({
+    required AnimeSourcesCacheManager that,
+    required Map<String, List<AnimeSource>> sources,
+  });
+
+  Future<AnimeSourcesCacheManager>
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerDefault();
+
+  Future<PlatformInt64>
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerGetExpirationDate({
+    required AnimeSourcesCacheManager that,
+  });
+
+  Future<Map<String, List<AnimeSource>>>
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerGetSources({
+    required AnimeSourcesCacheManager that,
+  });
+
+  Future<AnimeSourcesCacheManager>
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerInit();
+
+  Future<bool>
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerIsExpired({
+    required AnimeSourcesCacheManager that,
+  });
+
+  Future<String>
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerReadFromFile();
+
+  Stream<RefreshJob>
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerRefreshSources({
+    required AnimeSourcesCacheManager that,
+    required bool forceFetch,
+    required bool noFetch,
+    required bool onlyMissing,
+    required List<ConfigServer> servers,
+  });
+
+  Future<void> crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerUpdate({
+    required AnimeSourcesCacheManager that,
+  });
+
+  Future<void>
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerWriteToFile({
+    required AnimeSourcesCacheManager that,
+  });
+
   Future<AdvancedConfig> crateApiAppConfigurationModelsAdvancedConfigDefault();
 
   Future<AnimeBoxConfig> crateApiAppConfigurationModelsAnimeBoxConfigDefault();
@@ -123,11 +188,6 @@ abstract class RustLibApi extends BaseApi {
 
   Future<void> crateApiAppLoggingInitLogger({
     required CoreLoggerSettings settings,
-  });
-
-  Future<void>
-  crateApiDataVideoProvidersStreamwishInitStreamwishFetcherFunction({
-    required FutureOr<String> Function(String) fetcher,
   });
 
   Future<LibraryConfig> crateApiAppConfigurationModelsLibraryConfigDefault();
@@ -198,6 +258,15 @@ abstract class RustLibApi extends BaseApi {
     required YourUpload that,
     required String url,
   });
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_AnimeSourcesCacheManager;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_AnimeSourcesCacheManager;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_AnimeSourcesCacheManagerPtr;
 }
 
 class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
@@ -209,7 +278,260 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   });
 
   @override
-  Future<AdvancedConfig> crateApiAppConfigurationModelsAdvancedConfigDefault() {
+  PlatformInt64
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerAutoAccessorGetLastUpdate({
+    required AnimeSourcesCacheManager that,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+            that,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 1)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_i_64,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerAutoAccessorGetLastUpdateConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerAutoAccessorGetLastUpdateConstMeta =>
+      const TaskConstMeta(
+        debugName: "AnimeSourcesCacheManager_auto_accessor_get_last_update",
+        argNames: ["that"],
+      );
+
+  @override
+  Map<String, List<AnimeSource>>
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerAutoAccessorGetSources({
+    required AnimeSourcesCacheManager that,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+            that,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 2)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_Map_String_list_anime_source_None,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerAutoAccessorGetSourcesConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerAutoAccessorGetSourcesConstMeta =>
+      const TaskConstMeta(
+        debugName: "AnimeSourcesCacheManager_auto_accessor_get_sources",
+        argNames: ["that"],
+      );
+
+  @override
+  void
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerAutoAccessorSetLastUpdate({
+    required AnimeSourcesCacheManager that,
+    required PlatformInt64 lastUpdate,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+            that,
+            serializer,
+          );
+          sse_encode_i_64(lastUpdate, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 3)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerAutoAccessorSetLastUpdateConstMeta,
+        argValues: [that, lastUpdate],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerAutoAccessorSetLastUpdateConstMeta =>
+      const TaskConstMeta(
+        debugName: "AnimeSourcesCacheManager_auto_accessor_set_last_update",
+        argNames: ["that", "lastUpdate"],
+      );
+
+  @override
+  void
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerAutoAccessorSetSources({
+    required AnimeSourcesCacheManager that,
+    required Map<String, List<AnimeSource>> sources,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+            that,
+            serializer,
+          );
+          sse_encode_Map_String_list_anime_source_None(sources, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerAutoAccessorSetSourcesConstMeta,
+        argValues: [that, sources],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerAutoAccessorSetSourcesConstMeta =>
+      const TaskConstMeta(
+        debugName: "AnimeSourcesCacheManager_auto_accessor_set_sources",
+        argNames: ["that", "sources"],
+      );
+
+  @override
+  Future<AnimeSourcesCacheManager>
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerDefault() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 5,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerDefaultConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "AnimeSourcesCacheManager_default",
+        argNames: [],
+      );
+
+  @override
+  Future<PlatformInt64>
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerGetExpirationDate({
+    required AnimeSourcesCacheManager that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 6,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_i_64,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerGetExpirationDateConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerGetExpirationDateConstMeta =>
+      const TaskConstMeta(
+        debugName: "AnimeSourcesCacheManager_get_expiration_date",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<Map<String, List<AnimeSource>>>
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerGetSources({
+    required AnimeSourcesCacheManager that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 7,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_Map_String_list_anime_source_None,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerGetSourcesConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerGetSourcesConstMeta =>
+      const TaskConstMeta(
+        debugName: "AnimeSourcesCacheManager_get_sources",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<AnimeSourcesCacheManager>
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerInit() {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
@@ -218,6 +540,254 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             generalizedFrbRustBinding,
             serializer,
             funcId: 8,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta:
+            kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerInitConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerInitConstMeta =>
+      const TaskConstMeta(
+        debugName: "AnimeSourcesCacheManager_init",
+        argNames: [],
+      );
+
+  @override
+  Future<bool>
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerIsExpired({
+    required AnimeSourcesCacheManager that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 9,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_bool,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerIsExpiredConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerIsExpiredConstMeta =>
+      const TaskConstMeta(
+        debugName: "AnimeSourcesCacheManager_is_expired",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<String>
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerReadFromFile() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 10,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta:
+            kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerReadFromFileConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerReadFromFileConstMeta =>
+      const TaskConstMeta(
+        debugName: "AnimeSourcesCacheManager_read_from_file",
+        argNames: [],
+      );
+
+  @override
+  Stream<RefreshJob>
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerRefreshSources({
+    required AnimeSourcesCacheManager that,
+    required bool forceFetch,
+    required bool noFetch,
+    required bool onlyMissing,
+    required List<ConfigServer> servers,
+  }) {
+    final progressSink = RustStreamSink<RefreshJob>();
+    unawaited(
+      handler.executeNormal(
+        NormalTask(
+          callFfi: (port_) {
+            final serializer = SseSerializer(generalizedFrbRustBinding);
+            sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+              that,
+              serializer,
+            );
+            sse_encode_bool(forceFetch, serializer);
+            sse_encode_bool(noFetch, serializer);
+            sse_encode_bool(onlyMissing, serializer);
+            sse_encode_StreamSink_refresh_job_Sse(progressSink, serializer);
+            sse_encode_list_config_server(servers, serializer);
+            pdeCallFfi(
+              generalizedFrbRustBinding,
+              serializer,
+              funcId: 11,
+              port: port_,
+            );
+          },
+          codec: SseCodec(
+            decodeSuccessData: sse_decode_unit,
+            decodeErrorData: sse_decode_AnyhowException,
+          ),
+          constMeta:
+              kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerRefreshSourcesConstMeta,
+          argValues: [
+            that,
+            forceFetch,
+            noFetch,
+            onlyMissing,
+            progressSink,
+            servers,
+          ],
+          apiImpl: this,
+        ),
+      ),
+    );
+    return progressSink.stream;
+  }
+
+  TaskConstMeta
+  get kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerRefreshSourcesConstMeta =>
+      const TaskConstMeta(
+        debugName: "AnimeSourcesCacheManager_refresh_sources",
+        argNames: [
+          "that",
+          "forceFetch",
+          "noFetch",
+          "onlyMissing",
+          "progressSink",
+          "servers",
+        ],
+      );
+
+  @override
+  Future<void> crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerUpdate({
+    required AnimeSourcesCacheManager that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 12,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta:
+            kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerUpdateConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerUpdateConstMeta =>
+      const TaskConstMeta(
+        debugName: "AnimeSourcesCacheManager_update",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<void>
+  crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerWriteToFile({
+    required AnimeSourcesCacheManager that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 13,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta:
+            kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerWriteToFileConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerWriteToFileConstMeta =>
+      const TaskConstMeta(
+        debugName: "AnimeSourcesCacheManager_write_to_file",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<AdvancedConfig> crateApiAppConfigurationModelsAdvancedConfigDefault() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 28,
             port: port_,
           );
         },
@@ -246,7 +816,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 9,
+            funcId: 29,
             port: port_,
           );
         },
@@ -279,7 +849,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 10,
+            funcId: 30,
             port: port_,
           );
         },
@@ -314,7 +884,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 11,
+            funcId: 31,
             port: port_,
           );
         },
@@ -345,7 +915,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 12,
+            funcId: 32,
             port: port_,
           );
         },
@@ -373,7 +943,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 13,
+            funcId: 33,
             port: port_,
           );
         },
@@ -403,7 +973,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 14,
+            funcId: 34,
             port: port_,
           );
         },
@@ -437,7 +1007,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 15,
+            funcId: 35,
             port: port_,
           );
         },
@@ -468,7 +1038,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 16,
+            funcId: 36,
             port: port_,
           );
         },
@@ -495,7 +1065,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 17,
+            funcId: 37,
             port: port_,
           );
         },
@@ -525,7 +1095,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 18,
+            funcId: 38,
             port: port_,
           );
         },
@@ -544,45 +1114,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "init_logger", argNames: ["settings"]);
 
   @override
-  Future<void>
-  crateApiDataVideoProvidersStreamwishInitStreamwishFetcherFunction({
-    required FutureOr<String> Function(String) fetcher,
-  }) {
-    return handler.executeNormal(
-      NormalTask(
-        callFfi: (port_) {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_DartFn_Inputs_String_Output_String_AnyhowException(
-            fetcher,
-            serializer,
-          );
-          pdeCallFfi(
-            generalizedFrbRustBinding,
-            serializer,
-            funcId: 19,
-            port: port_,
-          );
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kCrateApiDataVideoProvidersStreamwishInitStreamwishFetcherFunctionConstMeta,
-        argValues: [fetcher],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kCrateApiDataVideoProvidersStreamwishInitStreamwishFetcherFunctionConstMeta =>
-      const TaskConstMeta(
-        debugName: "init_streamwish_fetcher_function",
-        argNames: ["fetcher"],
-      );
-
-  @override
   Future<LibraryConfig> crateApiAppConfigurationModelsLibraryConfigDefault() {
     return handler.executeNormal(
       NormalTask(
@@ -591,7 +1122,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 20,
+            funcId: 39,
             port: port_,
           );
         },
@@ -620,7 +1151,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 21,
+            funcId: 40,
             port: port_,
           );
         },
@@ -655,7 +1186,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 22,
+            funcId: 41,
             port: port_,
           );
         },
@@ -685,7 +1216,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 23,
+            funcId: 42,
             port: port_,
           );
         },
@@ -714,7 +1245,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 24,
+            funcId: 43,
             port: port_,
           );
         },
@@ -746,7 +1277,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 25,
+            funcId: 44,
             port: port_,
           );
         },
@@ -778,7 +1309,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 26,
+            funcId: 45,
             port: port_,
           );
         },
@@ -814,7 +1345,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 27,
+            funcId: 46,
             port: port_,
           );
         },
@@ -853,7 +1384,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 28,
+            funcId: 47,
             port: port_,
           );
         },
@@ -883,7 +1414,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 29,
+            funcId: 48,
             port: port_,
           );
         },
@@ -913,7 +1444,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 30,
+            funcId: 49,
             port: port_,
           );
         },
@@ -940,7 +1471,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 31,
+            funcId: 50,
             port: port_,
           );
         },
@@ -967,7 +1498,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 32,
+            funcId: 51,
             port: port_,
           );
         },
@@ -1000,7 +1531,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 33,
+            funcId: 52,
             port: port_,
           );
         },
@@ -1037,7 +1568,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 34,
+            funcId: 53,
             port: port_,
           );
         },
@@ -1074,7 +1605,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 35,
+            funcId: 54,
             port: port_,
           );
         },
@@ -1106,7 +1637,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 36,
+            funcId: 55,
             port: port_,
           );
         },
@@ -1133,7 +1664,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 37,
+            funcId: 56,
             port: port_,
           );
         },
@@ -1160,7 +1691,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 38,
+            funcId: 57,
             port: port_,
           );
         },
@@ -1186,7 +1717,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_String(url, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 39)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 58)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_opt_String,
@@ -1216,7 +1747,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 40,
+            funcId: 59,
             port: port_,
           );
         },
@@ -1239,40 +1770,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         argNames: ["that", "url"],
       );
 
-  Future<void> Function(int, dynamic)
-  encode_DartFn_Inputs_String_Output_String_AnyhowException(
-    FutureOr<String> Function(String) raw,
-  ) {
-    return (callId, rawArg0) async {
-      final arg0 = dco_decode_String(rawArg0);
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_AnimeSourcesCacheManager => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager;
 
-      Box<String>? rawOutput;
-      Box<AnyhowException>? rawError;
-      try {
-        rawOutput = Box(await raw(arg0));
-      } catch (e, s) {
-        rawError = Box(AnyhowException("$e\n\n$s"));
-      }
-
-      final serializer = SseSerializer(generalizedFrbRustBinding);
-      assert((rawOutput != null) ^ (rawError != null));
-      if (rawOutput != null) {
-        serializer.buffer.putUint8(0);
-        sse_encode_String(rawOutput.value, serializer);
-      } else {
-        serializer.buffer.putUint8(1);
-        sse_encode_AnyhowException(rawError!.value, serializer);
-      }
-      final output = serializer.intoRaw();
-
-      generalizedFrbRustBinding.dartFnDeliverOutput(
-        callId: callId,
-        ptr: output.ptr,
-        rustVecLen: output.rustVecLen,
-        dataLen: output.dataLen,
-      );
-    };
-  }
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_AnimeSourcesCacheManager => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager;
 
   @protected
   AnyhowException dco_decode_AnyhowException(dynamic raw) {
@@ -1281,16 +1785,36 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  FutureOr<String> Function(String)
-  dco_decode_DartFn_Inputs_String_Output_String_AnyhowException(dynamic raw) {
+  AnimeSourcesCacheManager
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    dynamic raw,
+  ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    throw UnimplementedError('');
+    return AnimeSourcesCacheManagerImpl.frbInternalDcoDecode(
+      raw as List<dynamic>,
+    );
   }
 
   @protected
-  Object dco_decode_DartOpaque(dynamic raw) {
+  AnimeSourcesCacheManager
+  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    dynamic raw,
+  ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return decodeDartOpaque(raw, generalizedFrbRustBinding);
+    return AnimeSourcesCacheManagerImpl.frbInternalDcoDecode(
+      raw as List<dynamic>,
+    );
+  }
+
+  @protected
+  AnimeSourcesCacheManager
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return AnimeSourcesCacheManagerImpl.frbInternalDcoDecode(
+      raw as List<dynamic>,
+    );
   }
 
   @protected
@@ -1304,13 +1828,80 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Map<String, CacheRefreshError> dco_decode_Map_String_cache_refresh_error_None(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Map.fromEntries(
+      dco_decode_list_record_string_cache_refresh_error(
+        raw,
+      ).map((e) => MapEntry(e.$1, e.$2)),
+    );
+  }
+
+  @protected
+  Map<String, List<AnimeSource>> dco_decode_Map_String_list_anime_source_None(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Map.fromEntries(
+      dco_decode_list_record_string_list_anime_source(
+        raw,
+      ).map((e) => MapEntry(e.$1, e.$2)),
+    );
+  }
+
+  @protected
+  AnimeSourcesCacheManager
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return AnimeSourcesCacheManagerImpl.frbInternalDcoDecode(
+      raw as List<dynamic>,
+    );
+  }
+
+  @protected
+  RustStreamSink<RefreshJob> dco_decode_StreamSink_refresh_job_Sse(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    throw UnimplementedError();
+  }
+
+  @protected
   String dco_decode_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as String;
   }
 
   @protected
+  AnimeSources dco_decode_TraitDef_AnimeSources(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    throw UnimplementedError();
+  }
+
+  @protected
+  CacheSource dco_decode_TraitDef_CacheSource(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    throw UnimplementedError();
+  }
+
+  @protected
   Expirable dco_decode_TraitDef_Expirable(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    throw UnimplementedError();
+  }
+
+  @protected
+  GetPath dco_decode_TraitDef_GetPath(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    throw UnimplementedError();
+  }
+
+  @protected
+  ReadWrite dco_decode_TraitDef_ReadWrite(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     throw UnimplementedError();
   }
@@ -1367,6 +1958,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       servers: dco_decode_servers_config(arr[6]),
       localStorage: dco_decode_local_storage_config(arr[7]),
       advanced: dco_decode_advanced_config(arr[8]),
+    );
+  }
+
+  @protected
+  AnimeSource dco_decode_anime_source(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 8)
+      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
+    return AnimeSource(
+      prettyName: dco_decode_String(arr[0]),
+      id: dco_decode_String(arr[1]),
+      url: dco_decode_String(arr[2]),
+      otherUrls: dco_decode_list_String(arr[3]),
+      noMeta: dco_decode_bool(arr[4]),
+      recommendations: dco_decode_opt_String(arr[5]),
+      isHentaiSource: dco_decode_bool(arr[6]),
+      lang: dco_decode_language(arr[7]),
     );
   }
 
@@ -1465,16 +2074,32 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CacheRefreshError dco_decode_cache_refresh_error(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    switch (raw[0]) {
+      case 0:
+        return CacheRefreshError_ConnectionOrDeserializationFailed(
+          dco_decode_String(raw[1]),
+        );
+      case 1:
+        return const CacheRefreshError_InvalidData();
+      default:
+        throw Exception("unreachable");
+    }
+  }
+
+  @protected
   ConfigServer dco_decode_config_server(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 4)
-      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
+    if (arr.length != 5)
+      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
     return ConfigServer(
       enabled: dco_decode_bool(arr[0]),
-      name: dco_decode_opt_String(arr[1]),
-      url: dco_decode_String(arr[2]),
-      logoUrl: dco_decode_opt_String(arr[3]),
+      uuid: dco_decode_String(arr[1]),
+      name: dco_decode_opt_String(arr[2]),
+      url: dco_decode_String(arr[3]),
+      logoUrl: dco_decode_opt_String(arr[4]),
     );
   }
 
@@ -1541,9 +2166,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  PlatformInt64 dco_decode_isize(dynamic raw) {
+  Language dco_decode_language(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dcoDecodeI64(raw);
+    return Language.values[raw as int];
   }
 
   @protected
@@ -1566,6 +2191,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<AnimeSource> dco_decode_list_anime_source(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_anime_source).toList();
+  }
+
+  @protected
   List<ConfigServer> dco_decode_list_config_server(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_config_server).toList();
@@ -1585,6 +2216,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as Uint8List;
+  }
+
+  @protected
+  List<(String, CacheRefreshError)>
+  dco_decode_list_record_string_cache_refresh_error(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(dco_decode_record_string_cache_refresh_error)
+        .toList();
+  }
+
+  @protected
+  List<(String, List<AnimeSource>)>
+  dco_decode_list_record_string_list_anime_source(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(dco_decode_record_string_list_anime_source)
+        .toList();
   }
 
   @protected
@@ -1716,6 +2365,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  (String, CacheRefreshError) dco_decode_record_string_cache_refresh_error(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (dco_decode_String(arr[0]), dco_decode_cache_refresh_error(arr[1]));
+  }
+
+  @protected
+  (String, List<AnimeSource>) dco_decode_record_string_list_anime_source(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (dco_decode_String(arr[0]), dco_decode_list_anime_source(arr[1]));
+  }
+
+  @protected
   (String, String) dco_decode_record_string_string(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -1723,6 +2396,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       throw Exception('Expected 2 elements, got ${arr.length}');
     }
     return (dco_decode_String(arr[0]), dco_decode_String(arr[1]));
+  }
+
+  @protected
+  RefreshJob dco_decode_refresh_job(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 5)
+      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    return RefreshJob(
+      runningOn: dco_decode_list_String(arr[0]),
+      errors: dco_decode_Map_String_cache_refresh_error_None(arr[1]),
+      success: dco_decode_u_32(arr[2]),
+      error: dco_decode_u_32(arr[3]),
+      total: dco_decode_u_32(arr[4]),
+    );
   }
 
   @protected
@@ -1896,10 +2584,39 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  Object sse_decode_DartOpaque(SseDeserializer deserializer) {
+  AnimeSourcesCacheManager
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    SseDeserializer deserializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var inner = sse_decode_isize(deserializer);
-    return decodeDartOpaque(inner, generalizedFrbRustBinding);
+    return AnimeSourcesCacheManagerImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  AnimeSourcesCacheManager
+  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return AnimeSourcesCacheManagerImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  AnimeSourcesCacheManager
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return AnimeSourcesCacheManagerImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
   }
 
   @protected
@@ -1909,6 +2626,44 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_list_record_string_string(deserializer);
     return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
+  Map<String, CacheRefreshError> sse_decode_Map_String_cache_refresh_error_None(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_list_record_string_cache_refresh_error(deserializer);
+    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
+  Map<String, List<AnimeSource>> sse_decode_Map_String_list_anime_source_None(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_list_record_string_list_anime_source(deserializer);
+    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
+  AnimeSourcesCacheManager
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return AnimeSourcesCacheManagerImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  RustStreamSink<RefreshJob> sse_decode_StreamSink_refresh_job_Sse(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    throw UnimplementedError('Unreachable ()');
   }
 
   @protected
@@ -1948,6 +2703,29 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       servers: var_servers,
       localStorage: var_localStorage,
       advanced: var_advanced,
+    );
+  }
+
+  @protected
+  AnimeSource sse_decode_anime_source(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_prettyName = sse_decode_String(deserializer);
+    var var_id = sse_decode_String(deserializer);
+    var var_url = sse_decode_String(deserializer);
+    var var_otherUrls = sse_decode_list_String(deserializer);
+    var var_noMeta = sse_decode_bool(deserializer);
+    var var_recommendations = sse_decode_opt_String(deserializer);
+    var var_isHentaiSource = sse_decode_bool(deserializer);
+    var var_lang = sse_decode_language(deserializer);
+    return AnimeSource(
+      prettyName: var_prettyName,
+      id: var_id,
+      url: var_url,
+      otherUrls: var_otherUrls,
+      noMeta: var_noMeta,
+      recommendations: var_recommendations,
+      isHentaiSource: var_isHentaiSource,
+      lang: var_lang,
     );
   }
 
@@ -2058,14 +2836,34 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CacheRefreshError sse_decode_cache_refresh_error(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        var var_field0 = sse_decode_String(deserializer);
+        return CacheRefreshError_ConnectionOrDeserializationFailed(var_field0);
+      case 1:
+        return const CacheRefreshError_InvalidData();
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
   ConfigServer sse_decode_config_server(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_enabled = sse_decode_bool(deserializer);
+    var var_uuid = sse_decode_String(deserializer);
     var var_name = sse_decode_opt_String(deserializer);
     var var_url = sse_decode_String(deserializer);
     var var_logoUrl = sse_decode_opt_String(deserializer);
     return ConfigServer(
       enabled: var_enabled,
+      uuid: var_uuid,
       name: var_name,
       url: var_url,
       logoUrl: var_logoUrl,
@@ -2130,9 +2928,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  PlatformInt64 sse_decode_isize(SseDeserializer deserializer) {
+  Language sse_decode_language(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return deserializer.buffer.getPlatformInt64();
+    var inner = sse_decode_i_32(deserializer);
+    return Language.values[inner];
   }
 
   @protected
@@ -2156,6 +2955,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var ans_ = <String>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_String(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<AnimeSource> sse_decode_list_anime_source(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <AnimeSource>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_anime_source(deserializer));
     }
     return ans_;
   }
@@ -2193,6 +3004,36 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
     return deserializer.buffer.getUint8List(len_);
+  }
+
+  @protected
+  List<(String, CacheRefreshError)>
+  sse_decode_list_record_string_cache_refresh_error(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <(String, CacheRefreshError)>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_record_string_cache_refresh_error(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<(String, List<AnimeSource>)>
+  sse_decode_list_record_string_list_anime_source(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <(String, List<AnimeSource>)>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_record_string_list_anime_source(deserializer));
+    }
+    return ans_;
   }
 
   @protected
@@ -2385,6 +3226,26 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  (String, CacheRefreshError) sse_decode_record_string_cache_refresh_error(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_field0 = sse_decode_String(deserializer);
+    var var_field1 = sse_decode_cache_refresh_error(deserializer);
+    return (var_field0, var_field1);
+  }
+
+  @protected
+  (String, List<AnimeSource>) sse_decode_record_string_list_anime_source(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_field0 = sse_decode_String(deserializer);
+    var var_field1 = sse_decode_list_anime_source(deserializer);
+    return (var_field0, var_field1);
+  }
+
+  @protected
   (String, String) sse_decode_record_string_string(
     SseDeserializer deserializer,
   ) {
@@ -2392,6 +3253,25 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_field0 = sse_decode_String(deserializer);
     var var_field1 = sse_decode_String(deserializer);
     return (var_field0, var_field1);
+  }
+
+  @protected
+  RefreshJob sse_decode_refresh_job(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_runningOn = sse_decode_list_String(deserializer);
+    var var_errors = sse_decode_Map_String_cache_refresh_error_None(
+      deserializer,
+    );
+    var var_success = sse_decode_u_32(deserializer);
+    var var_error = sse_decode_u_32(deserializer);
+    var var_total = sse_decode_u_32(deserializer);
+    return RefreshJob(
+      runningOn: var_runningOn,
+      errors: var_errors,
+      success: var_success,
+      error: var_error,
+      total: var_total,
+    );
   }
 
   @protected
@@ -2566,28 +3446,40 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_DartFn_Inputs_String_Output_String_AnyhowException(
-    FutureOr<String> Function(String) self,
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    AnimeSourcesCacheManager self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_DartOpaque(
-      encode_DartFn_Inputs_String_Output_String_AnyhowException(self),
+    sse_encode_usize(
+      (self as AnimeSourcesCacheManagerImpl).frbInternalSseEncode(move: true),
       serializer,
     );
   }
 
   @protected
-  void sse_encode_DartOpaque(Object self, SseSerializer serializer) {
+  void
+  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    AnimeSourcesCacheManager self,
+    SseSerializer serializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_isize(
-      PlatformPointerUtil.ptrToPlatformInt64(
-        encodeDartOpaque(
-          self,
-          portManager.dartHandlerPort,
-          generalizedFrbRustBinding,
-        ),
-      ),
+    sse_encode_usize(
+      (self as AnimeSourcesCacheManagerImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    AnimeSourcesCacheManager self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as AnimeSourcesCacheManagerImpl).frbInternalSseEncode(move: false),
       serializer,
     );
   }
@@ -2600,6 +3492,60 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_list_record_string_string(
       self.entries.map((e) => (e.key, e.value)).toList(),
+      serializer,
+    );
+  }
+
+  @protected
+  void sse_encode_Map_String_cache_refresh_error_None(
+    Map<String, CacheRefreshError> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_record_string_cache_refresh_error(
+      self.entries.map((e) => (e.key, e.value)).toList(),
+      serializer,
+    );
+  }
+
+  @protected
+  void sse_encode_Map_String_list_anime_source_None(
+    Map<String, List<AnimeSource>> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_record_string_list_anime_source(
+      self.entries.map((e) => (e.key, e.value)).toList(),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    AnimeSourcesCacheManager self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as AnimeSourcesCacheManagerImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void sse_encode_StreamSink_refresh_job_Sse(
+    RustStreamSink<RefreshJob> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(
+      self.setupAndSerialize(
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_refresh_job,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+      ),
       serializer,
     );
   }
@@ -2635,6 +3581,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_servers_config(self.servers, serializer);
     sse_encode_local_storage_config(self.localStorage, serializer);
     sse_encode_advanced_config(self.advanced, serializer);
+  }
+
+  @protected
+  void sse_encode_anime_source(AnimeSource self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.prettyName, serializer);
+    sse_encode_String(self.id, serializer);
+    sse_encode_String(self.url, serializer);
+    sse_encode_list_String(self.otherUrls, serializer);
+    sse_encode_bool(self.noMeta, serializer);
+    sse_encode_opt_String(self.recommendations, serializer);
+    sse_encode_bool(self.isHentaiSource, serializer);
+    sse_encode_language(self.lang, serializer);
   }
 
   @protected
@@ -2757,9 +3716,27 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_cache_refresh_error(
+    CacheRefreshError self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    switch (self) {
+      case CacheRefreshError_ConnectionOrDeserializationFailed(
+        field0: final field0,
+      ):
+        sse_encode_i_32(0, serializer);
+        sse_encode_String(field0, serializer);
+      case CacheRefreshError_InvalidData():
+        sse_encode_i_32(1, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_config_server(ConfigServer self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_bool(self.enabled, serializer);
+    sse_encode_String(self.uuid, serializer);
     sse_encode_opt_String(self.name, serializer);
     sse_encode_String(self.url, serializer);
     sse_encode_opt_String(self.logoUrl, serializer);
@@ -2819,9 +3796,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_isize(PlatformInt64 self, SseSerializer serializer) {
+  void sse_encode_language(Language self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    serializer.buffer.putPlatformInt64(self);
+    sse_encode_i_32(self.index, serializer);
   }
 
   @protected
@@ -2838,6 +3815,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_String(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_anime_source(
+    List<AnimeSource> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_anime_source(item, serializer);
     }
   }
 
@@ -2873,6 +3862,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
     serializer.buffer.putUint8List(self);
+  }
+
+  @protected
+  void sse_encode_list_record_string_cache_refresh_error(
+    List<(String, CacheRefreshError)> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_record_string_cache_refresh_error(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_record_string_list_anime_source(
+    List<(String, List<AnimeSource>)> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_record_string_list_anime_source(item, serializer);
+    }
   }
 
   @protected
@@ -3057,6 +4070,26 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_record_string_cache_refresh_error(
+    (String, CacheRefreshError) self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.$1, serializer);
+    sse_encode_cache_refresh_error(self.$2, serializer);
+  }
+
+  @protected
+  void sse_encode_record_string_list_anime_source(
+    (String, List<AnimeSource>) self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.$1, serializer);
+    sse_encode_list_anime_source(self.$2, serializer);
+  }
+
+  @protected
   void sse_encode_record_string_string(
     (String, String) self,
     SseSerializer serializer,
@@ -3064,6 +4097,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.$1, serializer);
     sse_encode_String(self.$2, serializer);
+  }
+
+  @protected
+  void sse_encode_refresh_job(RefreshJob self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_String(self.runningOn, serializer);
+    sse_encode_Map_String_cache_refresh_error_None(self.errors, serializer);
+    sse_encode_u_32(self.success, serializer);
+    sse_encode_u_32(self.error, serializer);
+    sse_encode_u_32(self.total, serializer);
   }
 
   @protected
@@ -3193,4 +4236,94 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_your_upload(YourUpload self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
   }
+}
+
+@sealed
+class AnimeSourcesCacheManagerImpl extends RustOpaque
+    implements AnimeSourcesCacheManager {
+  // Not to be used by end users
+  AnimeSourcesCacheManagerImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  AnimeSourcesCacheManagerImpl.frbInternalSseDecode(
+    BigInt ptr,
+    int externalSizeOnNative,
+  ) : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount: RustLib
+        .instance
+        .api
+        .rust_arc_increment_strong_count_AnimeSourcesCacheManager,
+    rustArcDecrementStrongCount: RustLib
+        .instance
+        .api
+        .rust_arc_decrement_strong_count_AnimeSourcesCacheManager,
+    rustArcDecrementStrongCountPtr: RustLib
+        .instance
+        .api
+        .rust_arc_decrement_strong_count_AnimeSourcesCacheManagerPtr,
+  );
+
+  PlatformInt64 get lastUpdate => RustLib.instance.api
+      .crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerAutoAccessorGetLastUpdate(
+        that: this,
+      );
+
+  Map<String, List<AnimeSource>> get sources => RustLib.instance.api
+      .crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerAutoAccessorGetSources(
+        that: this,
+      );
+
+  set lastUpdate(PlatformInt64 lastUpdate) => RustLib.instance.api
+      .crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerAutoAccessorSetLastUpdate(
+        that: this,
+        lastUpdate: lastUpdate,
+      );
+
+  set sources(Map<String, List<AnimeSource>> sources) => RustLib.instance.api
+      .crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerAutoAccessorSetSources(
+        that: this,
+        sources: sources,
+      );
+
+  Future<PlatformInt64> getExpirationDate() => RustLib.instance.api
+      .crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerGetExpirationDate(
+        that: this,
+      );
+
+  Future<Map<String, List<AnimeSource>>> getSources() => RustLib.instance.api
+      .crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerGetSources(
+        that: this,
+      );
+
+  Future<bool> isExpired() => RustLib.instance.api
+      .crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerIsExpired(
+        that: this,
+      );
+
+  Stream<RefreshJob> refreshSources({
+    required bool forceFetch,
+    required bool noFetch,
+    required bool onlyMissing,
+    required List<ConfigServer> servers,
+  }) => RustLib.instance.api
+      .crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerRefreshSources(
+        that: this,
+        forceFetch: forceFetch,
+        noFetch: noFetch,
+        onlyMissing: onlyMissing,
+        servers: servers,
+      );
+
+  Future<void> update() => RustLib.instance.api
+      .crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerUpdate(
+        that: this,
+      );
+
+  Future<void> writeToFile() => RustLib.instance.api
+      .crateApiDataCachingAnimeSourcesAnimeSourcesCacheManagerWriteToFile(
+        that: this,
+      );
 }

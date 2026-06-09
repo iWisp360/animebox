@@ -36,8 +36,14 @@ pub enum ServerLanguage {
 #[frb(non_final)]
 pub struct ConfigServer {
   #[frb(non_final)]
+  #[serde(default)]
   pub enabled: bool,
+  #[serde(default)]
+  pub uuid: String,
+  #[serde(default)]
   pub name: Option<String>,
+  #[serde(default)]
   pub url: String,
+  #[serde(default)]
   pub logo_url: Option<String>,
 }

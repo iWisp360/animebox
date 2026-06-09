@@ -71,7 +71,7 @@ class _SearchTabState extends State<SearchTab> {
             switchInCurve: Curves.easeInSine,
             switchOutCurve: Curves.easeOutSine,
             duration: const Duration(milliseconds: 100),
-            child: snapshot.connectionState == ConnectionState.waiting
+            child: snapshot.connectionState == .waiting
                 ? const Center(child: CircularProgressIndicator())
                 : snapshot.hasError
                 ? Center(child: Text("${snapshot.error}"))
@@ -79,28 +79,31 @@ class _SearchTabState extends State<SearchTab> {
                 ? const Center(child: Text("Enter your query"))
                 : snapshot.data!.isEmpty
                 ? const Center(child: Text("No Results"))
-                : GridView.builder(
-                    padding: const EdgeInsetsGeometry.only(bottom: 30),
-                    controller: widget.scrollController,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: MediaQuery.of(context).size.width > 800
-                          ? 4
-                          : MediaQuery.of(context).size.width > 550
-                          ? 3
-                          : 2,
-                      mainAxisSpacing: 8,
-                      crossAxisSpacing: 8,
-                      childAspectRatio: 0.75,
+                : Padding(
+                    padding: const .symmetric(horizontal: 8),
+                    child: GridView.builder(
+                      padding: const .only(bottom: 30),
+                      controller: widget.scrollController,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: MediaQuery.of(context).size.width > 800
+                            ? 4
+                            : MediaQuery.of(context).size.width > 550
+                            ? 3
+                            : 2,
+                        mainAxisSpacing: 16,
+                        crossAxisSpacing: 16,
+                        childAspectRatio: 0.75,
+                      ),
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        final result = snapshot.data![index];
+                        return SearchResultCard(
+                          imageUrl: result.image,
+                          onTap: () => (),
+                          name: result.name,
+                        );
+                      },
                     ),
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      final result = snapshot.data![index];
-                      return SearchResultCard(
-                        imageUrl: result.image,
-                        onTap: () => (),
-                        name: result.name,
-                      );
-                    },
                   ),
           ),
         ),

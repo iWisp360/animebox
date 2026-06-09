@@ -6,6 +6,18 @@
 import '../../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
+abstract class CacheSource {
+  Future<void> update();
+}
+
 abstract class Expirable {
+  Future<PlatformInt64> getExpirationDate();
+
   Future<bool> isExpired();
+}
+
+abstract class GetPath {}
+
+abstract class ReadWrite {
+  Future<void> writeToFile();
 }

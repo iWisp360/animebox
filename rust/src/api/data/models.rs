@@ -3,18 +3,24 @@
 use crate::api::data::{metadata::utils::MetadataSources, video_providers::utils::VideoProvider};
 use serde::{Deserialize, Serialize};
 
+#[derive(Deserialize, Serialize, PartialEq, Eq, Clone)]
 pub struct AnimeSource {
+  #[serde(rename = "prettyName")]
   pub pretty_name: String,
   pub id: String,
   pub url: String,
+  #[serde(rename = "otherUrls")]
   pub other_urls: Vec<String>,
   /// disables metadata search on the client. Useful for donghua or sources with bad serie names
+  #[serde(rename = "noMetaProvider")]
   pub no_meta: bool,
   pub recommendations: Option<String>,
+  #[serde(rename = "isHentaiSource")]
   pub is_hentai_source: bool,
   pub lang: Language,
 }
 
+#[derive(Deserialize, Serialize, PartialEq, Eq, Clone)]
 pub enum Language {
   ES,
   EN,

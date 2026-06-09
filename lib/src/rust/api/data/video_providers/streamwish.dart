@@ -7,13 +7,6 @@ import '../../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'utils.dart';
 
-Future<void> initStreamwishFetcherFunction({
-  required FutureOr<String> Function(String) fetcher,
-}) => RustLib.instance.api
-    .crateApiDataVideoProvidersStreamwishInitStreamwishFetcherFunction(
-      fetcher: fetcher,
-    );
-
 class StreamWish {
   const StreamWish();
 

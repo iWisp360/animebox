@@ -1,7 +1,6 @@
-use crate::api::app::configuration::models::AnimeBoxConfig;
+use crate::api::app::{PRETTY_CONFIG, configuration::models::AnimeBoxConfig};
 use flutter_rust_bridge::frb;
 use log::{debug, error, info};
-use ron::ser::PrettyConfig;
 use std::{
   fs::{File, create_dir_all},
   io::{BufReader, BufWriter, ErrorKind, Read, Write},
@@ -13,11 +12,12 @@ use std::{
   },
   time::Duration,
 };
+use uuid::Uuid;
 
 static ANIMEBOX_CONFIG: &str = "animebox.ron";
 static DEBOUNCE: LazyLock<AtomicU64> = LazyLock::new(|| AtomicU64::new(0));
 
-static CONFIG_PATH: OnceLock<String> = OnceLock::new();
+pub static CONFIG_PATH: OnceLock<String> = OnceLock::new();
 
 impl AnimeBoxConfig {
   pub fn init_config(path: String) -> anyhow::Result<AnimeBoxConfig> {
@@ -46,13 +46,23 @@ impl AnimeBoxConfig {
     let mut contents = String::new();
     reader.read_to_string(&mut contents)?;
 
-    match ron::from_str(contents.as_str()) {
-      Ok(config) => Ok(config),
+    let mut config: AnimeBoxConfig = match ron::from_str(contents.as_str()) {
+      Ok(config) => config,
       Err(error) => {
         error!("While deserializing config: {error}");
-        Err(error.into())
+        return Err(error.into());
+      }
+    };
+
+    for i in 0..config.servers.servers.len() {
+      if config.servers.servers[i].uuid.is_empty()
+        || Uuid::try_parse(config.servers.servers[i].uuid.as_str()).is_err()
+      {
+        config.servers.servers.remove(0);
       }
     }
+
+    Ok(config)
   }
 
   pub async fn update(&self) -> anyhow::Result<()> {
@@ -79,7 +89,7 @@ impl AnimeBoxConfig {
     let file = File::create(path)?;
     let mut writer = BufWriter::new(file);
 
-    let config = ron::ser::to_string_pretty(self, PrettyConfig::new().indentor("  "))?;
+    let config = ron::ser::to_string_pretty(self, PRETTY_CONFIG.clone())?;
 
     writer.write_all(config.as_bytes())?;
     Ok(())

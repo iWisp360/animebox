@@ -1,5 +1,8 @@
+import 'package:animebox/anime_sources.dart';
 import 'package:animebox/core/config.dart';
 import 'package:animebox/main.dart';
+import 'package:animebox/src/rust/api/data/caching/anime_sources.dart';
+import 'package:animebox/src/rust/api/data/models.dart';
 import 'package:animebox/src/rust/api/server/handler.dart';
 import 'package:animebox/src/rust/api/server/models.dart';
 import 'package:flutter/material.dart';
@@ -32,76 +35,112 @@ class _ServersPageState extends State<ServersPage> {
           title: Text(l10n.serversSettingsHeader),
         ),
 
-        body: SettingsList(
-          darkTheme: SettingsThemeData(
-            settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
-          ),
-          sections: [
-            SettingsSection(
-              title: const Text("Servers"),
-              tiles: [
-                ...config.servers.servers.isEmpty
-                    ? [
-                        const CustomSettingsTile(
-                          child: Center(
-                            child: Padding(
-                              padding: EdgeInsetsGeometry.only(
-                                top: 20,
-                                bottom: 30,
-                              ),
-                              child: Text(
-                                "There are no servers yet. Maybe add one?",
-                                textAlign: TextAlign.center,
+        body: ValueListenableBuilder(
+          valueListenable: animeSourcesController.isRefreshing,
+          builder: (context, isRefreshing, child) => StreamBuilder(
+            stream: animeSourcesController.getCurrentRefresh(),
+            builder: (context, snapshot) => SettingsList(
+              darkTheme: SettingsThemeData(
+                settingsListBackground: Theme.of(
+                  context,
+                ).scaffoldBackgroundColor,
+              ),
+              sections: [
+                SettingsSection(
+                  title: const Row(children: [Text("Servers")]),
+                  tiles: [
+                    ...config.servers.servers.isEmpty
+                        ? [
+                            const CustomSettingsTile(
+                              child: Center(
+                                child: Padding(
+                                  padding: EdgeInsetsGeometry.only(
+                                    top: 20,
+                                    bottom: 30,
+                                  ),
+                                  child: Text(
+                                    "There are no servers yet. Maybe add one?",
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          ]
+                        : [
+                            for (final server in config.servers.servers)
+                              CustomSettingsTile(
+                                child: ServerTile(
+                                  server: server,
+                                  isBeingRefreshed: isRefreshing,
+                                  onDeletion: () => setState(() {
+                                    animeSourcesController.cacheManager.sources
+                                        .remove(server.uuid);
+                                    animeSourcesController.cacheManager
+                                        .update();
+                                  }),
+                                  onTapUndo: () => setState(() {
+                                    config.servers.servers.add(server);
+                                    config.update();
+                                  }),
+                                ),
+                              ),
+                          ],
+                    CustomSettingsTile(
+                      child: Padding(
+                        padding: EdgeInsetsGeometry.only(
+                          top: config.servers.servers.isEmpty ? 0 : 10,
                         ),
-                      ]
-                    : [
-                        for (final server in config.servers.servers)
-                          CustomSettingsTile(
-                            child: ServerTile(
-                              server: server,
-                              onDeletion: () => setState(() {}),
-                              onTapUndo: () => setState(() {
-                                config.servers.servers.add(server);
-                                config.update();
-                              }),
-                            ),
-                          ),
-                      ],
-                CustomSettingsTile(
-                  child: Padding(
-                    padding: EdgeInsetsGeometry.only(
-                      top: config.servers.servers.isEmpty ? 0 : 10,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FilledButton.tonal(
-                          onPressed: () async {
-                            final ConfigServer? server;
-                            server = await showDialog(
-                              context: context,
-                              builder: (context) => const ServerDialog(),
-                            );
+                        child: Row(
+                          spacing: 10,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            FilledButton.tonal(
+                              onPressed: () async {
+                                final ConfigServer? server;
+                                server = await showDialog(
+                                  context: context,
+                                  builder: (context) => const ServerDialog(),
+                                );
 
-                            setState(() {
-                              if (server != null) {
-                                config.servers.servers.add(server);
-                                config.update();
-                              }
-                            });
-                          },
-                          child: const Text("Add Server"),
+                                setState(() {
+                                  if (server != null) {
+                                    config.servers.servers.add(server);
+                                    config.update();
+                                  }
+                                });
+                              },
+                              child: const Text("Add Server"),
+                            ),
+
+                            FilledButton.tonal(
+                              onPressed:
+                                  isRefreshing || config.servers.servers.isEmpty
+                                  ? null
+                                  : () => setState(() {
+                                      animeSourcesController.doRefresh(
+                                        onlyMissing: false,
+                                        forceFetch: true,
+                                        context: context,
+                                        noFetch: false,
+                                      );
+                                    }),
+                              child: isRefreshing
+                                  ? const SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : const Text("Refresh all sources"),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -214,11 +253,14 @@ class ServerTile extends StatefulWidget {
   final ConfigServer server;
   final Function() onDeletion;
   final Function() onTapUndo;
+  final bool isBeingRefreshed;
+
   const ServerTile({
     super.key,
     required this.server,
     required this.onDeletion,
     required this.onTapUndo,
+    required this.isBeingRefreshed,
   });
 
   @override
@@ -226,6 +268,29 @@ class ServerTile extends StatefulWidget {
 }
 
 class _ServerTileState extends State<ServerTile> {
+  List<AnimeSource>? sources;
+  RefreshJob? currentRefreshProgress;
+
+  @override
+  void initState() {
+    if (animeSourcesController.cacheManager.sources.keys.contains(
+      widget.server.uuid,
+    )) {
+      sources = animeSourcesController.cacheManager.sources[widget.server.uuid];
+    }
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant ServerTile oldWidget) {
+    if (animeSourcesController.cacheManager.sources.keys.contains(
+      widget.server.uuid,
+    )) {
+      sources = animeSourcesController.cacheManager.sources[widget.server.uuid];
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card.filled(
@@ -234,41 +299,49 @@ class _ServerTileState extends State<ServerTile> {
         leading: widget.server.logoUrl != null
             ? ImageIcon(NetworkImage(widget.server.logoUrl!))
             : null,
-        description: Text(widget.server.url),
+        description: Text(
+          "Sources: ${(sources != null && sources!.isNotEmpty) ? sources!.length : "Not fetched"}",
+        ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-              onPressed: () => setState(() {
-                config.servers.servers.remove(widget.server);
-                widget.onDeletion();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    action: SnackBarAction(
-                      label: "Undo",
-                      onPressed: () => widget.onTapUndo(),
-                    ),
-                    content: Row(
-                      children: [
-                        Text("Deleted server '${widget.server.name ?? ""}'"),
-                      ],
-                    ),
-                  ),
-                );
-                config.update();
-              }),
+              onPressed: widget.isBeingRefreshed
+                  ? null
+                  : () => setState(() {
+                      config.servers.servers.remove(widget.server);
+                      widget.onDeletion();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          action: SnackBarAction(
+                            label: "Undo",
+                            onPressed: () => widget.onTapUndo(),
+                          ),
+                          content: Row(
+                            children: [
+                              Text(
+                                "Deleted server '${widget.server.name ?? ""}'",
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                      config.update();
+                    }),
               icon: const Icon(Icons.delete),
             ),
             Checkbox(
               value: widget.server.enabled,
-              onChanged: (value) {
-                if (value != null) {
-                  setState(() {
-                    widget.server.enabled = value;
-                    config.update();
-                  });
-                }
-              },
+              onChanged: widget.isBeingRefreshed
+                  ? null
+                  : (value) {
+                      if (value != null) {
+                        setState(() {
+                          widget.server.enabled = value;
+                          config.update();
+                        });
+                      }
+                    },
             ),
           ],
         ),

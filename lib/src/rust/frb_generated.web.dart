@@ -11,6 +11,7 @@ import 'api/app/languages.dart';
 import 'api/app/logging.dart';
 import 'api/app/sections.dart';
 import 'api/app/themes.dart';
+import 'api/data/caching/anime_sources.dart';
 import 'api/data/caching/utils.dart';
 import 'api/data/metadata/myanimelist.dart';
 import 'api/data/metadata/utils.dart';
@@ -35,24 +36,70 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     required super.portManager,
   });
 
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_AnimeSourcesCacheManagerPtr => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager;
+
   @protected
   AnyhowException dco_decode_AnyhowException(dynamic raw);
 
   @protected
-  FutureOr<String> Function(String)
-  dco_decode_DartFn_Inputs_String_Output_String_AnyhowException(dynamic raw);
+  AnimeSourcesCacheManager
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    dynamic raw,
+  );
 
   @protected
-  Object dco_decode_DartOpaque(dynamic raw);
+  AnimeSourcesCacheManager
+  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    dynamic raw,
+  );
+
+  @protected
+  AnimeSourcesCacheManager
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    dynamic raw,
+  );
 
   @protected
   Map<String, String> dco_decode_Map_String_String_None(dynamic raw);
 
   @protected
+  Map<String, CacheRefreshError> dco_decode_Map_String_cache_refresh_error_None(
+    dynamic raw,
+  );
+
+  @protected
+  Map<String, List<AnimeSource>> dco_decode_Map_String_list_anime_source_None(
+    dynamic raw,
+  );
+
+  @protected
+  AnimeSourcesCacheManager
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    dynamic raw,
+  );
+
+  @protected
+  RustStreamSink<RefreshJob> dco_decode_StreamSink_refresh_job_Sse(dynamic raw);
+
+  @protected
   String dco_decode_String(dynamic raw);
 
   @protected
+  AnimeSources dco_decode_TraitDef_AnimeSources(dynamic raw);
+
+  @protected
+  CacheSource dco_decode_TraitDef_CacheSource(dynamic raw);
+
+  @protected
   Expirable dco_decode_TraitDef_Expirable(dynamic raw);
+
+  @protected
+  GetPath dco_decode_TraitDef_GetPath(dynamic raw);
+
+  @protected
+  ReadWrite dco_decode_TraitDef_ReadWrite(dynamic raw);
 
   @protected
   SlimMetaGetter dco_decode_TraitDef_SlimMetaGetter(dynamic raw);
@@ -71,6 +118,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   AnimeBoxConfig dco_decode_anime_box_config(dynamic raw);
+
+  @protected
+  AnimeSource dco_decode_anime_source(dynamic raw);
 
   @protected
   AppLanguages dco_decode_app_languages(dynamic raw);
@@ -115,6 +165,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   YourUpload dco_decode_box_autoadd_your_upload(dynamic raw);
 
   @protected
+  CacheRefreshError dco_decode_cache_refresh_error(dynamic raw);
+
+  @protected
   ConfigServer dco_decode_config_server(dynamic raw);
 
   @protected
@@ -139,13 +192,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PlatformInt64 dco_decode_i_64(dynamic raw);
 
   @protected
-  PlatformInt64 dco_decode_isize(dynamic raw);
+  Language dco_decode_language(dynamic raw);
 
   @protected
   LibraryConfig dco_decode_library_config(dynamic raw);
 
   @protected
   List<String> dco_decode_list_String(dynamic raw);
+
+  @protected
+  List<AnimeSource> dco_decode_list_anime_source(dynamic raw);
 
   @protected
   List<ConfigServer> dco_decode_list_config_server(dynamic raw);
@@ -157,6 +213,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
+
+  @protected
+  List<(String, CacheRefreshError)>
+  dco_decode_list_record_string_cache_refresh_error(dynamic raw);
+
+  @protected
+  List<(String, List<AnimeSource>)>
+  dco_decode_list_record_string_list_anime_source(dynamic raw);
 
   @protected
   List<(String, String)> dco_decode_list_record_string_string(dynamic raw);
@@ -210,7 +274,20 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PlaybackConfig dco_decode_playback_config(dynamic raw);
 
   @protected
+  (String, CacheRefreshError) dco_decode_record_string_cache_refresh_error(
+    dynamic raw,
+  );
+
+  @protected
+  (String, List<AnimeSource>) dco_decode_record_string_list_anime_source(
+    dynamic raw,
+  );
+
+  @protected
   (String, String) dco_decode_record_string_string(dynamic raw);
+
+  @protected
+  RefreshJob dco_decode_refresh_job(dynamic raw);
 
   @protected
   SearchResult dco_decode_search_result(dynamic raw);
@@ -267,10 +344,46 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   AnyhowException sse_decode_AnyhowException(SseDeserializer deserializer);
 
   @protected
-  Object sse_decode_DartOpaque(SseDeserializer deserializer);
+  AnimeSourcesCacheManager
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  AnimeSourcesCacheManager
+  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  AnimeSourcesCacheManager
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    SseDeserializer deserializer,
+  );
 
   @protected
   Map<String, String> sse_decode_Map_String_String_None(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  Map<String, CacheRefreshError> sse_decode_Map_String_cache_refresh_error_None(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  Map<String, List<AnimeSource>> sse_decode_Map_String_list_anime_source_None(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  AnimeSourcesCacheManager
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  RustStreamSink<RefreshJob> sse_decode_StreamSink_refresh_job_Sse(
     SseDeserializer deserializer,
   );
 
@@ -282,6 +395,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   AnimeBoxConfig sse_decode_anime_box_config(SseDeserializer deserializer);
+
+  @protected
+  AnimeSource sse_decode_anime_source(SseDeserializer deserializer);
 
   @protected
   AppLanguages sse_decode_app_languages(SseDeserializer deserializer);
@@ -334,6 +450,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   YourUpload sse_decode_box_autoadd_your_upload(SseDeserializer deserializer);
 
   @protected
+  CacheRefreshError sse_decode_cache_refresh_error(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   ConfigServer sse_decode_config_server(SseDeserializer deserializer);
 
   @protected
@@ -360,13 +481,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PlatformInt64 sse_decode_i_64(SseDeserializer deserializer);
 
   @protected
-  PlatformInt64 sse_decode_isize(SseDeserializer deserializer);
+  Language sse_decode_language(SseDeserializer deserializer);
 
   @protected
   LibraryConfig sse_decode_library_config(SseDeserializer deserializer);
 
   @protected
   List<String> sse_decode_list_String(SseDeserializer deserializer);
+
+  @protected
+  List<AnimeSource> sse_decode_list_anime_source(SseDeserializer deserializer);
 
   @protected
   List<ConfigServer> sse_decode_list_config_server(
@@ -380,6 +504,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
+
+  @protected
+  List<(String, CacheRefreshError)>
+  sse_decode_list_record_string_cache_refresh_error(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  List<(String, List<AnimeSource>)>
+  sse_decode_list_record_string_list_anime_source(SseDeserializer deserializer);
 
   @protected
   List<(String, String)> sse_decode_list_record_string_string(
@@ -449,9 +583,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PlaybackConfig sse_decode_playback_config(SseDeserializer deserializer);
 
   @protected
+  (String, CacheRefreshError) sse_decode_record_string_cache_refresh_error(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  (String, List<AnimeSource>) sse_decode_record_string_list_anime_source(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   (String, String) sse_decode_record_string_string(
     SseDeserializer deserializer,
   );
+
+  @protected
+  RefreshJob sse_decode_refresh_job(SseDeserializer deserializer);
 
   @protected
   SearchResult sse_decode_search_result(SseDeserializer deserializer);
@@ -515,17 +662,54 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
-  void sse_encode_DartFn_Inputs_String_Output_String_AnyhowException(
-    FutureOr<String> Function(String) self,
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    AnimeSourcesCacheManager self,
     SseSerializer serializer,
   );
 
   @protected
-  void sse_encode_DartOpaque(Object self, SseSerializer serializer);
+  void
+  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    AnimeSourcesCacheManager self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    AnimeSourcesCacheManager self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_Map_String_String_None(
     Map<String, String> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_Map_String_cache_refresh_error_None(
+    Map<String, CacheRefreshError> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_Map_String_list_anime_source_None(
+    Map<String, List<AnimeSource>> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    AnimeSourcesCacheManager self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_StreamSink_refresh_job_Sse(
+    RustStreamSink<RefreshJob> self,
     SseSerializer serializer,
   );
 
@@ -543,6 +727,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     AnimeBoxConfig self,
     SseSerializer serializer,
   );
+
+  @protected
+  void sse_encode_anime_source(AnimeSource self, SseSerializer serializer);
 
   @protected
   void sse_encode_app_languages(AppLanguages self, SseSerializer serializer);
@@ -617,6 +804,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_cache_refresh_error(
+    CacheRefreshError self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_config_server(ConfigServer self, SseSerializer serializer);
 
   @protected
@@ -647,13 +840,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_i_64(PlatformInt64 self, SseSerializer serializer);
 
   @protected
-  void sse_encode_isize(PlatformInt64 self, SseSerializer serializer);
+  void sse_encode_language(Language self, SseSerializer serializer);
 
   @protected
   void sse_encode_library_config(LibraryConfig self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_String(List<String> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_anime_source(
+    List<AnimeSource> self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_list_config_server(
@@ -670,6 +869,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_list_prim_u_8_strict(
     Uint8List self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_record_string_cache_refresh_error(
+    List<(String, CacheRefreshError)> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_record_string_list_anime_source(
+    List<(String, List<AnimeSource>)> self,
     SseSerializer serializer,
   );
 
@@ -758,10 +969,25 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_record_string_cache_refresh_error(
+    (String, CacheRefreshError) self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_record_string_list_anime_source(
+    (String, List<AnimeSource>) self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_record_string_string(
     (String, String) self,
     SseSerializer serializer,
   );
+
+  @protected
+  void sse_encode_refresh_job(RefreshJob self, SseSerializer serializer);
 
   @protected
   void sse_encode_search_result(SearchResult self, SseSerializer serializer);
@@ -825,6 +1051,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
 class RustLibWire implements BaseWire {
   RustLibWire.fromExternalLibrary(ExternalLibrary lib);
+
+  void
+  rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    int ptr,
+  ) => wasmModule
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+        ptr,
+      );
+
+  void
+  rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    int ptr,
+  ) => wasmModule
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+        ptr,
+      );
 }
 
 @JS('wasm_bindgen')
@@ -832,4 +1074,14 @@ external RustLibWasmModule get wasmModule;
 
 @JS()
 @anonymous
-extension type RustLibWasmModule._(JSObject _) implements JSObject {}
+extension type RustLibWasmModule._(JSObject _) implements JSObject {
+  external void
+  rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    int ptr,
+  );
+
+  external void
+  rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAnimeSourcesCacheManager(
+    int ptr,
+  );
+}

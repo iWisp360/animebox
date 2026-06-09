@@ -1,102 +1,87 @@
+import 'package:animebox/core/config.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class SearchResultCard extends StatefulWidget {
+class SearchResultCard extends StatelessWidget {
   final String? imageUrl;
   final String? name;
   final Function()? onTap;
   const SearchResultCard({super.key, this.imageUrl, this.name, this.onTap});
 
   @override
-  State<SearchResultCard> createState() => _SearchResultCardState();
-}
-
-class _SearchResultCardState extends State<SearchResultCard> {
-  @override
   Widget build(BuildContext context) {
-    const double borderRadius = 16.0;
-    return Card.filled(
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusGeometry.circular(borderRadius),
-      ),
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: ClipRRect(
-              clipBehavior: Clip.antiAlias,
-              borderRadius: BorderRadiusGeometry.circular(borderRadius),
-              child: FadeInImage.memoryNetwork(
-                placeholder: kTransparentImage,
-                fadeInDuration: const Duration(milliseconds: 100),
-                fadeInCurve: Curves.easeOutSine,
-                fadeOutDuration: const Duration(milliseconds: 100),
-                fadeOutCurve: Curves.easeOutSine,
-                image: widget.imageUrl ?? "",
-                imageErrorBuilder: (context, error, stacktrace) =>
-                    const Center(child: Icon(Icons.broken_image)),
-                fit: BoxFit.fitWidth,
-              ),
+    const double borderRadius = 18.0;
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: ClipRRect(
+            clipBehavior: .antiAlias,
+            borderRadius: .circular(borderRadius),
+            child: FadeInImage.memoryNetwork(
+              filterQuality: .low,
+              placeholder: kTransparentImage,
+              fadeInDuration: const Duration(milliseconds: 100),
+              fadeInCurve: Curves.easeOutSine,
+              fadeOutDuration: const Duration(milliseconds: 100),
+              fadeOutCurve: Curves.easeOutSine,
+              image: imageUrl ?? "",
+              imageErrorBuilder: (context, error, stacktrace) =>
+                  const Center(child: Icon(Icons.broken_image)),
+              fit: .cover,
             ),
           ),
+        ),
 
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: 60,
-            child: ClipRRect(
-              borderRadius: const BorderRadiusGeometry.only(
-                bottomLeft: Radius.circular(borderRadius),
-                bottomRight: Radius.circular(borderRadius),
-              ),
-              child: Container(
-                clipBehavior: Clip.antiAlias,
+        Positioned(
+          bottom: -1,
+          left: -0.5,
+          right: -0.5,
+          height: 150,
+          child: Builder(
+            builder: (context) {
+              final baseColor = config.appearance.pitchBlack
+                  ? Colors.black
+                  : Theme.of(context).colorScheme.surface;
+              return DecoratedBox(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    begin: AlignmentGeometry.topCenter,
-                    end: AlignmentGeometry.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      Theme.of(context).colorScheme.surface.withAlpha(240),
-                    ],
+                    begin: .topCenter,
+                    end: .bottomCenter,
+                    colors: [baseColor.withValues(alpha: 0), baseColor],
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsetsGeometry.symmetric(horizontal: 10),
+                  padding: const .symmetric(horizontal: 10),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: .end,
+                    crossAxisAlignment: .start,
+                    mainAxisSize: .max,
                     children: [
                       Text(
-                        widget.name ?? "",
+                        name ?? "Unknown Name",
                         maxLines: 2,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          shadows: [Shadow(blurRadius: 6)],
-                        ),
-                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontSize: 16, fontWeight: .w600),
+                        overflow: .ellipsis,
                       ),
                       const SizedBox(height: 10),
                     ],
                   ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
+        ),
 
-          Positioned.fill(
-            child: ClipRRect(
-              borderRadius: BorderRadiusGeometry.circular(borderRadius),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(onTap: widget.onTap),
-              ),
+        Positioned.fill(
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(borderRadius),
+              onTap: onTap,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

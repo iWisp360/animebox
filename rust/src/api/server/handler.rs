@@ -30,6 +30,7 @@ pub async fn get_server(url: String) -> anyhow::Result<ConfigServer> {
   match response {
     Some(response) => Ok(ConfigServer {
       enabled: true,
+      uuid: response.server_info.uuid,
       name: response.server_info.name,
       logo_url: response.server_info.logo_url,
       url,

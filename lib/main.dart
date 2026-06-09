@@ -1,8 +1,7 @@
 import 'dart:async';
-import 'dart:io';
+import 'package:animebox/anime_sources.dart';
 import 'package:animebox/core/config.dart';
 import 'package:animebox/core/logging.dart';
-import 'package:animebox/init_video_providers.dart';
 import 'package:animebox/l10n/app_localizations.dart';
 import 'package:animebox/src/rust/api/app/logging.dart';
 import 'package:animebox/ui/error_tab.dart';
@@ -62,10 +61,6 @@ Future<void> main() async {
     if (!failedInit) {
       logger.d("Configuring theming");
       await ThemeManager.init();
-      if (!Platform.isLinux) {
-        logger.d("Initializing webview fetcher functions");
-        VideoProviders.initWebviewFunctions();
-      }
 
       try {
         MediaKit.ensureInitialized();
@@ -87,6 +82,7 @@ Future<void> main() async {
     return true;
   };
 
+  await AnimeSourcesController.init();
   runApp(const AnimeBox());
 }
 
@@ -118,6 +114,8 @@ class _AnimeBoxState extends State<AnimeBox> {
         }),
       );
     }
+
+    isPitchBlack = config.appearance.pitchBlack;
   }
 
   @override
@@ -130,9 +128,7 @@ class _AnimeBoxState extends State<AnimeBox> {
               stackTrace: initStackTrace,
             ),
             theme: lightTheme,
-            darkTheme: isPitchBlack ?? config.appearance.pitchBlack
-                ? pitchBlackTheme
-                : darkTheme,
+            darkTheme: darkTheme,
             themeMode: themeMode,
           )
         : ThemedApp(

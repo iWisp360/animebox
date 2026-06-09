@@ -53,7 +53,7 @@ class ThemeManager extends ChangeNotifier {
 
   void setGlobalThemes() {
     lightTheme = getTheme(useDark: false, isPitchBlack: false);
-    darkTheme = getTheme(useDark: true);
+    darkTheme = getTheme(useDark: true, isPitchBlack: false);
     pitchBlackTheme = getTheme(useDark: true, isPitchBlack: true);
   }
 
