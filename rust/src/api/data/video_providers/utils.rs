@@ -1,9 +1,12 @@
 use flutter_rust_bridge::frb;
+use regex::Regex;
 use reqwest::Client;
 use reqwest::header::HeaderMap;
 use std::{collections::HashMap, sync::LazyLock};
 
 pub static CLIENT: LazyLock<Client> = LazyLock::new(Client::new);
+pub static UNPACKED_JS_REGEX: LazyLock<Regex> =
+  LazyLock::new(|| Regex::new(r"eval([\s\S]+?)\.split\('\|'\)\)\)").unwrap());
 
 pub trait VideoProviderImpl {
   fn get_direct_video(&self, url: String) -> impl Future<Output = anyhow::Result<Video>>
