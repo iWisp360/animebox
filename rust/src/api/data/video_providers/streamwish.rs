@@ -16,7 +16,7 @@ pub struct StreamWish {}
 
 impl VideoProviderImpl for StreamWish {
   async fn get_direct_video(&self, url: String) -> Result<Video, Error> {
-    let response: String = self.get_content(url).await?;
+    let response: String = get_content(url).await?;
 
     let scripts_regex = Regex::new(r#"(?s)<script[^>]*>(.*?)<\/script>"#)?;
     let m3u8_regex = Regex::new(r#"https[^"]*m3u8[^"]*"#)?;
@@ -44,46 +44,43 @@ impl VideoProviderImpl for StreamWish {
       headers: headermap_to_hashmap(headers),
     })
   }
+}
 
-  async fn get_content(&self, url: String) -> anyhow::Result<String>
-  where
-    Self: Sized,
-  {
-    let parsed_url = Url::parse(url.as_str())?;
-    let path = parsed_url
-      .path_segments()
-      .ok_or(anyhow::anyhow!("Url without path segments"))?
-      .next_back()
-      .unwrap_or_default();
+async fn get_content(url: String) -> anyhow::Result<String> {
+  let parsed_url = Url::parse(url.as_str())?;
+  let path = parsed_url
+    .path_segments()
+    .ok_or(anyhow::anyhow!("Url without path segments"))?
+    .next_back()
+    .unwrap_or_default();
 
-    let mut shuffled_domains_indexes = (0..DOMAINS.len()).collect::<Vec<usize>>();
-    shuffled_domains_indexes.shuffle(&mut rng());
+  let mut shuffled_domains_indexes = (0..DOMAINS.len()).collect::<Vec<usize>>();
+  shuffled_domains_indexes.shuffle(&mut rng());
 
-    let mut errors = String::new();
+  let mut errors = String::new();
 
-    for i in shuffled_domains_indexes {
-      match CLIENT
-        .get(format!("https://{}/e/{path}", DOMAINS[i]))
-        .headers(HEADERS.clone())
-        .send()
-        .await
-      {
-        Ok(contents) => match contents.text().await {
-          Ok(contents) => return Ok(contents),
-          Err(error) => {
-            errors.push_str(format!("{error}\n").as_str());
-            continue;
-          }
-        },
+  for i in shuffled_domains_indexes {
+    match CLIENT
+      .get(format!("https://{}/e/{path}", DOMAINS[i]))
+      .headers(HEADERS.clone())
+      .send()
+      .await
+    {
+      Ok(contents) => match contents.text().await {
+        Ok(contents) => return Ok(contents),
         Err(error) => {
           errors.push_str(format!("{error}\n").as_str());
           continue;
         }
-      };
+      },
+      Err(error) => {
+        errors.push_str(format!("{error}\n").as_str());
+        continue;
+      }
     }
-
-    Err(anyhow::anyhow!(errors))
   }
+
+  Err(anyhow::anyhow!(errors))
 }
 
 const DOMAINS: &[&str] = &[

@@ -1,11 +1,14 @@
 // SPDX-FileCopyrightText: 2026 iWisp360
 // SPDX-License-Identifier: AGPL-3.0-only
 
-use crate::api::data::video_providers::utils::{
-  CLIENT, Video, VideoProviderImpl, headermap_to_hashmap,
-};
+use crate::api::data::video_providers::utils::{CLIENT, Video, VideoProviderImpl};
 use regex::Regex;
-use reqwest::header::{HeaderMap, HeaderValue, REFERER};
+use reqwest::header::{HeaderValue, REFERER};
+use std::{collections::HashMap, sync::LazyLock};
+
+const MP4UPLOAD_REFERER_URL: &str = "https://mp4upload.com/";
+
+static SRC_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new(r#"src:\s*"([^"]+)""#).unwrap());
 
 pub struct MP4Upload {}
 
@@ -14,26 +17,26 @@ impl VideoProviderImpl for MP4Upload {
   where
     Self: Sized,
   {
-    let mut headers = HeaderMap::new();
-    headers.insert(REFERER, HeaderValue::from_static("https://mp4upload.com/"));
-
     let response = CLIENT
       .get(url)
-      .headers(headers.clone())
+      .header(REFERER, HeaderValue::from_static(MP4UPLOAD_REFERER_URL))
       .send()
       .await?
       .text()
       .await?;
 
-    let src_regex = Regex::new(r#"src:\s*"([^"]+)""#)?;
-
-    let final_url = src_regex
+    let final_url = SRC_REGEX
       .captures(response.as_str())
       .map(|c| c[1].to_string());
 
+    let mut headers = HashMap::new();
+    headers.insert(
+      REFERER.as_str().to_string(),
+      MP4UPLOAD_REFERER_URL.to_string(),
+    );
     Ok(Video {
       url: final_url,
-      headers: headermap_to_hashmap(headers),
+      headers,
     })
   }
 }

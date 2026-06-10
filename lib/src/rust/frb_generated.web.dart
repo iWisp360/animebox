@@ -17,6 +17,7 @@ import 'api/data/metadata/myanimelist.dart';
 import 'api/data/metadata/utils.dart';
 import 'api/data/models.dart';
 import 'api/data/video_providers/mp4upload.dart';
+import 'api/data/video_providers/pixeldrain.dart';
 import 'api/data/video_providers/streamtape.dart';
 import 'api/data/video_providers/streamwish.dart';
 import 'api/data/video_providers/utils.dart';
@@ -150,6 +151,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MP4Upload dco_decode_box_autoadd_mp_4_upload(dynamic raw);
 
   @protected
+  PixelDrain dco_decode_box_autoadd_pixel_drain(dynamic raw);
+
+  @protected
   SerieMetadata dco_decode_box_autoadd_serie_metadata(dynamic raw);
 
   @protected
@@ -269,6 +273,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<String>? dco_decode_opt_list_String(dynamic raw);
+
+  @protected
+  PixelDrain dco_decode_pixel_drain(dynamic raw);
 
   @protected
   PlaybackConfig dco_decode_playback_config(dynamic raw);
@@ -433,6 +440,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MP4Upload sse_decode_box_autoadd_mp_4_upload(SseDeserializer deserializer);
 
   @protected
+  PixelDrain sse_decode_box_autoadd_pixel_drain(SseDeserializer deserializer);
+
+  @protected
   SerieMetadata sse_decode_box_autoadd_serie_metadata(
     SseDeserializer deserializer,
   );
@@ -578,6 +588,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<String>? sse_decode_opt_list_String(SseDeserializer deserializer);
+
+  @protected
+  PixelDrain sse_decode_pixel_drain(SseDeserializer deserializer);
 
   @protected
   PlaybackConfig sse_decode_playback_config(SseDeserializer deserializer);
@@ -777,6 +790,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_box_autoadd_pixel_drain(
+    PixelDrain self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_box_autoadd_serie_metadata(
     SerieMetadata self,
     SseSerializer serializer,
@@ -961,6 +980,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_opt_list_String(List<String>? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_pixel_drain(PixelDrain self, SseSerializer serializer);
 
   @protected
   void sse_encode_playback_config(

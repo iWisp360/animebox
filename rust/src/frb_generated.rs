@@ -33,7 +33,7 @@ use crate::api::data::caching::utils::Expirable;
 use crate::api::data::caching::utils::ReadWrite;
 use crate::api::data::video_providers::utils::VideoProviderImpl;
 use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
-use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
+use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
 use flutter_rust_bridge::{Handler, IntoIntoDart};
 
 // Section: boilerplate
@@ -44,7 +44,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
   default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 2013153059;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -52476028;
 
 // Section: executor
 
@@ -1221,6 +1221,47 @@ fn wire__crate__api__data__video_providers__mp4upload__mp_4_upload_get_direct_vi
     },
   )
 }
+fn wire__crate__api__data__video_providers__pixeldrain__pixel_drain_get_direct_video_impl(
+  port_: flutter_rust_bridge::for_generated::MessagePort,
+  ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+  rust_vec_len_: i32,
+  data_len_: i32,
+) {
+  FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+    flutter_rust_bridge::for_generated::TaskInfo {
+      debug_name: "pixel_drain_get_direct_video",
+      port: Some(port_),
+      mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+    },
+    move || {
+      let message = unsafe {
+        flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+          ptr_,
+          rust_vec_len_,
+          data_len_,
+        )
+      };
+      let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+      let api_that =
+        <crate::api::data::video_providers::pixeldrain::PixelDrain>::sse_decode(&mut deserializer);
+      let api_url = <String>::sse_decode(&mut deserializer);
+      deserializer.end();
+      move |context| async move {
+        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+          (move || async move {
+            let output_ok =
+              crate::api::data::video_providers::pixeldrain::PixelDrain::get_direct_video(
+                &api_that, api_url,
+              )
+              .await?;
+            Ok(output_ok)
+          })()
+          .await,
+        )
+      }
+    },
+  )
+}
 fn wire__crate__api__app__configuration__models__playback_config_default_impl(
   port_: flutter_rust_bridge::for_generated::MessagePort,
   ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -1497,46 +1538,6 @@ fn wire__crate__api__data__video_providers__streamtape__stream_tape_get_direct_v
                 &api_that, api_url,
               )
               .await?;
-            Ok(output_ok)
-          })()
-          .await,
-        )
-      }
-    },
-  )
-}
-fn wire__crate__api__data__video_providers__streamwish__stream_wish_get_content_impl(
-  port_: flutter_rust_bridge::for_generated::MessagePort,
-  ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
-  rust_vec_len_: i32,
-  data_len_: i32,
-) {
-  FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
-    flutter_rust_bridge::for_generated::TaskInfo {
-      debug_name: "stream_wish_get_content",
-      port: Some(port_),
-      mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
-    },
-    move || {
-      let message = unsafe {
-        flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
-          ptr_,
-          rust_vec_len_,
-          data_len_,
-        )
-      };
-      let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
-      let api_that =
-        <crate::api::data::video_providers::streamwish::StreamWish>::sse_decode(&mut deserializer);
-      let api_url = <String>::sse_decode(&mut deserializer);
-      deserializer.end();
-      move |context| async move {
-        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
-          (move || async move {
-            let output_ok = crate::api::data::video_providers::streamwish::StreamWish::get_content(
-              &api_that, api_url,
-            )
-            .await?;
             Ok(output_ok)
           })()
           .await,
@@ -2382,6 +2383,13 @@ impl SseDecode for Option<Vec<String>> {
   }
 }
 
+impl SseDecode for crate::api::data::video_providers::pixeldrain::PixelDrain {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    return crate::api::data::video_providers::pixeldrain::PixelDrain {};
+  }
+}
+
 impl SseDecode for crate::api::app::configuration::models::PlaybackConfig {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -2696,15 +2704,15 @@ fn pde_ffi_dispatcher_primary_impl(
 42 => wire__crate__api__app__configuration__models__metadata_config_default_impl(port, ptr, rust_vec_len, data_len),
 43 => wire__crate__api__data__metadata__utils__metadata_sources_default_impl(port, ptr, rust_vec_len, data_len),
 44 => wire__crate__api__data__video_providers__mp4upload__mp_4_upload_get_direct_video_impl(port, ptr, rust_vec_len, data_len),
-45 => wire__crate__api__app__configuration__models__playback_config_default_impl(port, ptr, rust_vec_len, data_len),
-46 => wire__crate__api__server__handler__search_impl(port, ptr, rust_vec_len, data_len),
-47 => wire__crate__api__data__metadata__utils__search_metadata_impl(port, ptr, rust_vec_len, data_len),
-48 => wire__crate__api__data__models__serie_meta_confidence_default_impl(port, ptr, rust_vec_len, data_len),
-49 => wire__crate__api__data__models__serie_metadata_default_impl(port, ptr, rust_vec_len, data_len),
-50 => wire__crate__api__data__models__serie_status_default_impl(port, ptr, rust_vec_len, data_len),
-51 => wire__crate__api__app__configuration__models__servers_config_default_impl(port, ptr, rust_vec_len, data_len),
-52 => wire__crate__api__data__video_providers__streamtape__stream_tape_get_direct_video_impl(port, ptr, rust_vec_len, data_len),
-53 => wire__crate__api__data__video_providers__streamwish__stream_wish_get_content_impl(port, ptr, rust_vec_len, data_len),
+45 => wire__crate__api__data__video_providers__pixeldrain__pixel_drain_get_direct_video_impl(port, ptr, rust_vec_len, data_len),
+46 => wire__crate__api__app__configuration__models__playback_config_default_impl(port, ptr, rust_vec_len, data_len),
+47 => wire__crate__api__server__handler__search_impl(port, ptr, rust_vec_len, data_len),
+48 => wire__crate__api__data__metadata__utils__search_metadata_impl(port, ptr, rust_vec_len, data_len),
+49 => wire__crate__api__data__models__serie_meta_confidence_default_impl(port, ptr, rust_vec_len, data_len),
+50 => wire__crate__api__data__models__serie_metadata_default_impl(port, ptr, rust_vec_len, data_len),
+51 => wire__crate__api__data__models__serie_status_default_impl(port, ptr, rust_vec_len, data_len),
+52 => wire__crate__api__app__configuration__models__servers_config_default_impl(port, ptr, rust_vec_len, data_len),
+53 => wire__crate__api__data__video_providers__streamtape__stream_tape_get_direct_video_impl(port, ptr, rust_vec_len, data_len),
 54 => wire__crate__api__data__video_providers__streamwish__stream_wish_get_direct_video_impl(port, ptr, rust_vec_len, data_len),
 55 => wire__crate__api__app__themes__theme_modes_default_impl(port, ptr, rust_vec_len, data_len),
 56 => wire__crate__api__app__themes__themes_default_impl(port, ptr, rust_vec_len, data_len),
@@ -3170,6 +3178,23 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::data::video_providers::mp4upl
   for crate::api::data::video_providers::mp4upload::MP4Upload
 {
   fn into_into_dart(self) -> crate::api::data::video_providers::mp4upload::MP4Upload {
+    self
+  }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::data::video_providers::pixeldrain::PixelDrain {
+  fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+    Vec::<u8>::new().into_dart()
+  }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+  for crate::api::data::video_providers::pixeldrain::PixelDrain
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::data::video_providers::pixeldrain::PixelDrain>
+  for crate::api::data::video_providers::pixeldrain::PixelDrain
+{
+  fn into_into_dart(self) -> crate::api::data::video_providers::pixeldrain::PixelDrain {
     self
   }
 }
@@ -4024,6 +4049,11 @@ impl SseEncode for Option<Vec<String>> {
   }
 }
 
+impl SseEncode for crate::api::data::video_providers::pixeldrain::PixelDrain {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {}
+}
+
 impl SseEncode for crate::api::app::configuration::models::PlaybackConfig {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {}
@@ -4272,7 +4302,7 @@ mod io {
   use crate::api::data::caching::utils::ReadWrite;
   use crate::api::data::video_providers::utils::VideoProviderImpl;
   use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
-  use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
+  use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
   use flutter_rust_bridge::{Handler, IntoIntoDart};
 
   // Section: boilerplate
@@ -4314,7 +4344,7 @@ mod web {
   use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
   use flutter_rust_bridge::for_generated::wasm_bindgen;
   use flutter_rust_bridge::for_generated::wasm_bindgen::prelude::*;
-  use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
+  use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
   use flutter_rust_bridge::{Handler, IntoIntoDart};
 
   // Section: boilerplate

@@ -7,8 +7,8 @@ import '../../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `VideoProvider`
-// These functions are ignored (category: IgnoreBecauseExplicitAttribute): `dumb_call`, `dumb_fetcher`, `headermap_to_hashmap`
-// These functions have error during generation (see debug logs or enable `stop_on_error: true` for more details): `get_content`, `get_content`, `get_content`, `get_content`, `get_direct_video`
+// These functions are ignored (category: IgnoreBecauseExplicitAttribute): `headermap_to_hashmap`
+// These functions have error during generation (see debug logs or enable `stop_on_error: true` for more details): `get_direct_video`
 
 class Video {
   final String? url;

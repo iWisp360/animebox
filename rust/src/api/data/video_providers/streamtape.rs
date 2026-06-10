@@ -3,7 +3,10 @@
 
 use crate::api::data::video_providers::utils::{CLIENT, Video, VideoProviderImpl};
 use regex::Regex;
-use std::collections::HashMap;
+use std::{collections::HashMap, sync::LazyLock};
+
+static VIDEO_REGEX: LazyLock<Regex> =
+  LazyLock::new(|| Regex::new(r#"robotlink.*'(.*?)'.*?'xcd(.*?)'"#).unwrap());
 
 pub struct StreamTape {}
 
@@ -11,11 +14,10 @@ impl VideoProviderImpl for StreamTape {
   async fn get_direct_video(&self, url: String) -> anyhow::Result<Video> {
     let response = CLIENT.get(url).send().await?.text().await?;
 
-    let video_regex = Regex::new(r#".*robotlink.*'(.*?)'.*?'xcd(.*?)'"#)?;
-    let final_url = video_regex
-      .captures(&response)
-      .map(|c| (c[1].to_string(), c[2].to_string()))
-      .map(|(p1, p2)| format!("https:{}{}", p1, p2));
+    let final_url = VIDEO_REGEX.captures(&response).map(|c| {
+      let (p1, p2) = (&c[1], &c[2]);
+      format!("https:{}{}", p1, p2)
+    });
 
     Ok(Video {
       url: final_url,

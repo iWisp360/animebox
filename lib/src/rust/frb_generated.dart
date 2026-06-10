@@ -14,6 +14,7 @@ import 'api/data/metadata/myanimelist.dart';
 import 'api/data/metadata/utils.dart';
 import 'api/data/models.dart';
 import 'api/data/video_providers/mp4upload.dart';
+import 'api/data/video_providers/pixeldrain.dart';
 import 'api/data/video_providers/streamtape.dart';
 import 'api/data/video_providers/streamwish.dart';
 import 'api/data/video_providers/utils.dart';
@@ -80,7 +81,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => 2013153059;
+  int get rustContentHash => -52476028;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -208,6 +209,11 @@ abstract class RustLibApi extends BaseApi {
     required String url,
   });
 
+  Future<Video> crateApiDataVideoProvidersPixeldrainPixelDrainGetDirectVideo({
+    required PixelDrain that,
+    required String url,
+  });
+
   Future<PlaybackConfig> crateApiAppConfigurationModelsPlaybackConfigDefault();
 
   Future<List<SearchResult>> crateApiServerHandlerSearch({
@@ -233,11 +239,6 @@ abstract class RustLibApi extends BaseApi {
 
   Future<Video> crateApiDataVideoProvidersStreamtapeStreamTapeGetDirectVideo({
     required StreamTape that,
-    required String url,
-  });
-
-  Future<String> crateApiDataVideoProvidersStreamwishStreamWishGetContent({
-    required StreamWish that,
     required String url,
   });
 
@@ -1301,6 +1302,43 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<Video> crateApiDataVideoProvidersPixeldrainPixelDrainGetDirectVideo({
+    required PixelDrain that,
+    required String url,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_box_autoadd_pixel_drain(that, serializer);
+          sse_encode_String(url, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 45,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_video,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta:
+            kCrateApiDataVideoProvidersPixeldrainPixelDrainGetDirectVideoConstMeta,
+        argValues: [that, url],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiDataVideoProvidersPixeldrainPixelDrainGetDirectVideoConstMeta =>
+      const TaskConstMeta(
+        debugName: "pixel_drain_get_direct_video",
+        argNames: ["that", "url"],
+      );
+
+  @override
   Future<PlaybackConfig> crateApiAppConfigurationModelsPlaybackConfigDefault() {
     return handler.executeNormal(
       NormalTask(
@@ -1309,7 +1347,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 45,
+            funcId: 46,
             port: port_,
           );
         },
@@ -1345,7 +1383,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 46,
+            funcId: 47,
             port: port_,
           );
         },
@@ -1384,7 +1422,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 47,
+            funcId: 48,
             port: port_,
           );
         },
@@ -1414,7 +1452,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 48,
+            funcId: 49,
             port: port_,
           );
         },
@@ -1444,7 +1482,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 49,
+            funcId: 50,
             port: port_,
           );
         },
@@ -1471,7 +1509,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 50,
+            funcId: 51,
             port: port_,
           );
         },
@@ -1498,7 +1536,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 51,
+            funcId: 52,
             port: port_,
           );
         },
@@ -1531,7 +1569,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 52,
+            funcId: 53,
             port: port_,
           );
         },
@@ -1551,43 +1589,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   get kCrateApiDataVideoProvidersStreamtapeStreamTapeGetDirectVideoConstMeta =>
       const TaskConstMeta(
         debugName: "stream_tape_get_direct_video",
-        argNames: ["that", "url"],
-      );
-
-  @override
-  Future<String> crateApiDataVideoProvidersStreamwishStreamWishGetContent({
-    required StreamWish that,
-    required String url,
-  }) {
-    return handler.executeNormal(
-      NormalTask(
-        callFfi: (port_) {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_box_autoadd_stream_wish(that, serializer);
-          sse_encode_String(url, serializer);
-          pdeCallFfi(
-            generalizedFrbRustBinding,
-            serializer,
-            funcId: 53,
-            port: port_,
-          );
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_String,
-          decodeErrorData: sse_decode_AnyhowException,
-        ),
-        constMeta:
-            kCrateApiDataVideoProvidersStreamwishStreamWishGetContentConstMeta,
-        argValues: [that, url],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kCrateApiDataVideoProvidersStreamwishStreamWishGetContentConstMeta =>
-      const TaskConstMeta(
-        debugName: "stream_wish_get_content",
         argNames: ["that", "url"],
       );
 
@@ -2044,6 +2045,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  PixelDrain dco_decode_box_autoadd_pixel_drain(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_pixel_drain(raw);
+  }
+
+  @protected
   SerieMetadata dco_decode_box_autoadd_serie_metadata(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_serie_metadata(raw);
@@ -2353,6 +2360,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   List<String>? dco_decode_opt_list_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_list_String(raw);
+  }
+
+  @protected
+  PixelDrain dco_decode_pixel_drain(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.isNotEmpty)
+      throw Exception('unexpected arr length: expect 0 but see ${arr.length}');
+    return const PixelDrain();
   }
 
   @protected
@@ -2804,6 +2820,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  PixelDrain sse_decode_box_autoadd_pixel_drain(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_pixel_drain(deserializer));
+  }
+
+  @protected
   SerieMetadata sse_decode_box_autoadd_serie_metadata(
     SseDeserializer deserializer,
   ) {
@@ -3217,6 +3239,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     } else {
       return null;
     }
+  }
+
+  @protected
+  PixelDrain sse_decode_pixel_drain(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return const PixelDrain();
   }
 
   @protected
@@ -3674,6 +3702,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_pixel_drain(
+    PixelDrain self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_pixel_drain(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_serie_metadata(
     SerieMetadata self,
     SseSerializer serializer,
@@ -4059,6 +4096,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     if (self != null) {
       sse_encode_list_String(self, serializer);
     }
+  }
+
+  @protected
+  void sse_encode_pixel_drain(PixelDrain self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
   }
 
   @protected

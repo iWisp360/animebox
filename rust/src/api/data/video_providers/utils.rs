@@ -1,4 +1,4 @@
-use flutter_rust_bridge::{DartFnFuture, frb};
+use flutter_rust_bridge::frb;
 use reqwest::Client;
 use reqwest::header::HeaderMap;
 use std::{collections::HashMap, sync::LazyLock};
@@ -9,12 +9,6 @@ pub trait VideoProviderImpl {
   fn get_direct_video(&self, url: String) -> impl Future<Output = anyhow::Result<Video>>
   where
     Self: Sized;
-  fn get_content(&self, url: String) -> impl Future<Output = anyhow::Result<String>>
-  where
-    Self: Sized,
-  {
-    async { Ok(url) }
-  }
 }
 
 pub enum VideoProvider {
@@ -41,14 +35,4 @@ pub fn headermap_to_hashmap(headermap: HeaderMap) -> HashMap<String, String> {
   }
 
   hashmap
-}
-
-#[frb(ignore)]
-pub fn dumb_fetcher(url: String) -> DartFnFuture<String> {
-  Box::pin(dumb_call(url))
-}
-
-#[frb(ignore)]
-pub async fn dumb_call(url: String) -> String {
-  url
 }

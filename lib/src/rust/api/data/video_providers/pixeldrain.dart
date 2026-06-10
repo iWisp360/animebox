@@ -7,13 +7,14 @@ import '../../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'utils.dart';
 
-// These functions are ignored because they are not marked as `pub`: `get_content`
+// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `PixeldrainError`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `fmt`, `fmt`
 
-class StreamWish {
-  const StreamWish();
+class PixelDrain {
+  const PixelDrain();
 
   Future<Video> getDirectVideo({required String url}) => RustLib.instance.api
-      .crateApiDataVideoProvidersStreamwishStreamWishGetDirectVideo(
+      .crateApiDataVideoProvidersPixeldrainPixelDrainGetDirectVideo(
         that: this,
         url: url,
       );
@@ -24,5 +25,5 @@ class StreamWish {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is StreamWish && runtimeType == other.runtimeType;
+      other is PixelDrain && runtimeType == other.runtimeType;
 }

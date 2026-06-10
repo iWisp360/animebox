@@ -1,39 +1,42 @@
 // SPDX-FileCopyrightText: 2026 iWisp360
-// SPDX-License-Identifier: AGPL-3.0-only
 
-use crate::api::data::video_providers::utils::{
-  CLIENT, Video, VideoProviderImpl, headermap_to_hashmap,
-};
+// SPDX-License-Identifier: AGPL-3.0-only
+use std::{collections::HashMap, sync::LazyLock};
+
+use crate::api::data::video_providers::utils::{CLIENT, Video, VideoProviderImpl};
 use regex::Regex;
-use reqwest::header::{HeaderMap, HeaderValue, REFERER};
+use reqwest::header::{HeaderValue, REFERER};
+
+static VIDEO_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new(r#"file:.*?'(.*)'"#).unwrap());
 
 pub struct YourUpload {}
 
 impl VideoProviderImpl for YourUpload {
   async fn get_direct_video(&self, url: String) -> anyhow::Result<Video> {
-    let mut headers = HeaderMap::new();
-    headers.insert(
-      REFERER,
-      HeaderValue::from_static("https://www.yourupload.com/"),
-    );
-
     let response = CLIENT
       .get(url)
-      .headers(headers.clone())
+      .header(
+        REFERER,
+        HeaderValue::from_static("https://www.yourupload.com/"),
+      )
       .send()
       .await?
       .text()
       .await?;
 
-    let video_regex = Regex::new(r#"file:.*'(.*?\.(mp4|mkv))'"#)?;
-
-    let final_url = video_regex
+    let final_url = VIDEO_REGEX
       .captures(response.as_str())
       .map(|c| c[1].to_string());
 
+    let mut headers = HashMap::new();
+    headers.insert(
+      REFERER.as_str().to_string(),
+      "https://www.yourupload.com/".to_string(),
+    );
+
     Ok(Video {
       url: final_url,
-      headers: headermap_to_hashmap(headers),
+      headers,
     })
   }
 }
