@@ -1,4 +1,5 @@
 // SPDX-FileCopyrightText: 2026 iWisp360
+// SPDX-License-Identifier: AGPL-3.0-only
 
 use anilist_moe::{
   enums::media::MediaStatus,
@@ -14,8 +15,8 @@ use crate::{
     metadata::{
       myanimelist::match_confidence,
       utils::{
-        choose_name, MetadataSource, MetadataSources, SerieNames, SlimMetaGetter, ToDateObject,
-        ToSerieMetadata, ToSlimMeta, ANILIST_CLIENT,
+        ANILIST_CLIENT, MetadataSource, MetadataSources, SerieNames, SlimMetaGetter, ToDateObject,
+        ToSerieMetadata, ToSlimMeta, choose_name,
       },
     },
     models::{DateObject, SerieMetaConfidence, SerieMetadata, SerieStatus, SlimSerieMetadata},

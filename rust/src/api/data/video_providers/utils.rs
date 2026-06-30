@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 iWisp360
+// SPDX-License-Identifier: AGPL-3.0-only
+
 use flutter_rust_bridge::frb;
 use regex::Regex;
 use reqwest::Client;

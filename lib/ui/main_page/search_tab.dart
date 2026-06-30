@@ -85,11 +85,7 @@ class _SearchTabState extends State<SearchTab> {
                       padding: const .only(bottom: 30),
                       controller: widget.scrollController,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: MediaQuery.of(context).size.width > 800
-                            ? 4
-                            : MediaQuery.of(context).size.width > 550
-                            ? 3
-                            : 2,
+                        crossAxisCount: getResultRowItems(context),
                         mainAxisSpacing: 16,
                         crossAxisSpacing: 16,
                         childAspectRatio: 0.75,
@@ -111,3 +107,10 @@ class _SearchTabState extends State<SearchTab> {
     );
   }
 }
+
+int getResultRowItems(BuildContext context) =>
+    MediaQuery.of(context).size.width > 800
+    ? 4
+    : MediaQuery.of(context).size.width > 550
+    ? 3
+    : 2;

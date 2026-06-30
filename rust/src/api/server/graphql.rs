@@ -1,6 +1,8 @@
-use serde::{Deserialize, Serialize};
+// SPDX-FileCopyrightText: 2026 iWisp360
+// SPDX-License-Identifier: AGPL-3.0-only
 
 use crate::api::data::models::Search;
+use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize)]
 pub struct ServerInfoResponse {

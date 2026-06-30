@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 iWisp360
+// SPDX-License-Identifier: AGPL-3.0-only
+
 use crate::{
   api::{
     app::{PRETTY_CONFIG, configuration::controllers::CONFIG_PATH},

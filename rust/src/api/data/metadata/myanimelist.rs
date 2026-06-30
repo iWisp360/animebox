@@ -1,10 +1,11 @@
 // SPDX-FileCopyrightText: 2026 iWisp360
+// SPDX-License-Identifier: AGPL-3.0-only
 
 use crate::{
   api::data::{
     metadata::utils::{
-      choose_name, MetadataSource, MetadataSources, SerieNames, SlimMetaGetter, ToDateObject,
-      ToSerieMetadata, ToSlimMeta, JIKAN_CLIENT,
+      JIKAN_CLIENT, MetadataSource, MetadataSources, SerieNames, SlimMetaGetter, ToDateObject,
+      ToSerieMetadata, ToSlimMeta, choose_name,
     },
     models::{DateObject, SerieMetaConfidence, SerieMetadata, SerieStatus, SlimSerieMetadata},
   },

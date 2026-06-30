@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2026 iWisp360
-
 // SPDX-License-Identifier: AGPL-3.0-only
+
 use std::{collections::HashMap, sync::LazyLock};
 
 use crate::api::data::video_providers::utils::{CLIENT, Video, VideoProviderImpl};
