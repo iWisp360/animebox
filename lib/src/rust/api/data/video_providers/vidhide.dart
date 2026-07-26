@@ -7,13 +7,11 @@ import '../../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'utils.dart';
 
-// These functions are ignored because they are not marked as `pub`: `get_content`
-
-class StreamWish {
-  const StreamWish();
+class VidHide {
+  const VidHide();
 
   Future<Video> getDirectVideo({required String url}) => RustLib.instance.api
-      .crateApiDataVideoProvidersStreamwishStreamWishGetDirectVideo(
+      .crateApiDataVideoProvidersVidhideVidHideGetDirectVideo(
         that: this,
         url: url,
       );
@@ -24,5 +22,5 @@ class StreamWish {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is StreamWish && runtimeType == other.runtimeType;
+      other is VidHide && runtimeType == other.runtimeType;
 }

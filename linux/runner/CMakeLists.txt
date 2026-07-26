@@ -14,16 +14,13 @@ add_executable(${BINARY_NAME}
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/../../rust_builder/cargokit/cmake/cargokit.cmake")
 
-# 2. Call the function with the exact arguments expected:
-# apply_cargokit(target, manifest_dir, lib_name, any_symbol_name)
 apply_cargokit(
-    ${BINARY_NAME} 
-    "../../rust"                  # Relative path from runner directory to your Rust folder
-    "rust_lib_animebox"           # Cargo package name (without lib or .so)
-    ""                            # Symbol name (used for Windows, can be anything dummy for Linux)
+  ${BINARY_NAME}
+  "../../rust"
+  "rust_lib_${BINARY_NAME}"
+  ""
 )
 
-# 3. Elevate the library path variable to the top-level scope so your main CMakeLists can find it
 set(${BINARY_NAME}_cargokit_lib "${${BINARY_NAME}_cargokit_lib}" PARENT_SCOPE)
 
 # Apply the standard set of build settings. This can be removed for applications

@@ -81,7 +81,7 @@
           )}";
 
           buildInputs = with pkgs; [
-            android-studio
+            flutter
             glib
             mpv
             libepoxy
@@ -90,6 +90,7 @@
             pkg-config
             at-spi2-core
             gtk3
+            rustup
             (pkgs.rust-bin.stable.latest.default.override {
               targets = [
                 "aarch64-linux-android"
