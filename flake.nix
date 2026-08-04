@@ -88,6 +88,7 @@
             pkgs-stable.chromium
             pango
             pkg-config
+            ninja
             at-spi2-core
             gtk3
             rustup

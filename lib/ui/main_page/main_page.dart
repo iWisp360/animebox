@@ -233,39 +233,6 @@ class _HomePageState extends State<HomePage>
                       ),
                     ),
                   ),
-
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    height: 15,
-                    child: IgnorePointer(
-                      child: Builder(
-                        builder: (context) {
-                          final baseColor = config.appearance.pitchBlack
-                              ? Theme.of(
-                                  context,
-                                ).colorScheme.surfaceContainerLowest
-                              : Theme.of(context).colorScheme.surfaceContainer;
-
-                          return Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  baseColor.withValues(alpha: 0),
-                                  baseColor,
-                                ],
-                                begin: AlignmentGeometry.topCenter,
-                                end: AlignmentGeometry.bottomCenter,
-                                stops: const [0, 1],
-                              ),
-                            ),
-                            child: const SizedBox.shrink(),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
