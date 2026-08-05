@@ -4,6 +4,7 @@ import 'package:animebox/anime_sources.dart';
 import 'package:animebox/core/config.dart';
 import 'package:animebox/core/logging.dart';
 import 'package:animebox/l10n/app_localizations.dart';
+import 'package:animebox/src/rust/api/app/configuration/controllers.dart';
 import 'package:animebox/src/rust/api/app/logging.dart';
 import 'package:animebox/ui/error_tab.dart';
 import 'package:animebox/ui/main_page/main_page.dart';
@@ -53,7 +54,8 @@ Future<void> main() async {
     logger.d("Initializing config");
     try {
       await configController.init();
-    } catch (e, st) {
+    } on ConfigError catch (e, st) {
+      logger.e(e);
       failedInit = true;
       initStackTrace = st;
       failure = Exception("$e");
@@ -65,8 +67,8 @@ Future<void> main() async {
 
       try {
         MediaKit.ensureInitialized();
-      } catch (e, st) {
-        failure = Exception("$e");
+      } on ConfigError catch (e, st) {
+        failure = e as Exception;
         initStackTrace = st;
         failedInit = true;
       }
@@ -116,7 +118,9 @@ class _AnimeBoxState extends State<AnimeBox> {
       );
     }
 
-    isPitchBlack = config.appearance.pitchBlack;
+    if (!failedInit) {
+      isPitchBlack = config.appearance.pitchBlack;
+    }
   }
 
   @override

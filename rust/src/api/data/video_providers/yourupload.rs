@@ -3,7 +3,10 @@
 
 use std::{collections::HashMap, sync::LazyLock};
 
-use crate::api::data::video_providers::utils::{CLIENT, Video, VideoProviderImpl};
+use crate::api::data::{
+  network::CLIENT,
+  video_providers::{Video, VideoProviderImpl, error::VideoProviderError},
+};
 use regex::Regex;
 use reqwest::header::{HeaderValue, REFERER};
 
@@ -12,7 +15,7 @@ static VIDEO_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new(r#"file:.*?'(.
 pub struct YourUpload {}
 
 impl VideoProviderImpl for YourUpload {
-  async fn get_direct_video(&self, url: String) -> anyhow::Result<Video> {
+  async fn get_direct_video(&self, url: String) -> Result<Video, VideoProviderError> {
     let response = CLIENT
       .get(url)
       .header(

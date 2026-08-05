@@ -22,7 +22,7 @@ pub struct ServerInfoTiny {
   #[serde(rename = "logoUrl")]
   pub logo_url: Option<String>,
   pub version: u32,
-  pub uuid: String,
+  pub uuid: [u8; 16],
   #[serde(rename = "minCompat")]
   pub min_compat: u32,
 }
@@ -46,7 +46,6 @@ pub static SERVER_SUPPORTED_SOURCES_QUERY: &str = "
         prettyName
         id
         url
-        otherUrls
         noMetaProvider
         recommendations
         isHentaiSource

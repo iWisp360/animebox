@@ -22,7 +22,6 @@ pub struct AnimeSourceInfo {
   pub pretty_name: String,
   pub id: String,
   pub url: String,
-  pub other_urls: Vec<String>,
   pub no_meta_provider: bool,
   pub recommendations: Option<String>,
   pub is_hentai_source: bool,
@@ -42,7 +41,7 @@ pub struct ConfigServer {
   #[serde(default)]
   pub enabled: bool,
   #[serde(default)]
-  pub uuid: String,
+  pub uuid: [u8; 16],
   #[serde(default)]
   pub name: Option<String>,
   #[serde(default)]

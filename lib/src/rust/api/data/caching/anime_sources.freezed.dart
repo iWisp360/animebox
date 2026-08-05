@@ -12,7 +12,7 @@ part of 'anime_sources.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$CacheRefreshError {
+mixin _$SourcesRefreshError {
 
 
 
@@ -20,7 +20,7 @@ mixin _$CacheRefreshError {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CacheRefreshError);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SourcesRefreshError);
 }
 
 
@@ -29,20 +29,20 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'CacheRefreshError()';
+  return 'SourcesRefreshError()';
 }
 
 
 }
 
 /// @nodoc
-class $CacheRefreshErrorCopyWith<$Res>  {
-$CacheRefreshErrorCopyWith(CacheRefreshError _, $Res Function(CacheRefreshError) __);
+class $SourcesRefreshErrorCopyWith<$Res>  {
+$SourcesRefreshErrorCopyWith(SourcesRefreshError _, $Res Function(SourcesRefreshError) __);
 }
 
 
-/// Adds pattern-matching-related methods to [CacheRefreshError].
-extension CacheRefreshErrorPatterns on CacheRefreshError {
+/// Adds pattern-matching-related methods to [SourcesRefreshError].
+extension SourcesRefreshErrorPatterns on SourcesRefreshError {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -55,11 +55,11 @@ extension CacheRefreshErrorPatterns on CacheRefreshError {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( CacheRefreshError_ConnectionOrDeserializationFailed value)?  connectionOrDeserializationFailed,TResult Function( CacheRefreshError_InvalidData value)?  invalidData,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( SourcesRefreshError_GraphQL value)?  graphQl,TResult Function( SourcesRefreshError_InvalidData value)?  invalidData,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case CacheRefreshError_ConnectionOrDeserializationFailed() when connectionOrDeserializationFailed != null:
-return connectionOrDeserializationFailed(_that);case CacheRefreshError_InvalidData() when invalidData != null:
+case SourcesRefreshError_GraphQL() when graphQl != null:
+return graphQl(_that);case SourcesRefreshError_InvalidData() when invalidData != null:
 return invalidData(_that);case _:
   return orElse();
 
@@ -78,11 +78,11 @@ return invalidData(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( CacheRefreshError_ConnectionOrDeserializationFailed value)  connectionOrDeserializationFailed,required TResult Function( CacheRefreshError_InvalidData value)  invalidData,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( SourcesRefreshError_GraphQL value)  graphQl,required TResult Function( SourcesRefreshError_InvalidData value)  invalidData,}){
 final _that = this;
 switch (_that) {
-case CacheRefreshError_ConnectionOrDeserializationFailed():
-return connectionOrDeserializationFailed(_that);case CacheRefreshError_InvalidData():
+case SourcesRefreshError_GraphQL():
+return graphQl(_that);case SourcesRefreshError_InvalidData():
 return invalidData(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
@@ -97,11 +97,11 @@ return invalidData(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( CacheRefreshError_ConnectionOrDeserializationFailed value)?  connectionOrDeserializationFailed,TResult? Function( CacheRefreshError_InvalidData value)?  invalidData,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( SourcesRefreshError_GraphQL value)?  graphQl,TResult? Function( SourcesRefreshError_InvalidData value)?  invalidData,}){
 final _that = this;
 switch (_that) {
-case CacheRefreshError_ConnectionOrDeserializationFailed() when connectionOrDeserializationFailed != null:
-return connectionOrDeserializationFailed(_that);case CacheRefreshError_InvalidData() when invalidData != null:
+case SourcesRefreshError_GraphQL() when graphQl != null:
+return graphQl(_that);case SourcesRefreshError_InvalidData() when invalidData != null:
 return invalidData(_that);case _:
   return null;
 
@@ -119,10 +119,10 @@ return invalidData(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String field0)?  connectionOrDeserializationFailed,TResult Function()?  invalidData,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String field0)?  graphQl,TResult Function()?  invalidData,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case CacheRefreshError_ConnectionOrDeserializationFailed() when connectionOrDeserializationFailed != null:
-return connectionOrDeserializationFailed(_that.field0);case CacheRefreshError_InvalidData() when invalidData != null:
+case SourcesRefreshError_GraphQL() when graphQl != null:
+return graphQl(_that.field0);case SourcesRefreshError_InvalidData() when invalidData != null:
 return invalidData();case _:
   return orElse();
 
@@ -141,10 +141,10 @@ return invalidData();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String field0)  connectionOrDeserializationFailed,required TResult Function()  invalidData,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String field0)  graphQl,required TResult Function()  invalidData,}) {final _that = this;
 switch (_that) {
-case CacheRefreshError_ConnectionOrDeserializationFailed():
-return connectionOrDeserializationFailed(_that.field0);case CacheRefreshError_InvalidData():
+case SourcesRefreshError_GraphQL():
+return graphQl(_that.field0);case SourcesRefreshError_InvalidData():
 return invalidData();}
 }
 /// A variant of `when` that fallback to returning `null`
@@ -159,10 +159,10 @@ return invalidData();}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String field0)?  connectionOrDeserializationFailed,TResult? Function()?  invalidData,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String field0)?  graphQl,TResult? Function()?  invalidData,}) {final _that = this;
 switch (_that) {
-case CacheRefreshError_ConnectionOrDeserializationFailed() when connectionOrDeserializationFailed != null:
-return connectionOrDeserializationFailed(_that.field0);case CacheRefreshError_InvalidData() when invalidData != null:
+case SourcesRefreshError_GraphQL() when graphQl != null:
+return graphQl(_that.field0);case SourcesRefreshError_InvalidData() when invalidData != null:
 return invalidData();case _:
   return null;
 
@@ -174,23 +174,23 @@ return invalidData();case _:
 /// @nodoc
 
 
-class CacheRefreshError_ConnectionOrDeserializationFailed extends CacheRefreshError {
-  const CacheRefreshError_ConnectionOrDeserializationFailed(this.field0): super._();
+class SourcesRefreshError_GraphQL extends SourcesRefreshError {
+  const SourcesRefreshError_GraphQL(this.field0): super._();
   
 
  final  String field0;
 
-/// Create a copy of CacheRefreshError
+/// Create a copy of SourcesRefreshError
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$CacheRefreshError_ConnectionOrDeserializationFailedCopyWith<CacheRefreshError_ConnectionOrDeserializationFailed> get copyWith => _$CacheRefreshError_ConnectionOrDeserializationFailedCopyWithImpl<CacheRefreshError_ConnectionOrDeserializationFailed>(this, _$identity);
+$SourcesRefreshError_GraphQLCopyWith<SourcesRefreshError_GraphQL> get copyWith => _$SourcesRefreshError_GraphQLCopyWithImpl<SourcesRefreshError_GraphQL>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CacheRefreshError_ConnectionOrDeserializationFailed&&(identical(other.field0, field0) || other.field0 == field0));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SourcesRefreshError_GraphQL&&(identical(other.field0, field0) || other.field0 == field0));
 }
 
 
@@ -199,15 +199,15 @@ int get hashCode => Object.hash(runtimeType,field0);
 
 @override
 String toString() {
-  return 'CacheRefreshError.connectionOrDeserializationFailed(field0: $field0)';
+  return 'SourcesRefreshError.graphQl(field0: $field0)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $CacheRefreshError_ConnectionOrDeserializationFailedCopyWith<$Res> implements $CacheRefreshErrorCopyWith<$Res> {
-  factory $CacheRefreshError_ConnectionOrDeserializationFailedCopyWith(CacheRefreshError_ConnectionOrDeserializationFailed value, $Res Function(CacheRefreshError_ConnectionOrDeserializationFailed) _then) = _$CacheRefreshError_ConnectionOrDeserializationFailedCopyWithImpl;
+abstract mixin class $SourcesRefreshError_GraphQLCopyWith<$Res> implements $SourcesRefreshErrorCopyWith<$Res> {
+  factory $SourcesRefreshError_GraphQLCopyWith(SourcesRefreshError_GraphQL value, $Res Function(SourcesRefreshError_GraphQL) _then) = _$SourcesRefreshError_GraphQLCopyWithImpl;
 @useResult
 $Res call({
  String field0
@@ -218,17 +218,17 @@ $Res call({
 
 }
 /// @nodoc
-class _$CacheRefreshError_ConnectionOrDeserializationFailedCopyWithImpl<$Res>
-    implements $CacheRefreshError_ConnectionOrDeserializationFailedCopyWith<$Res> {
-  _$CacheRefreshError_ConnectionOrDeserializationFailedCopyWithImpl(this._self, this._then);
+class _$SourcesRefreshError_GraphQLCopyWithImpl<$Res>
+    implements $SourcesRefreshError_GraphQLCopyWith<$Res> {
+  _$SourcesRefreshError_GraphQLCopyWithImpl(this._self, this._then);
 
-  final CacheRefreshError_ConnectionOrDeserializationFailed _self;
-  final $Res Function(CacheRefreshError_ConnectionOrDeserializationFailed) _then;
+  final SourcesRefreshError_GraphQL _self;
+  final $Res Function(SourcesRefreshError_GraphQL) _then;
 
-/// Create a copy of CacheRefreshError
+/// Create a copy of SourcesRefreshError
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? field0 = null,}) {
-  return _then(CacheRefreshError_ConnectionOrDeserializationFailed(
+  return _then(SourcesRefreshError_GraphQL(
 null == field0 ? _self.field0 : field0 // ignore: cast_nullable_to_non_nullable
 as String,
   ));
@@ -240,8 +240,8 @@ as String,
 /// @nodoc
 
 
-class CacheRefreshError_InvalidData extends CacheRefreshError {
-  const CacheRefreshError_InvalidData(): super._();
+class SourcesRefreshError_InvalidData extends SourcesRefreshError {
+  const SourcesRefreshError_InvalidData(): super._();
   
 
 
@@ -251,7 +251,7 @@ class CacheRefreshError_InvalidData extends CacheRefreshError {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CacheRefreshError_InvalidData);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SourcesRefreshError_InvalidData);
 }
 
 
@@ -260,7 +260,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'CacheRefreshError.invalidData()';
+  return 'SourcesRefreshError.invalidData()';
 }
 
 

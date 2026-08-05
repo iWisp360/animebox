@@ -26,14 +26,15 @@
 
 // Section: imports
 
+use crate::api::app::logging::*;
 use crate::api::data::caching::anime_sources::AnimeSources;
 use crate::api::data::caching::anime_sources::*;
 use crate::api::data::caching::utils::CacheSource;
 use crate::api::data::caching::utils::Expirable;
 use crate::api::data::caching::utils::ReadWrite;
-use crate::api::data::video_providers::utils::VideoProviderImpl;
+use crate::api::data::video_providers::VideoProviderImpl;
 use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
-use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
+use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
 use flutter_rust_bridge::{Handler, IntoIntoDart};
 
 // Section: boilerplate
@@ -44,7 +45,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
   default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -478372576;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1936202520;
 
 // Section: executor
 
@@ -210,7 +211,7 @@ fn wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_auto
         flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>,
       >>::sse_decode(&mut deserializer);
       let api_sources = <std::collections::HashMap<
-        String,
+        [u8; 16],
         Vec<crate::api::data::models::AnimeSource>,
       >>::sse_decode(&mut deserializer);
       deserializer.end();
@@ -393,7 +394,7 @@ fn wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_init
       let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
       deserializer.end();
       move |context| {
-        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>((move || {
+        transform_result_sse::<_, crate::api::data::caching::utils::CacheError>((move || {
           let output_ok =
             crate::api::data::caching::anime_sources::AnimeSourcesCacheManager::init()?;
           Ok(output_ok)
@@ -519,7 +520,7 @@ fn wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_refr
         <Vec<crate::api::server::models::ConfigServer>>::sse_decode(&mut deserializer);
       deserializer.end();
       move |context| async move {
-        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+        transform_result_sse::<_, crate::api::data::caching::anime_sources::SourcesRefreshError>(
           (move || async move {
             let mut api_that_guard = None;
             let decode_indices_ =
@@ -737,11 +738,13 @@ fn wire__crate__api__app__configuration__models__anime_box_config_init_config_im
       let api_path = <String>::sse_decode(&mut deserializer);
       deserializer.end();
       move |context| {
-        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>((move || {
-          let output_ok =
-            crate::api::app::configuration::models::AnimeBoxConfig::init_config(api_path)?;
-          Ok(output_ok)
-        })())
+        transform_result_sse::<_, crate::api::app::configuration::controllers::ConfigError>(
+          (move || {
+            let output_ok =
+              crate::api::app::configuration::models::AnimeBoxConfig::init_config(api_path)?;
+            Ok(output_ok)
+          })(),
+        )
       }
     },
   )
@@ -771,7 +774,7 @@ fn wire__crate__api__app__configuration__models__anime_box_config_update_impl(
         <crate::api::app::configuration::models::AnimeBoxConfig>::sse_decode(&mut deserializer);
       deserializer.end();
       move |context| async move {
-        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+        transform_result_sse::<_, crate::api::app::configuration::controllers::ConfigError>(
           (move || async move {
             let output_ok =
               crate::api::app::configuration::models::AnimeBoxConfig::update(&api_that).await?;
@@ -906,7 +909,7 @@ fn wire__crate__api__data__metadata__utils__get_metadata_impl(
         <crate::api::data::metadata::utils::MetadataSources>::sse_decode(&mut deserializer);
       deserializer.end();
       move |context| async move {
-        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+        transform_result_sse::<_, crate::api::data::metadata::error::MetadataSourceError>(
           (move || async move {
             let output_ok =
               crate::api::data::metadata::utils::get_metadata(api_id, &api_metadata_source).await?;
@@ -918,7 +921,7 @@ fn wire__crate__api__data__metadata__utils__get_metadata_impl(
     },
   )
 }
-fn wire__crate__api__server__handler__get_server_impl(
+fn wire__crate__api__server__get_server_impl(
   port_: flutter_rust_bridge::for_generated::MessagePort,
   ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
   rust_vec_len_: i32,
@@ -942,9 +945,9 @@ fn wire__crate__api__server__handler__get_server_impl(
       let api_url = <String>::sse_decode(&mut deserializer);
       deserializer.end();
       move |context| async move {
-        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+        transform_result_sse::<_, crate::api::server::error::ServerError>(
           (move || async move {
-            let output_ok = crate::api::server::handler::get_server(api_url).await?;
+            let output_ok = crate::api::server::get_server(api_url).await?;
             Ok(output_ok)
           })()
           .await,
@@ -1009,7 +1012,7 @@ fn wire__crate__api__app__logging__init_logger_impl(
         <crate::api::app::logging::CoreLoggerSettings>::sse_decode(&mut deserializer);
       deserializer.end();
       move |context| {
-        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>((move || {
+        transform_result_sse::<_, LoggerError>((move || {
           let output_ok = crate::api::app::logging::init_logger(api_settings)?;
           Ok(output_ok)
         })())
@@ -1206,7 +1209,7 @@ fn wire__crate__api__data__video_providers__mp4upload__mp_4_upload_get_direct_vi
       let api_url = <String>::sse_decode(&mut deserializer);
       deserializer.end();
       move |context| async move {
-        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+        transform_result_sse::<_, crate::api::data::video_providers::error::VideoProviderError>(
           (move || async move {
             let output_ok =
               crate::api::data::video_providers::mp4upload::MP4Upload::get_direct_video(
@@ -1247,7 +1250,7 @@ fn wire__crate__api__data__video_providers__pixeldrain__pixel_drain_get_direct_v
       let api_url = <String>::sse_decode(&mut deserializer);
       deserializer.end();
       move |context| async move {
-        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+        transform_result_sse::<_, crate::api::data::video_providers::error::VideoProviderError>(
           (move || async move {
             let output_ok =
               crate::api::data::video_providers::pixeldrain::PixelDrain::get_direct_video(
@@ -1294,7 +1297,7 @@ fn wire__crate__api__app__configuration__models__playback_config_default_impl(
     },
   )
 }
-fn wire__crate__api__server__handler__search_impl(
+fn wire__crate__api__server__search_impl(
   port_: flutter_rust_bridge::for_generated::MessagePort,
   ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
   rust_vec_len_: i32,
@@ -1320,11 +1323,10 @@ fn wire__crate__api__server__handler__search_impl(
       let api_source_id = <String>::sse_decode(&mut deserializer);
       deserializer.end();
       move |context| async move {
-        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+        transform_result_sse::<_, crate::api::server::error::ServerError>(
           (move || async move {
             let output_ok =
-              crate::api::server::handler::search(api_server_url, api_pattern, api_source_id)
-                .await?;
+              crate::api::server::search(api_server_url, api_pattern, api_source_id).await?;
             Ok(output_ok)
           })()
           .await,
@@ -1362,7 +1364,7 @@ fn wire__crate__api__data__metadata__utils__search_metadata_impl(
       let api_precision = <f64>::sse_decode(&mut deserializer);
       deserializer.end();
       move |context| async move {
-        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+        transform_result_sse::<_, crate::api::data::metadata::error::MetadataSourceError>(
           (move || async move {
             let output_ok = crate::api::data::metadata::utils::search_metadata(
               api_query,
@@ -1531,7 +1533,7 @@ fn wire__crate__api__data__video_providers__streamtape__stream_tape_get_direct_v
       let api_url = <String>::sse_decode(&mut deserializer);
       deserializer.end();
       move |context| async move {
-        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+        transform_result_sse::<_, crate::api::data::video_providers::error::VideoProviderError>(
           (move || async move {
             let output_ok =
               crate::api::data::video_providers::streamtape::StreamTape::get_direct_video(
@@ -1572,7 +1574,7 @@ fn wire__crate__api__data__video_providers__streamwish__stream_wish_get_direct_v
       let api_url = <String>::sse_decode(&mut deserializer);
       deserializer.end();
       move |context| async move {
-        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+        transform_result_sse::<_, crate::api::data::video_providers::error::VideoProviderError>(
           (move || async move {
             let output_ok =
               crate::api::data::video_providers::streamwish::StreamWish::get_direct_video(
@@ -1681,7 +1683,7 @@ fn wire__crate__api__app__configuration__models__update_params_default_impl(
     },
   )
 }
-fn wire__crate__api__server__handler__validate_url_impl(
+fn wire__crate__api__server__validate_url_impl(
   ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
   rust_vec_len_: i32,
   data_len_: i32,
@@ -1704,7 +1706,7 @@ fn wire__crate__api__server__handler__validate_url_impl(
       let api_url = <String>::sse_decode(&mut deserializer);
       deserializer.end();
       transform_result_sse::<_, ()>((move || {
-        let output_ok = Result::<_, ()>::Ok(crate::api::server::handler::validate_url(api_url))?;
+        let output_ok = Result::<_, ()>::Ok(crate::api::server::validate_url(api_url))?;
         Ok(output_ok)
       })())
     },
@@ -1736,7 +1738,7 @@ fn wire__crate__api__data__video_providers__vidhide__vid_hide_get_direct_video_i
       let api_url = <String>::sse_decode(&mut deserializer);
       deserializer.end();
       move |context| async move {
-        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+        transform_result_sse::<_, crate::api::data::video_providers::error::VideoProviderError>(
           (move || async move {
             let output_ok = crate::api::data::video_providers::vidhide::VidHide::get_direct_video(
               &api_that, api_url,
@@ -1776,7 +1778,7 @@ fn wire__crate__api__data__video_providers__yourupload__your_upload_get_direct_v
       let api_url = <String>::sse_decode(&mut deserializer);
       deserializer.end();
       move |context| async move {
-        transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+        transform_result_sse::<_, crate::api::data::video_providers::error::VideoProviderError>(
           (move || async move {
             let output_ok =
               crate::api::data::video_providers::yourupload::YourUpload::get_direct_video(
@@ -1796,6 +1798,9 @@ fn wire__crate__api__data__video_providers__yourupload__your_upload_get_direct_v
 
 flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
   flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>
+);
+flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
+  flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LoggerError>
 );
 
 // Section: dart2rust
@@ -1818,6 +1823,16 @@ impl SseDecode for AnimeSourcesCacheManager {
   }
 }
 
+impl SseDecode for LoggerError {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut inner = <RustOpaqueMoi<
+      flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LoggerError>,
+    >>::sse_decode(deserializer);
+    return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
+  }
+}
+
 impl SseDecode for std::collections::HashMap<String, String> {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1826,24 +1841,11 @@ impl SseDecode for std::collections::HashMap<String, String> {
   }
 }
 
-impl SseDecode
-  for std::collections::HashMap<String, crate::api::data::caching::anime_sources::CacheRefreshError>
-{
-  // Codec=Sse (Serialization based), see doc to use other codecs
-  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-    let mut inner = <Vec<(
-      String,
-      crate::api::data::caching::anime_sources::CacheRefreshError,
-    )>>::sse_decode(deserializer);
-    return inner.into_iter().collect();
-  }
-}
-
-impl SseDecode for std::collections::HashMap<String, Vec<crate::api::data::models::AnimeSource>> {
+impl SseDecode for std::collections::HashMap<[u8; 16], Vec<crate::api::data::models::AnimeSource>> {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
     let mut inner =
-      <Vec<(String, Vec<crate::api::data::models::AnimeSource>)>>::sse_decode(deserializer);
+      <Vec<([u8; 16], Vec<crate::api::data::models::AnimeSource>)>>::sse_decode(deserializer);
     return inner.into_iter().collect();
   }
 }
@@ -1852,6 +1854,16 @@ impl SseDecode
   for RustOpaqueMoi<
     flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>,
   >
+{
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut inner = <usize>::sse_decode(deserializer);
+    return decode_rust_opaque_moi(inner);
+  }
+}
+
+impl SseDecode
+  for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LoggerError>>
 {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1933,7 +1945,6 @@ impl SseDecode for crate::api::data::models::AnimeSource {
     let mut var_prettyName = <String>::sse_decode(deserializer);
     let mut var_id = <String>::sse_decode(deserializer);
     let mut var_url = <String>::sse_decode(deserializer);
-    let mut var_otherUrls = <Vec<String>>::sse_decode(deserializer);
     let mut var_noMeta = <bool>::sse_decode(deserializer);
     let mut var_recommendations = <Option<String>>::sse_decode(deserializer);
     let mut var_isHentaiSource = <bool>::sse_decode(deserializer);
@@ -1942,7 +1953,6 @@ impl SseDecode for crate::api::data::models::AnimeSource {
       pretty_name: var_prettyName,
       id: var_id,
       url: var_url,
-      other_urls: var_otherUrls,
       no_meta: var_noMeta,
       recommendations: var_recommendations,
       is_hentai_source: var_isHentaiSource,
@@ -1994,17 +2004,45 @@ impl SseDecode for bool {
   }
 }
 
-impl SseDecode for crate::api::data::caching::anime_sources::CacheRefreshError {
+impl SseDecode for crate::api::data::caching::utils::CacheError {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
     let mut tag_ = <i32>::sse_decode(deserializer);
     match tag_ {
       0 => {
         let mut var_field0 = <String>::sse_decode(deserializer);
-        return crate::api::data::caching::anime_sources::CacheRefreshError::ConnectionOrDeserializationFailed(var_field0);
+        return crate::api::data::caching::utils::CacheError::InputOutput(var_field0);
+      }
+      _ => {
+        unimplemented!("");
+      }
+    }
+  }
+}
+
+impl SseDecode for crate::api::app::configuration::controllers::ConfigError {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut tag_ = <i32>::sse_decode(deserializer);
+    match tag_ {
+      0 => {
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        return crate::api::app::configuration::controllers::ConfigError::InputOutput(var_field0);
       }
       1 => {
-        return crate::api::data::caching::anime_sources::CacheRefreshError::InvalidData;
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        return crate::api::app::configuration::controllers::ConfigError::Infallible(var_field0);
+      }
+      2 => {
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        return crate::api::app::configuration::controllers::ConfigError::RonSpanned(var_field0);
+      }
+      3 => {
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        return crate::api::app::configuration::controllers::ConfigError::Ron(var_field0);
+      }
+      4 => {
+        return crate::api::app::configuration::controllers::ConfigError::NonInitializedConfig;
       }
       _ => {
         unimplemented!("");
@@ -2017,7 +2055,7 @@ impl SseDecode for crate::api::server::models::ConfigServer {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
     let mut var_enabled = <bool>::sse_decode(deserializer);
-    let mut var_uuid = <String>::sse_decode(deserializer);
+    let mut var_uuid = <[u8; 16]>::sse_decode(deserializer);
     let mut var_name = <Option<String>>::sse_decode(deserializer);
     let mut var_url = <String>::sse_decode(deserializer);
     let mut var_logoUrl = <Option<String>>::sse_decode(deserializer);
@@ -2197,38 +2235,6 @@ impl SseDecode for Vec<u8> {
   }
 }
 
-impl SseDecode
-  for Vec<(
-    String,
-    crate::api::data::caching::anime_sources::CacheRefreshError,
-  )>
-{
-  // Codec=Sse (Serialization based), see doc to use other codecs
-  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-    let mut len_ = <i32>::sse_decode(deserializer);
-    let mut ans_ = Vec::with_capacity(len_ as usize);
-    for idx_ in 0..len_ {
-      ans_.push(<(
-        String,
-        crate::api::data::caching::anime_sources::CacheRefreshError,
-      )>::sse_decode(deserializer));
-    }
-    return ans_;
-  }
-}
-
-impl SseDecode for Vec<(String, Vec<crate::api::data::models::AnimeSource>)> {
-  // Codec=Sse (Serialization based), see doc to use other codecs
-  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-    let mut len_ = <i32>::sse_decode(deserializer);
-    let mut ans_ = Vec::with_capacity(len_ as usize);
-    for idx_ in 0..len_ {
-      ans_.push(<(String, Vec<crate::api::data::models::AnimeSource>)>::sse_decode(deserializer));
-    }
-    return ans_;
-  }
-}
-
 impl SseDecode for Vec<(String, String)> {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -2236,6 +2242,18 @@ impl SseDecode for Vec<(String, String)> {
     let mut ans_ = Vec::with_capacity(len_ as usize);
     for idx_ in 0..len_ {
       ans_.push(<(String, String)>::sse_decode(deserializer));
+    }
+    return ans_;
+  }
+}
+
+impl SseDecode for Vec<([u8; 16], Vec<crate::api::data::models::AnimeSource>)> {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut len_ = <i32>::sse_decode(deserializer);
+    let mut ans_ = Vec::with_capacity(len_ as usize);
+    for idx_ in 0..len_ {
+      ans_.push(<([u8; 16], Vec<crate::api::data::models::AnimeSource>)>::sse_decode(deserializer));
     }
     return ans_;
   }
@@ -2320,6 +2338,33 @@ impl SseDecode for crate::api::data::metadata::utils::MetadataSourceConfig {
       enabled: var_enabled,
       source: var_source,
     };
+  }
+}
+
+impl SseDecode for crate::api::data::metadata::error::MetadataSourceError {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut tag_ = <i32>::sse_decode(deserializer);
+    match tag_ {
+      0 => {
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        return crate::api::data::metadata::error::MetadataSourceError::AniList(var_field0);
+      }
+      1 => {
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        return crate::api::data::metadata::error::MetadataSourceError::MyAnimeList(var_field0);
+      }
+      2 => {
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        return crate::api::data::metadata::error::MetadataSourceError::IntParse(var_field0);
+      }
+      3 => {
+        return crate::api::data::metadata::error::MetadataSourceError::PrecisionsParsing;
+      }
+      _ => {
+        unimplemented!("");
+      }
+    }
   }
 }
 
@@ -2437,30 +2482,6 @@ impl SseDecode for crate::api::app::configuration::models::PlaybackConfig {
   }
 }
 
-impl SseDecode
-  for (
-    String,
-    crate::api::data::caching::anime_sources::CacheRefreshError,
-  )
-{
-  // Codec=Sse (Serialization based), see doc to use other codecs
-  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-    let mut var_field0 = <String>::sse_decode(deserializer);
-    let mut var_field1 =
-      <crate::api::data::caching::anime_sources::CacheRefreshError>::sse_decode(deserializer);
-    return (var_field0, var_field1);
-  }
-}
-
-impl SseDecode for (String, Vec<crate::api::data::models::AnimeSource>) {
-  // Codec=Sse (Serialization based), see doc to use other codecs
-  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-    let mut var_field0 = <String>::sse_decode(deserializer);
-    let mut var_field1 = <Vec<crate::api::data::models::AnimeSource>>::sse_decode(deserializer);
-    return (var_field0, var_field1);
-  }
-}
-
 impl SseDecode for (String, String) {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -2470,20 +2491,24 @@ impl SseDecode for (String, String) {
   }
 }
 
+impl SseDecode for ([u8; 16], Vec<crate::api::data::models::AnimeSource>) {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut var_field0 = <[u8; 16]>::sse_decode(deserializer);
+    let mut var_field1 = <Vec<crate::api::data::models::AnimeSource>>::sse_decode(deserializer);
+    return (var_field0, var_field1);
+  }
+}
+
 impl SseDecode for crate::api::data::caching::anime_sources::RefreshJob {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
     let mut var_runningOn = <Vec<String>>::sse_decode(deserializer);
-    let mut var_errors = <std::collections::HashMap<
-      String,
-      crate::api::data::caching::anime_sources::CacheRefreshError,
-    >>::sse_decode(deserializer);
     let mut var_success = <u32>::sse_decode(deserializer);
     let mut var_error = <u32>::sse_decode(deserializer);
     let mut var_total = <u32>::sse_decode(deserializer);
     return crate::api::data::caching::anime_sources::RefreshJob {
       running_on: var_runningOn,
-      errors: var_errors,
       success: var_success,
       error: var_error,
       total: var_total,
@@ -2572,6 +2597,22 @@ impl SseDecode for crate::api::data::models::SerieStatus {
   }
 }
 
+impl SseDecode for crate::api::server::error::ServerError {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut tag_ = <i32>::sse_decode(deserializer);
+    match tag_ {
+      0 => {
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        return crate::api::server::error::ServerError::GraphQL(var_field0);
+      }
+      _ => {
+        unimplemented!("");
+      }
+    }
+  }
+}
+
 impl SseDecode for crate::api::app::configuration::models::ServersConfig {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -2593,6 +2634,25 @@ impl SseDecode for crate::api::data::models::SlimSerieMetadata {
       name: var_name,
       image: var_image,
     };
+  }
+}
+
+impl SseDecode for crate::api::data::caching::anime_sources::SourcesRefreshError {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut tag_ = <i32>::sse_decode(deserializer);
+    match tag_ {
+      0 => {
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        return crate::api::data::caching::anime_sources::SourcesRefreshError::GraphQL(var_field0);
+      }
+      1 => {
+        return crate::api::data::caching::anime_sources::SourcesRefreshError::InvalidData;
+      }
+      _ => {
+        unimplemented!("");
+      }
+    }
   }
 }
 
@@ -2656,6 +2716,14 @@ impl SseDecode for u8 {
   }
 }
 
+impl SseDecode for [u8; 16] {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut inner = <Vec<u8>>::sse_decode(deserializer);
+    return flutter_rust_bridge::for_generated::from_vec_to_array(inner);
+  }
+}
+
 impl SseDecode for () {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {}
@@ -2697,15 +2765,62 @@ impl SseDecode for crate::api::data::video_providers::vidhide::VidHide {
   }
 }
 
-impl SseDecode for crate::api::data::video_providers::utils::Video {
+impl SseDecode for crate::api::data::video_providers::Video {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
     let mut var_url = <Option<String>>::sse_decode(deserializer);
     let mut var_headers = <std::collections::HashMap<String, String>>::sse_decode(deserializer);
-    return crate::api::data::video_providers::utils::Video {
+    return crate::api::data::video_providers::Video {
       url: var_url,
       headers: var_headers,
     };
+  }
+}
+
+impl SseDecode for crate::api::data::video_providers::error::VideoProviderError {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+    let mut tag_ = <i32>::sse_decode(deserializer);
+    match tag_ {
+      0 => {
+        return crate::api::data::video_providers::error::VideoProviderError::UrlNoPathSegments;
+      }
+      1 => {
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        return crate::api::data::video_providers::error::VideoProviderError::Multiple(var_field0);
+      }
+      2 => {
+        return crate::api::data::video_providers::error::VideoProviderError::PackedScriptNotFound;
+      }
+      3 => {
+        return crate::api::data::video_providers::error::VideoProviderError::HLS2UrlNotFound;
+      }
+      4 => {
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        return crate::api::data::video_providers::error::VideoProviderError::JsUnpack(var_field0);
+      }
+      5 => {
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        return crate::api::data::video_providers::error::VideoProviderError::Regex(var_field0);
+      }
+      6 => {
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        return crate::api::data::video_providers::error::VideoProviderError::Pixeldrain(
+          var_field0,
+        );
+      }
+      7 => {
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        return crate::api::data::video_providers::error::VideoProviderError::Url(var_field0);
+      }
+      8 => {
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        return crate::api::data::video_providers::error::VideoProviderError::Request(var_field0);
+      }
+      _ => {
+        unimplemented!("");
+      }
+    }
   }
 }
 
@@ -2742,7 +2857,7 @@ fn pde_ffi_dispatcher_primary_impl(
 33 => wire__crate__api__app__configuration__models__appearance_config_default_impl(port, ptr, rust_vec_len, data_len),
 34 => wire__crate__api__app__configuration__models__downloads_config_default_impl(port, ptr, rust_vec_len, data_len),
 35 => wire__crate__api__data__metadata__utils__get_metadata_impl(port, ptr, rust_vec_len, data_len),
-36 => wire__crate__api__server__handler__get_server_impl(port, ptr, rust_vec_len, data_len),
+36 => wire__crate__api__server__get_server_impl(port, ptr, rust_vec_len, data_len),
 37 => wire__crate__api__app__sections__home_tabs_default_impl(port, ptr, rust_vec_len, data_len),
 38 => wire__crate__api__app__logging__init_logger_impl(port, ptr, rust_vec_len, data_len),
 39 => wire__crate__api__app__configuration__models__library_config_default_impl(port, ptr, rust_vec_len, data_len),
@@ -2753,7 +2868,7 @@ fn pde_ffi_dispatcher_primary_impl(
 44 => wire__crate__api__data__video_providers__mp4upload__mp_4_upload_get_direct_video_impl(port, ptr, rust_vec_len, data_len),
 45 => wire__crate__api__data__video_providers__pixeldrain__pixel_drain_get_direct_video_impl(port, ptr, rust_vec_len, data_len),
 46 => wire__crate__api__app__configuration__models__playback_config_default_impl(port, ptr, rust_vec_len, data_len),
-47 => wire__crate__api__server__handler__search_impl(port, ptr, rust_vec_len, data_len),
+47 => wire__crate__api__server__search_impl(port, ptr, rust_vec_len, data_len),
 48 => wire__crate__api__data__metadata__utils__search_metadata_impl(port, ptr, rust_vec_len, data_len),
 49 => wire__crate__api__data__models__serie_meta_confidence_default_impl(port, ptr, rust_vec_len, data_len),
 50 => wire__crate__api__data__models__serie_metadata_default_impl(port, ptr, rust_vec_len, data_len),
@@ -2782,7 +2897,7 @@ fn pde_ffi_dispatcher_sync_impl(
 2 => wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_auto_accessor_get_sources_impl(ptr, rust_vec_len, data_len),
 3 => wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_auto_accessor_set_last_update_impl(ptr, rust_vec_len, data_len),
 4 => wire__crate__api__data__caching__anime_sources__AnimeSourcesCacheManager_auto_accessor_set_sources_impl(ptr, rust_vec_len, data_len),
-58 => wire__crate__api__server__handler__validate_url_impl(ptr, rust_vec_len, data_len),
+58 => wire__crate__api__server__validate_url_impl(ptr, rust_vec_len, data_len),
                         _ => unreachable!(),
                     }
 }
@@ -2804,6 +2919,20 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<AnimeSourcesCacheManager>>
   for AnimeSourcesCacheManager
 {
   fn into_into_dart(self) -> FrbWrapper<AnimeSourcesCacheManager> {
+    self.into()
+  }
+}
+
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<LoggerError> {
+  fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+    flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self.0).into_dart()
+  }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for FrbWrapper<LoggerError> {}
+
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<LoggerError>> for LoggerError {
+  fn into_into_dart(self) -> FrbWrapper<LoggerError> {
     self.into()
   }
 }
@@ -2864,7 +2993,6 @@ impl flutter_rust_bridge::IntoDart for crate::api::data::models::AnimeSource {
       self.pretty_name.into_into_dart().into_dart(),
       self.id.into_into_dart().into_dart(),
       self.url.into_into_dart().into_dart(),
-      self.other_urls.into_into_dart().into_dart(),
       self.no_meta.into_into_dart().into_dart(),
       self.recommendations.into_into_dart().into_dart(),
       self.is_hentai_source.into_into_dart().into_dart(),
@@ -2935,22 +3063,62 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::app::configuration::models::A
   }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::data::caching::anime_sources::CacheRefreshError {
+impl flutter_rust_bridge::IntoDart for crate::api::data::caching::utils::CacheError {
   fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
-    match self {crate::api::data::caching::anime_sources::CacheRefreshError::ConnectionOrDeserializationFailed(field0) => { [0.into_dart(),
-field0.into_into_dart().into_dart()].into_dart() }
-crate::api::data::caching::anime_sources::CacheRefreshError::InvalidData => { [1.into_dart()].into_dart() }
- _ => { unimplemented!(""); }}
+    match self {
+      crate::api::data::caching::utils::CacheError::InputOutput(field0) => {
+        [0.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+      }
+      _ => {
+        unimplemented!("");
+      }
+    }
   }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-  for crate::api::data::caching::anime_sources::CacheRefreshError
+  for crate::api::data::caching::utils::CacheError
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<crate::api::data::caching::anime_sources::CacheRefreshError>
-  for crate::api::data::caching::anime_sources::CacheRefreshError
+impl flutter_rust_bridge::IntoIntoDart<crate::api::data::caching::utils::CacheError>
+  for crate::api::data::caching::utils::CacheError
 {
-  fn into_into_dart(self) -> crate::api::data::caching::anime_sources::CacheRefreshError {
+  fn into_into_dart(self) -> crate::api::data::caching::utils::CacheError {
+    self
+  }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::app::configuration::controllers::ConfigError {
+  fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+    match self {
+      crate::api::app::configuration::controllers::ConfigError::InputOutput(field0) => {
+        [0.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+      }
+      crate::api::app::configuration::controllers::ConfigError::Infallible(field0) => {
+        [1.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+      }
+      crate::api::app::configuration::controllers::ConfigError::RonSpanned(field0) => {
+        [2.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+      }
+      crate::api::app::configuration::controllers::ConfigError::Ron(field0) => {
+        [3.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+      }
+      crate::api::app::configuration::controllers::ConfigError::NonInitializedConfig => {
+        [4.into_dart()].into_dart()
+      }
+      _ => {
+        unimplemented!("");
+      }
+    }
+  }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+  for crate::api::app::configuration::controllers::ConfigError
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::app::configuration::controllers::ConfigError>
+  for crate::api::app::configuration::controllers::ConfigError
+{
+  fn into_into_dart(self) -> crate::api::app::configuration::controllers::ConfigError {
     self
   }
 }
@@ -3192,6 +3360,39 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::data::metadata::utils::Metada
   }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::data::metadata::error::MetadataSourceError {
+  fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+    match self {
+      crate::api::data::metadata::error::MetadataSourceError::AniList(field0) => {
+        [0.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+      }
+      crate::api::data::metadata::error::MetadataSourceError::MyAnimeList(field0) => {
+        [1.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+      }
+      crate::api::data::metadata::error::MetadataSourceError::IntParse(field0) => {
+        [2.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+      }
+      crate::api::data::metadata::error::MetadataSourceError::PrecisionsParsing => {
+        [3.into_dart()].into_dart()
+      }
+      _ => {
+        unimplemented!("");
+      }
+    }
+  }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+  for crate::api::data::metadata::error::MetadataSourceError
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::data::metadata::error::MetadataSourceError>
+  for crate::api::data::metadata::error::MetadataSourceError
+{
+  fn into_into_dart(self) -> crate::api::data::metadata::error::MetadataSourceError {
+    self
+  }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::data::metadata::utils::MetadataSources {
   fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
     match self {
@@ -3268,7 +3469,6 @@ impl flutter_rust_bridge::IntoDart for crate::api::data::caching::anime_sources:
   fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
     [
       self.running_on.into_into_dart().into_dart(),
-      self.errors.into_into_dart().into_dart(),
       self.success.into_into_dart().into_dart(),
       self.error.into_into_dart().into_dart(),
       self.total.into_into_dart().into_dart(),
@@ -3388,6 +3588,30 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::data::models::SerieStatus>
   }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::server::error::ServerError {
+  fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+    match self {
+      crate::api::server::error::ServerError::GraphQL(field0) => {
+        [0.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+      }
+      _ => {
+        unimplemented!("");
+      }
+    }
+  }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+  for crate::api::server::error::ServerError
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::server::error::ServerError>
+  for crate::api::server::error::ServerError
+{
+  fn into_into_dart(self) -> crate::api::server::error::ServerError {
+    self
+  }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::app::configuration::models::ServersConfig {
   fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
     [self.servers.into_into_dart().into_dart()].into_dart()
@@ -3423,6 +3647,36 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::data::models::SlimSerieMetada
   for crate::api::data::models::SlimSerieMetadata
 {
   fn into_into_dart(self) -> crate::api::data::models::SlimSerieMetadata {
+    self
+  }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart
+  for crate::api::data::caching::anime_sources::SourcesRefreshError
+{
+  fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+    match self {
+      crate::api::data::caching::anime_sources::SourcesRefreshError::GraphQL(field0) => {
+        [0.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+      }
+      crate::api::data::caching::anime_sources::SourcesRefreshError::InvalidData => {
+        [1.into_dart()].into_dart()
+      }
+      _ => {
+        unimplemented!("");
+      }
+    }
+  }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+  for crate::api::data::caching::anime_sources::SourcesRefreshError
+{
+}
+impl
+  flutter_rust_bridge::IntoIntoDart<crate::api::data::caching::anime_sources::SourcesRefreshError>
+  for crate::api::data::caching::anime_sources::SourcesRefreshError
+{
+  fn into_into_dart(self) -> crate::api::data::caching::anime_sources::SourcesRefreshError {
     self
   }
 }
@@ -3554,7 +3808,7 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::data::video_providers::vidhid
   }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::data::video_providers::utils::Video {
+impl flutter_rust_bridge::IntoDart for crate::api::data::video_providers::Video {
   fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
     [
       self.url.into_into_dart().into_dart(),
@@ -3564,13 +3818,63 @@ impl flutter_rust_bridge::IntoDart for crate::api::data::video_providers::utils:
   }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-  for crate::api::data::video_providers::utils::Video
+  for crate::api::data::video_providers::Video
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<crate::api::data::video_providers::utils::Video>
-  for crate::api::data::video_providers::utils::Video
+impl flutter_rust_bridge::IntoIntoDart<crate::api::data::video_providers::Video>
+  for crate::api::data::video_providers::Video
 {
-  fn into_into_dart(self) -> crate::api::data::video_providers::utils::Video {
+  fn into_into_dart(self) -> crate::api::data::video_providers::Video {
+    self
+  }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart
+  for crate::api::data::video_providers::error::VideoProviderError
+{
+  fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+    match self {
+      crate::api::data::video_providers::error::VideoProviderError::UrlNoPathSegments => {
+        [0.into_dart()].into_dart()
+      }
+      crate::api::data::video_providers::error::VideoProviderError::Multiple(field0) => {
+        [1.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+      }
+      crate::api::data::video_providers::error::VideoProviderError::PackedScriptNotFound => {
+        [2.into_dart()].into_dart()
+      }
+      crate::api::data::video_providers::error::VideoProviderError::HLS2UrlNotFound => {
+        [3.into_dart()].into_dart()
+      }
+      crate::api::data::video_providers::error::VideoProviderError::JsUnpack(field0) => {
+        [4.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+      }
+      crate::api::data::video_providers::error::VideoProviderError::Regex(field0) => {
+        [5.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+      }
+      crate::api::data::video_providers::error::VideoProviderError::Pixeldrain(field0) => {
+        [6.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+      }
+      crate::api::data::video_providers::error::VideoProviderError::Url(field0) => {
+        [7.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+      }
+      crate::api::data::video_providers::error::VideoProviderError::Request(field0) => {
+        [8.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+      }
+      _ => {
+        unimplemented!("");
+      }
+    }
+  }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+  for crate::api::data::video_providers::error::VideoProviderError
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::data::video_providers::error::VideoProviderError>
+  for crate::api::data::video_providers::error::VideoProviderError
+{
+  fn into_into_dart(self) -> crate::api::data::video_providers::error::VideoProviderError {
     self
   }
 }
@@ -3611,6 +3915,13 @@ impl SseEncode for AnimeSourcesCacheManager {
   }
 }
 
+impl SseEncode for LoggerError {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    <RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LoggerError>>>::sse_encode(flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self), serializer);
+  }
+}
+
 impl SseEncode for std::collections::HashMap<String, String> {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -3618,22 +3929,10 @@ impl SseEncode for std::collections::HashMap<String, String> {
   }
 }
 
-impl SseEncode
-  for std::collections::HashMap<String, crate::api::data::caching::anime_sources::CacheRefreshError>
-{
+impl SseEncode for std::collections::HashMap<[u8; 16], Vec<crate::api::data::models::AnimeSource>> {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-    <Vec<(
-      String,
-      crate::api::data::caching::anime_sources::CacheRefreshError,
-    )>>::sse_encode(self.into_iter().collect(), serializer);
-  }
-}
-
-impl SseEncode for std::collections::HashMap<String, Vec<crate::api::data::models::AnimeSource>> {
-  // Codec=Sse (Serialization based), see doc to use other codecs
-  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-    <Vec<(String, Vec<crate::api::data::models::AnimeSource>)>>::sse_encode(
+    <Vec<([u8; 16], Vec<crate::api::data::models::AnimeSource>)>>::sse_encode(
       self.into_iter().collect(),
       serializer,
     );
@@ -3644,6 +3943,17 @@ impl SseEncode
   for RustOpaqueMoi<
     flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>,
   >
+{
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    let (ptr, size) = self.sse_encode_raw();
+    <usize>::sse_encode(ptr, serializer);
+    <i32>::sse_encode(size, serializer);
+  }
+}
+
+impl SseEncode
+  for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LoggerError>>
 {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -3710,7 +4020,6 @@ impl SseEncode for crate::api::data::models::AnimeSource {
     <String>::sse_encode(self.pretty_name, serializer);
     <String>::sse_encode(self.id, serializer);
     <String>::sse_encode(self.url, serializer);
-    <Vec<String>>::sse_encode(self.other_urls, serializer);
     <bool>::sse_encode(self.no_meta, serializer);
     <Option<String>>::sse_encode(self.recommendations, serializer);
     <bool>::sse_encode(self.is_hentai_source, serializer);
@@ -3757,13 +4066,48 @@ impl SseEncode for bool {
   }
 }
 
-impl SseEncode for crate::api::data::caching::anime_sources::CacheRefreshError {
+impl SseEncode for crate::api::data::caching::utils::CacheError {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-    match self {crate::api::data::caching::anime_sources::CacheRefreshError::ConnectionOrDeserializationFailed(field0) => { <i32>::sse_encode(0, serializer); <String>::sse_encode(field0, serializer);
- }
-crate::api::data::caching::anime_sources::CacheRefreshError::InvalidData => { <i32>::sse_encode(1, serializer);  }
- _ => { unimplemented!(""); }}
+    match self {
+      crate::api::data::caching::utils::CacheError::InputOutput(field0) => {
+        <i32>::sse_encode(0, serializer);
+        <String>::sse_encode(field0, serializer);
+      }
+      _ => {
+        unimplemented!("");
+      }
+    }
+  }
+}
+
+impl SseEncode for crate::api::app::configuration::controllers::ConfigError {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    match self {
+      crate::api::app::configuration::controllers::ConfigError::InputOutput(field0) => {
+        <i32>::sse_encode(0, serializer);
+        <String>::sse_encode(field0, serializer);
+      }
+      crate::api::app::configuration::controllers::ConfigError::Infallible(field0) => {
+        <i32>::sse_encode(1, serializer);
+        <String>::sse_encode(field0, serializer);
+      }
+      crate::api::app::configuration::controllers::ConfigError::RonSpanned(field0) => {
+        <i32>::sse_encode(2, serializer);
+        <String>::sse_encode(field0, serializer);
+      }
+      crate::api::app::configuration::controllers::ConfigError::Ron(field0) => {
+        <i32>::sse_encode(3, serializer);
+        <String>::sse_encode(field0, serializer);
+      }
+      crate::api::app::configuration::controllers::ConfigError::NonInitializedConfig => {
+        <i32>::sse_encode(4, serializer);
+      }
+      _ => {
+        unimplemented!("");
+      }
+    }
   }
 }
 
@@ -3771,7 +4115,7 @@ impl SseEncode for crate::api::server::models::ConfigServer {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
     <bool>::sse_encode(self.enabled, serializer);
-    <String>::sse_encode(self.uuid, serializer);
+    <[u8; 16]>::sse_encode(self.uuid, serializer);
     <Option<String>>::sse_encode(self.name, serializer);
     <String>::sse_encode(self.url, serializer);
     <Option<String>>::sse_encode(self.logo_url, serializer);
@@ -3920,40 +4264,22 @@ impl SseEncode for Vec<u8> {
   }
 }
 
-impl SseEncode
-  for Vec<(
-    String,
-    crate::api::data::caching::anime_sources::CacheRefreshError,
-  )>
-{
-  // Codec=Sse (Serialization based), see doc to use other codecs
-  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-    <i32>::sse_encode(self.len() as _, serializer);
-    for item in self {
-      <(
-        String,
-        crate::api::data::caching::anime_sources::CacheRefreshError,
-      )>::sse_encode(item, serializer);
-    }
-  }
-}
-
-impl SseEncode for Vec<(String, Vec<crate::api::data::models::AnimeSource>)> {
-  // Codec=Sse (Serialization based), see doc to use other codecs
-  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-    <i32>::sse_encode(self.len() as _, serializer);
-    for item in self {
-      <(String, Vec<crate::api::data::models::AnimeSource>)>::sse_encode(item, serializer);
-    }
-  }
-}
-
 impl SseEncode for Vec<(String, String)> {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
     <i32>::sse_encode(self.len() as _, serializer);
     for item in self {
       <(String, String)>::sse_encode(item, serializer);
+    }
+  }
+}
+
+impl SseEncode for Vec<([u8; 16], Vec<crate::api::data::models::AnimeSource>)> {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    <i32>::sse_encode(self.len() as _, serializer);
+    for item in self {
+      <([u8; 16], Vec<crate::api::data::models::AnimeSource>)>::sse_encode(item, serializer);
     }
   }
 }
@@ -4020,6 +4346,32 @@ impl SseEncode for crate::api::data::metadata::utils::MetadataSourceConfig {
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
     <bool>::sse_encode(self.enabled, serializer);
     <crate::api::data::metadata::utils::MetadataSources>::sse_encode(self.source, serializer);
+  }
+}
+
+impl SseEncode for crate::api::data::metadata::error::MetadataSourceError {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    match self {
+      crate::api::data::metadata::error::MetadataSourceError::AniList(field0) => {
+        <i32>::sse_encode(0, serializer);
+        <String>::sse_encode(field0, serializer);
+      }
+      crate::api::data::metadata::error::MetadataSourceError::MyAnimeList(field0) => {
+        <i32>::sse_encode(1, serializer);
+        <String>::sse_encode(field0, serializer);
+      }
+      crate::api::data::metadata::error::MetadataSourceError::IntParse(field0) => {
+        <i32>::sse_encode(2, serializer);
+        <String>::sse_encode(field0, serializer);
+      }
+      crate::api::data::metadata::error::MetadataSourceError::PrecisionsParsing => {
+        <i32>::sse_encode(3, serializer);
+      }
+      _ => {
+        unimplemented!("");
+      }
+    }
   }
 }
 
@@ -4124,27 +4476,6 @@ impl SseEncode for crate::api::app::configuration::models::PlaybackConfig {
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {}
 }
 
-impl SseEncode
-  for (
-    String,
-    crate::api::data::caching::anime_sources::CacheRefreshError,
-  )
-{
-  // Codec=Sse (Serialization based), see doc to use other codecs
-  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-    <String>::sse_encode(self.0, serializer);
-    <crate::api::data::caching::anime_sources::CacheRefreshError>::sse_encode(self.1, serializer);
-  }
-}
-
-impl SseEncode for (String, Vec<crate::api::data::models::AnimeSource>) {
-  // Codec=Sse (Serialization based), see doc to use other codecs
-  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-    <String>::sse_encode(self.0, serializer);
-    <Vec<crate::api::data::models::AnimeSource>>::sse_encode(self.1, serializer);
-  }
-}
-
 impl SseEncode for (String, String) {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -4153,11 +4484,18 @@ impl SseEncode for (String, String) {
   }
 }
 
+impl SseEncode for ([u8; 16], Vec<crate::api::data::models::AnimeSource>) {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    <[u8; 16]>::sse_encode(self.0, serializer);
+    <Vec<crate::api::data::models::AnimeSource>>::sse_encode(self.1, serializer);
+  }
+}
+
 impl SseEncode for crate::api::data::caching::anime_sources::RefreshJob {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
     <Vec<String>>::sse_encode(self.running_on, serializer);
-    <std::collections::HashMap<String, crate::api::data::caching::anime_sources::CacheRefreshError>>::sse_encode(self.errors, serializer);
     <u32>::sse_encode(self.success, serializer);
     <u32>::sse_encode(self.error, serializer);
     <u32>::sse_encode(self.total, serializer);
@@ -4231,6 +4569,21 @@ impl SseEncode for crate::api::data::models::SerieStatus {
   }
 }
 
+impl SseEncode for crate::api::server::error::ServerError {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    match self {
+      crate::api::server::error::ServerError::GraphQL(field0) => {
+        <i32>::sse_encode(0, serializer);
+        <String>::sse_encode(field0, serializer);
+      }
+      _ => {
+        unimplemented!("");
+      }
+    }
+  }
+}
+
 impl SseEncode for crate::api::app::configuration::models::ServersConfig {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -4244,6 +4597,24 @@ impl SseEncode for crate::api::data::models::SlimSerieMetadata {
     <i32>::sse_encode(self.id, serializer);
     <Option<String>>::sse_encode(self.name, serializer);
     <Option<String>>::sse_encode(self.image, serializer);
+  }
+}
+
+impl SseEncode for crate::api::data::caching::anime_sources::SourcesRefreshError {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    match self {
+      crate::api::data::caching::anime_sources::SourcesRefreshError::GraphQL(field0) => {
+        <i32>::sse_encode(0, serializer);
+        <String>::sse_encode(field0, serializer);
+      }
+      crate::api::data::caching::anime_sources::SourcesRefreshError::InvalidData => {
+        <i32>::sse_encode(1, serializer);
+      }
+      _ => {
+        unimplemented!("");
+      }
+    }
   }
 }
 
@@ -4311,6 +4682,19 @@ impl SseEncode for u8 {
   }
 }
 
+impl SseEncode for [u8; 16] {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    <Vec<u8>>::sse_encode(
+      {
+        let boxed: Box<[_]> = Box::new(self);
+        boxed.into_vec()
+      },
+      serializer,
+    );
+  }
+}
+
 impl SseEncode for () {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {}
@@ -4344,11 +4728,55 @@ impl SseEncode for crate::api::data::video_providers::vidhide::VidHide {
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {}
 }
 
-impl SseEncode for crate::api::data::video_providers::utils::Video {
+impl SseEncode for crate::api::data::video_providers::Video {
   // Codec=Sse (Serialization based), see doc to use other codecs
   fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
     <Option<String>>::sse_encode(self.url, serializer);
     <std::collections::HashMap<String, String>>::sse_encode(self.headers, serializer);
+  }
+}
+
+impl SseEncode for crate::api::data::video_providers::error::VideoProviderError {
+  // Codec=Sse (Serialization based), see doc to use other codecs
+  fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+    match self {
+      crate::api::data::video_providers::error::VideoProviderError::UrlNoPathSegments => {
+        <i32>::sse_encode(0, serializer);
+      }
+      crate::api::data::video_providers::error::VideoProviderError::Multiple(field0) => {
+        <i32>::sse_encode(1, serializer);
+        <String>::sse_encode(field0, serializer);
+      }
+      crate::api::data::video_providers::error::VideoProviderError::PackedScriptNotFound => {
+        <i32>::sse_encode(2, serializer);
+      }
+      crate::api::data::video_providers::error::VideoProviderError::HLS2UrlNotFound => {
+        <i32>::sse_encode(3, serializer);
+      }
+      crate::api::data::video_providers::error::VideoProviderError::JsUnpack(field0) => {
+        <i32>::sse_encode(4, serializer);
+        <String>::sse_encode(field0, serializer);
+      }
+      crate::api::data::video_providers::error::VideoProviderError::Regex(field0) => {
+        <i32>::sse_encode(5, serializer);
+        <String>::sse_encode(field0, serializer);
+      }
+      crate::api::data::video_providers::error::VideoProviderError::Pixeldrain(field0) => {
+        <i32>::sse_encode(6, serializer);
+        <String>::sse_encode(field0, serializer);
+      }
+      crate::api::data::video_providers::error::VideoProviderError::Url(field0) => {
+        <i32>::sse_encode(7, serializer);
+        <String>::sse_encode(field0, serializer);
+      }
+      crate::api::data::video_providers::error::VideoProviderError::Request(field0) => {
+        <i32>::sse_encode(8, serializer);
+        <String>::sse_encode(field0, serializer);
+      }
+      _ => {
+        unimplemented!("");
+      }
+    }
   }
 }
 
@@ -4365,14 +4793,15 @@ mod io {
   // Section: imports
 
   use super::*;
+  use crate::api::app::logging::*;
   use crate::api::data::caching::anime_sources::AnimeSources;
   use crate::api::data::caching::anime_sources::*;
   use crate::api::data::caching::utils::CacheSource;
   use crate::api::data::caching::utils::Expirable;
   use crate::api::data::caching::utils::ReadWrite;
-  use crate::api::data::video_providers::utils::VideoProviderImpl;
+  use crate::api::data::video_providers::VideoProviderImpl;
   use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
-  use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
+  use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
   use flutter_rust_bridge::{Handler, IntoIntoDart};
 
   // Section: boilerplate
@@ -4392,6 +4821,20 @@ mod io {
   ) {
     MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>>::decrement_strong_count(ptr as _);
   }
+
+  #[unsafe(no_mangle)]
+  pub extern "C" fn frbgen_animebox_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLoggerError(
+    ptr: *const std::ffi::c_void,
+  ) {
+    MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LoggerError>>::increment_strong_count(ptr as _);
+  }
+
+  #[unsafe(no_mangle)]
+  pub extern "C" fn frbgen_animebox_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLoggerError(
+    ptr: *const std::ffi::c_void,
+  ) {
+    MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LoggerError>>::decrement_strong_count(ptr as _);
+  }
 }
 #[cfg(not(target_family = "wasm"))]
 pub use io::*;
@@ -4405,16 +4848,17 @@ mod web {
   // Section: imports
 
   use super::*;
+  use crate::api::app::logging::*;
   use crate::api::data::caching::anime_sources::AnimeSources;
   use crate::api::data::caching::anime_sources::*;
   use crate::api::data::caching::utils::CacheSource;
   use crate::api::data::caching::utils::Expirable;
   use crate::api::data::caching::utils::ReadWrite;
-  use crate::api::data::video_providers::utils::VideoProviderImpl;
+  use crate::api::data::video_providers::VideoProviderImpl;
   use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
   use flutter_rust_bridge::for_generated::wasm_bindgen;
   use flutter_rust_bridge::for_generated::wasm_bindgen::prelude::*;
-  use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
+  use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
   use flutter_rust_bridge::{Handler, IntoIntoDart};
 
   // Section: boilerplate
@@ -4433,6 +4877,20 @@ mod web {
     ptr: *const std::ffi::c_void,
   ) {
     MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AnimeSourcesCacheManager>>::decrement_strong_count(ptr as _);
+  }
+
+  #[wasm_bindgen]
+  pub fn rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLoggerError(
+    ptr: *const std::ffi::c_void,
+  ) {
+    MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LoggerError>>::increment_strong_count(ptr as _);
+  }
+
+  #[wasm_bindgen]
+  pub fn rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLoggerError(
+    ptr: *const std::ffi::c_void,
+  ) {
+    MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LoggerError>>::decrement_strong_count(ptr as _);
   }
 }
 #[cfg(target_family = "wasm")]

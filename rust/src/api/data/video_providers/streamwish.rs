@@ -1,10 +1,10 @@
 // SPDX-FileCopyrightText: 2026 iWisp360
 // SPDX-License-Identifier: AGPL-3.0-only
 
-use crate::api::data::video_providers::utils::{
-  CLIENT, Video, VideoProviderImpl, headermap_to_hashmap,
+use crate::api::data::{
+  network::CLIENT,
+  video_providers::{Video, VideoProviderImpl, error::VideoProviderError, headermap_to_hashmap},
 };
-use anyhow::Error;
 use js_unpack::JsUnpack;
 use rand::{rng, seq::SliceRandom};
 use regex::Regex;
@@ -15,7 +15,7 @@ use url::Url;
 pub struct StreamWish {}
 
 impl VideoProviderImpl for StreamWish {
-  async fn get_direct_video(&self, url: String) -> Result<Video, Error> {
+  async fn get_direct_video(&self, url: String) -> Result<Video, VideoProviderError> {
     let response: String = get_content(url).await?;
 
     let scripts_regex = Regex::new(r#"(?s)<script[^>]*>(.*?)<\/script>"#)?;
@@ -29,11 +29,9 @@ impl VideoProviderImpl for StreamWish {
     let packed_script: String = scripts
       .map(|capture| capture[1].to_string())
       .find(|element| element.contains("eval(function(p,a,c"))
-      .ok_or(anyhow::anyhow!("packed script is not found"))?;
+      .ok_or(VideoProviderError::PackedScriptNotFound)?;
 
-    let unpacked_script = JsUnpack::new(packed_script.as_str())
-      .unpack()
-      .map_err(Error::msg)?;
+    let unpacked_script = JsUnpack::new(packed_script.as_str()).unpack()?;
 
     let final_url = m3u8_regex
       .captures(unpacked_script.as_str())
@@ -46,11 +44,11 @@ impl VideoProviderImpl for StreamWish {
   }
 }
 
-async fn get_content(url: String) -> anyhow::Result<String> {
+async fn get_content(url: String) -> Result<String, VideoProviderError> {
   let parsed_url = Url::parse(url.as_str())?;
   let path = parsed_url
     .path_segments()
-    .ok_or(anyhow::anyhow!("Url without path segments"))?
+    .ok_or(VideoProviderError::UrlNoPathSegments)?
     .next_back()
     .unwrap_or_default();
 
@@ -80,7 +78,7 @@ async fn get_content(url: String) -> anyhow::Result<String> {
     }
   }
 
-  Err(anyhow::anyhow!(errors))
+  Err(VideoProviderError::Multiple(errors))
 }
 
 const DOMAINS: &[&str] = &[

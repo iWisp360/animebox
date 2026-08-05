@@ -3,10 +3,10 @@ import 'package:animebox/core/config.dart';
 import 'package:animebox/main.dart';
 import 'package:animebox/src/rust/api/data/caching/anime_sources.dart';
 import 'package:animebox/src/rust/api/data/models.dart';
-import 'package:animebox/src/rust/api/server/handler.dart';
+import 'package:animebox/src/rust/api/server.dart';
+import 'package:animebox/src/rust/api/server/error.dart';
 import 'package:animebox/src/rust/api/server/models.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class ServersPage extends StatefulWidget {
@@ -233,8 +233,8 @@ class _ServerDialogState extends State<ServerDialog> {
               if (context.mounted) {
                 Navigator.of(context).pop(server);
               }
-            } catch (e) {
-              textError = (e as AnyhowException).message;
+            } on ServerError_GraphQL catch (e) {
+              textError = e.field0;
             } finally {
               if (mounted) {
                 setState(() {

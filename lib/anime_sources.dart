@@ -48,27 +48,6 @@ class AnimeSourcesController {
                 content: Text(
                   "${data.success} sources refreshed and ${data.error} other sources threw errors",
                 ),
-                action: data.error > 0
-                    ? SnackBarAction(
-                        label: "See errors",
-                        onPressed: () => showModalBottomSheet(
-                          context: context,
-                          backgroundColor: Theme.of(
-                            context,
-                          ).colorScheme.surfaceContainerHigh,
-                          showDragHandle: true,
-                          builder: (context) => SingleChildScrollView(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                for (final error in data.errors.values)
-                                  Text(error.toString()),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
-                    : null,
               ),
             );
           }

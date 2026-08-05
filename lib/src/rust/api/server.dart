@@ -3,22 +3,24 @@
 
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
-import '../../frb_generated.dart';
-import '../data/models.dart';
-import 'models.dart';
+import '../frb_generated.dart';
+import '../lib.dart';
+import 'data/models.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'server/error.dart';
+import 'server/models.dart';
 
 String? validateUrl({required String url}) =>
-    RustLib.instance.api.crateApiServerHandlerValidateUrl(url: url);
+    RustLib.instance.api.crateApiServerValidateUrl(url: url);
 
 Future<ConfigServer> getServer({required String url}) =>
-    RustLib.instance.api.crateApiServerHandlerGetServer(url: url);
+    RustLib.instance.api.crateApiServerGetServer(url: url);
 
 Future<List<SearchResult>> search({
   required String serverUrl,
   required String pattern,
   required String sourceId,
-}) => RustLib.instance.api.crateApiServerHandlerSearch(
+}) => RustLib.instance.api.crateApiServerSearch(
   serverUrl: serverUrl,
   pattern: pattern,
   sourceId: sourceId,

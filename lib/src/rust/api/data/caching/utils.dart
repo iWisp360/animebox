@@ -5,6 +5,10 @@
 
 import '../../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
+part 'utils.freezed.dart';
+
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `fmt`, `fmt`, `from`
 
 abstract class CacheSource {
   Future<void> update();
@@ -20,4 +24,11 @@ abstract class GetPath {}
 
 abstract class ReadWrite {
   Future<void> writeToFile();
+}
+
+@freezed
+sealed class CacheError with _$CacheError implements FrbException {
+  const CacheError._();
+
+  const factory CacheError.inputOutput(String field0) = CacheError_InputOutput;
 }

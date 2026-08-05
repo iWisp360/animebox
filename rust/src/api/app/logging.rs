@@ -5,7 +5,7 @@ use log4rs::{
   config::{Appender, Root},
 };
 use serde::{Deserialize, Serialize};
-use std::sync::OnceLock;
+use std::{io, sync::OnceLock};
 
 pub struct CoreLoggerSettings {
   pub path: String,
@@ -18,9 +18,19 @@ pub enum LogLevel {
   Debug,
 }
 
+#[derive(thiserror::Error, Debug)]
+pub enum LoggerError {
+  #[error("The logger implementation failed: {0}")]
+  SetLogger(#[from] log::SetLoggerError),
+  #[error("I/O error: {0}")]
+  InputOutput(#[from] io::Error),
+  #[error("Logger configuration error: {0}")]
+  LoggerConfig(#[from] log4rs::config::runtime::ConfigErrors),
+}
+
 static LOGGER_HANDLE: OnceLock<Handle> = OnceLock::new();
 
-pub fn init_logger(settings: CoreLoggerSettings) -> anyhow::Result<()> {
+pub fn init_logger(settings: CoreLoggerSettings) -> Result<(), LoggerError> {
   if LOGGER_HANDLE.get().is_none() {
     LOGGER_HANDLE
       .set(log4rs::init_config(

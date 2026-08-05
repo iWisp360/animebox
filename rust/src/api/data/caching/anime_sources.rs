@@ -8,11 +8,17 @@ use crate::{
       caching::utils::{CacheSource, Expirable, GetPath, ReadWrite},
       models::AnimeSource,
     },
-    server::{graphql::SERVER_SUPPORTED_SOURCES_QUERY, models::ConfigServer},
+    server::{
+      error::GraphQLError,
+      graphql::{Client, SERVER_SUPPORTED_SOURCES_QUERY},
+      models::ConfigServer,
+    },
   },
   frb_generated::StreamSink,
+  impl_string_representation,
 };
 use flutter_rust_bridge::frb;
+use log::error;
 use ron::ser::to_string_pretty;
 use serde::{Deserialize, Serialize};
 use std::{
@@ -21,6 +27,7 @@ use std::{
   io,
   path::PathBuf,
 };
+use uuid::Uuid;
 
 #[derive(Deserialize)]
 pub struct ServerSourcesResponse {
@@ -34,26 +41,26 @@ pub struct ServerSources {
   pub sources: Vec<AnimeSource>,
 }
 
-#[derive(thiserror::Error, Debug, Clone)]
-pub enum CacheRefreshError {
-  #[error("The connection to this server or the deserialization process failed")]
-  ConnectionOrDeserializationFailed(String),
+#[derive(thiserror::Error, Debug)]
+pub enum SourcesRefreshError {
+  #[error("Server error: {0}")]
+  GraphQL(String),
   #[error("This server returned invalid data")]
   InvalidData,
 }
 
-#[frb(unignore)]
-#[derive(Clone, Debug)]
+impl_string_representation!(SourcesRefreshError, (GraphQL, GraphQLError));
+
+#[derive(Debug, Clone)]
 pub struct RefreshJob {
   pub running_on: Vec<String>,
-  pub errors: HashMap<String, CacheRefreshError>,
   pub success: u32,
   pub error: u32,
   pub total: u32,
 }
 
 impl AnimeSources for AnimeSourcesCacheManager {
-  fn get_sources(&self) -> HashMap<String, Vec<AnimeSource>> {
+  fn get_sources(&self) -> HashMap<[u8; 16], Vec<AnimeSource>> {
     self.sources.clone()
   }
 
@@ -64,19 +71,21 @@ impl AnimeSources for AnimeSourcesCacheManager {
     only_missing: bool,
     progress_sink: StreamSink<RefreshJob>,
     servers: Vec<ConfigServer>,
-  ) -> anyhow::Result<()> {
+  ) -> Result<(), SourcesRefreshError> {
     let needed_servers = if only_missing {
       servers
         .iter()
-        .filter(|s| !self.sources.contains_key(s.uuid.as_str()))
+        .filter(|s| !self.sources.contains_key(&s.uuid))
         .collect::<Vec<&ConfigServer>>()
     } else {
       servers.iter().collect()
     };
 
     let mut refresh_job = RefreshJob {
-      errors: HashMap::new(),
-      running_on: needed_servers.iter().map(|s| s.uuid.clone()).collect(),
+      running_on: needed_servers
+        .iter()
+        .map(|s| Uuid::from_bytes(s.uuid).to_string())
+        .collect(),
       success: 0,
       error: 0,
       total: needed_servers.len() as u32,
@@ -86,40 +95,30 @@ impl AnimeSources for AnimeSourcesCacheManager {
       let _ = progress_sink.add(refresh_job);
       Ok(())
     } else if self.is_expired() || force_fetch || self.sources.is_empty() {
-      let mut new_sources: HashMap<String, Vec<AnimeSource>> = HashMap::new();
+      let mut new_sources: HashMap<[u8; 16], Vec<AnimeSource>> = HashMap::new();
 
       for server in needed_servers {
-        let client = gql_client::Client::new(server.url.clone());
+        let client = Client::new(server.url.as_str());
         match client
           .query::<ServerSourcesResponse>(SERVER_SUPPORTED_SOURCES_QUERY)
           .await
         {
           Ok(supported_sources) => {
-            if let Some(supported_sources) = supported_sources {
-              new_sources.insert(server.uuid.clone(), supported_sources.response.sources);
-              refresh_job.success += 1;
-              refresh_job.running_on.retain(|e| e.as_str() != server.uuid);
-              if progress_sink.add(refresh_job.clone()).is_err() {
-                return Ok(());
-              }
-            } else {
-              refresh_job
-                .errors
-                .insert(server.uuid.clone(), CacheRefreshError::InvalidData);
-              refresh_job.error += 1;
-              refresh_job.running_on.retain(|e| e.as_str() != server.uuid);
-              if progress_sink.add(refresh_job.clone()).is_err() {
-                return Ok(());
-              }
+            new_sources.insert(server.uuid, supported_sources.response.sources);
+            refresh_job.success += 1;
+            refresh_job
+              .running_on
+              .retain(|e| *e != Uuid::from_bytes(server.uuid).to_string());
+
+            if progress_sink.add(refresh_job.clone()).is_err() {
+              return Ok(());
             }
           }
 
           Err(error) => {
-            refresh_job.errors.insert(
-              server.uuid.clone(),
-              CacheRefreshError::ConnectionOrDeserializationFailed(
-                anyhow::anyhow!(error).to_string(),
-              ),
+            error!(
+              "Refresh error for uuid {}: {error}",
+              Uuid::from_bytes(server.uuid)
             );
 
             refresh_job.error += 1;
@@ -144,12 +143,12 @@ static ANIME_SOURCES_CACHE_PATH: &str = "animebox.sources.ron";
 #[frb(opaque)]
 #[derive(Deserialize, Serialize, Default)]
 pub struct AnimeSourcesCacheManager {
-  pub sources: HashMap<String, Vec<AnimeSource>>,
+  pub sources: HashMap<[u8; 16], Vec<AnimeSource>>,
   pub last_update: i64,
 }
 
 pub trait AnimeSources {
-  fn get_sources(&self) -> HashMap<String, Vec<AnimeSource>>;
+  fn get_sources(&self) -> HashMap<[u8; 16], Vec<AnimeSource>>;
   fn refresh_sources(
     &mut self,
     force_fetch: bool,
@@ -157,12 +156,12 @@ pub trait AnimeSources {
     only_missing: bool,
     progress_sink: StreamSink<RefreshJob>,
     servers: Vec<ConfigServer>,
-  ) -> impl std::future::Future<Output = anyhow::Result<()>> + Send;
+  ) -> impl std::future::Future<Output = Result<(), SourcesRefreshError>> + Send;
 }
 
 #[frb(ignore)]
 impl GetPath for AnimeSourcesCacheManager {
-  fn origin_path() -> anyhow::Result<String, io::Error> {
+  fn origin_path() -> Result<String, io::Error> {
     if let Some(path) = CONFIG_PATH.get() {
       Ok(
         PathBuf::from(path)

@@ -1,9 +1,12 @@
-use crate::api::app::{PRETTY_CONFIG, configuration::models::AnimeBoxConfig};
+use crate::{
+  api::app::{PRETTY_CONFIG, configuration::models::AnimeBoxConfig},
+  impl_string_representation,
+};
 use flutter_rust_bridge::frb;
 use log::{debug, error, info};
 use std::{
   fs::{File, create_dir_all},
-  io::{BufReader, BufWriter, ErrorKind, Read, Write},
+  io::{self, BufReader, BufWriter, ErrorKind, Read, Write},
   path::PathBuf,
   str::FromStr,
   sync::{
@@ -12,7 +15,28 @@ use std::{
   },
   time::Duration,
 };
-use uuid::Uuid;
+
+#[derive(thiserror::Error, Debug)]
+pub enum ConfigError {
+  #[error("I/O error: {0}")]
+  InputOutput(String),
+  #[error("Infallible error: {0}")]
+  Infallible(String),
+  #[error("RON spanned error: {0}")]
+  RonSpanned(String),
+  #[error("RON error: {0}")]
+  Ron(String),
+  #[error("Config was not initialized")]
+  NonInitializedConfig,
+}
+
+impl_string_representation!(
+  ConfigError,
+  (Ron, ron::Error),
+  (RonSpanned, ron::de::SpannedError),
+  (InputOutput, io::Error),
+  (Infallible, std::convert::Infallible)
+);
 
 static ANIMEBOX_CONFIG: &str = "animebox.ron";
 static DEBOUNCE: LazyLock<AtomicU64> = LazyLock::new(|| AtomicU64::new(0));
@@ -20,7 +44,7 @@ static DEBOUNCE: LazyLock<AtomicU64> = LazyLock::new(|| AtomicU64::new(0));
 pub static CONFIG_PATH: OnceLock<String> = OnceLock::new();
 
 impl AnimeBoxConfig {
-  pub fn init_config(path: String) -> anyhow::Result<AnimeBoxConfig> {
+  pub fn init_config(path: String) -> Result<AnimeBoxConfig, ConfigError> {
     let mut config_path = PathBuf::from_str(CONFIG_PATH.get_or_init(|| path).as_str())?;
     create_dir_all(&config_path)?;
 
@@ -35,8 +59,8 @@ impl AnimeBoxConfig {
           Self::write_config_to_file(&config, &config_path)?;
           return Ok(config);
         }
-        e => {
-          return Err(anyhow::anyhow!("While opening config file: {e}"));
+        _ => {
+          return Err(error.into());
         }
       },
     };
@@ -46,7 +70,7 @@ impl AnimeBoxConfig {
     let mut contents = String::new();
     reader.read_to_string(&mut contents)?;
 
-    let mut config: AnimeBoxConfig = match ron::from_str(contents.as_str()) {
+    let config: AnimeBoxConfig = match ron::from_str(contents.as_str()) {
       Ok(config) => config,
       Err(error) => {
         error!("While deserializing config: {error}");
@@ -54,20 +78,12 @@ impl AnimeBoxConfig {
       }
     };
 
-    for i in 0..config.servers.servers.len() {
-      if config.servers.servers[i].uuid.is_empty()
-        || Uuid::try_parse(config.servers.servers[i].uuid.as_str()).is_err()
-      {
-        config.servers.servers.remove(0);
-      }
-    }
-
     Ok(config)
   }
 
-  pub async fn update(&self) -> anyhow::Result<()> {
+  pub async fn update(&self) -> Result<(), ConfigError> {
     if CONFIG_PATH.get().is_none() {
-      return Err(anyhow::anyhow!("Config path is uninitialized"));
+      return Err(ConfigError::NonInitializedConfig);
     }
 
     let id = DEBOUNCE.fetch_add(1, Ordering::SeqCst) + 1;
@@ -78,14 +94,14 @@ impl AnimeBoxConfig {
     } else {
       info!("Updating config");
       match CONFIG_PATH.get() {
-        None => Err(anyhow::anyhow!("Config path is uninitialized")),
+        None => Err(ConfigError::NonInitializedConfig),
         Some(path) => self.write_config_to_file(&PathBuf::from_str(path)?.join(ANIMEBOX_CONFIG)),
       }
     }
   }
 
   #[frb(ignore)]
-  fn write_config_to_file(&self, path: &PathBuf) -> anyhow::Result<()> {
+  fn write_config_to_file(&self, path: &PathBuf) -> Result<(), ConfigError> {
     let file = File::create(path)?;
     let mut writer = BufWriter::new(file);
 

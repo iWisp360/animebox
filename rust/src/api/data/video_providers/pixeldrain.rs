@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 iWisp360
 // SPDX-License-Identifier: AGPL-3.0-only
 
-use crate::api::data::video_providers::utils::{Video, VideoProviderImpl};
+use crate::api::data::video_providers::{Video, VideoProviderImpl, error::VideoProviderError};
 use std::collections::HashMap;
 use url::Url;
 
@@ -16,7 +16,7 @@ pub enum PixeldrainError {
 pub struct PixelDrain {}
 
 impl VideoProviderImpl for PixelDrain {
-  async fn get_direct_video(&self, url: String) -> anyhow::Result<Video>
+  async fn get_direct_video(&self, url: String) -> Result<Video, VideoProviderError>
   where
     Self: Sized,
   {

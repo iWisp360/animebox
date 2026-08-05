@@ -4,7 +4,9 @@
 use crate::api::{
   app::configuration::models::AnimeBoxConfig,
   data::{
-    metadata::{anilist::AniListMetadata, myanimelist::MyAnimeListMetadata},
+    metadata::{
+      anilist::AniListMetadata, error::MetadataSourceError, myanimelist::MyAnimeListMetadata,
+    },
     models::{DateObject, SerieMetadata, SlimSerieMetadata},
   },
 };
@@ -23,12 +25,12 @@ pub trait MetadataSource {
     &self,
     query: String,
     precision: f64,
-  ) -> impl Future<Output = anyhow::Result<Option<SerieMetadata>>> + Send;
+  ) -> impl Future<Output = Result<Option<SerieMetadata>, MetadataSourceError>> + Send;
 
   fn get_metadata_for_serie(
     &self,
     id: String,
-  ) -> impl Future<Output = anyhow::Result<Option<SerieMetadata>>> + Send;
+  ) -> impl Future<Output = Result<Option<SerieMetadata>, MetadataSourceError>> + Send;
 }
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -91,7 +93,7 @@ pub async fn search_metadata(
   config: &AnimeBoxConfig,
   source: Option<MetadataSources>,
   precision: f64,
-) -> anyhow::Result<Option<SerieMetadata>> {
+) -> Result<Option<SerieMetadata>, MetadataSourceError> {
   if let Some(provider) = source {
     return call_search_metadata(query, &provider, precision).await;
   } else if config
@@ -123,7 +125,7 @@ pub async fn call_search_metadata(
   query: String,
   metadata_source: &MetadataSources,
   precision: f64,
-) -> anyhow::Result<Option<SerieMetadata>> {
+) -> Result<Option<SerieMetadata>, MetadataSourceError> {
   match metadata_source {
     MetadataSources::MyAnimeList => {
       MyAnimeListMetadata {}
@@ -137,7 +139,7 @@ pub async fn call_search_metadata(
 pub async fn get_metadata(
   id: String,
   metadata_source: &MetadataSources,
-) -> anyhow::Result<Option<SerieMetadata>> {
+) -> Result<Option<SerieMetadata>, MetadataSourceError> {
   match metadata_source {
     MetadataSources::MyAnimeList => MyAnimeListMetadata {}.get_metadata_for_serie(id).await,
     MetadataSources::AniList => AniListMetadata {}.get_metadata_for_serie(id).await,

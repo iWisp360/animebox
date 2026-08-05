@@ -3,9 +3,12 @@
 
 use crate::{
   api::data::{
-    metadata::utils::{
-      JIKAN_CLIENT, MetadataSource, MetadataSources, SerieNames, SlimMetaGetter, ToDateObject,
-      ToSerieMetadata, ToSlimMeta, choose_name,
+    metadata::{
+      error::MetadataSourceError,
+      utils::{
+        JIKAN_CLIENT, MetadataSource, MetadataSources, SerieNames, SlimMetaGetter, ToDateObject,
+        ToSerieMetadata, ToSlimMeta, choose_name,
+      },
     },
     models::{DateObject, SerieMetaConfidence, SerieMetadata, SerieStatus, SlimSerieMetadata},
   },
@@ -25,7 +28,7 @@ impl MetadataSource for MyAnimeListMetadata {
     &self,
     serie: String,
     min_precision: f64,
-  ) -> anyhow::Result<Option<SerieMetadata>> {
+  ) -> Result<Option<SerieMetadata>, MetadataSourceError> {
     let serie = serie.to_title_case();
     let serie = serie.as_str();
 
@@ -48,7 +51,7 @@ impl MetadataSource for MyAnimeListMetadata {
           .iter()
           .max_by(|a, b| a.1.partial_cmp(&b.1).unwrap_or(Ordering::Equal))
           .map(|(a, p)| (*a, *p))
-          .ok_or_else(|| anyhow::anyhow!("Error while parsing metadata titles precisions"))?;
+          .ok_or_else(|| MetadataSourceError::PrecisionsParsing)?;
 
         let mut result_metadata = matching_serie.to_serie_metadata();
         result_metadata.finding_precision = precision;
@@ -67,7 +70,10 @@ impl MetadataSource for MyAnimeListMetadata {
     }
   }
 
-  async fn get_metadata_for_serie(&self, id: String) -> anyhow::Result<Option<SerieMetadata>> {
+  async fn get_metadata_for_serie(
+    &self,
+    id: String,
+  ) -> Result<Option<SerieMetadata>, MetadataSourceError> {
     let id = id.parse()?;
 
     match JIKAN_CLIENT.get_anime(id).await {

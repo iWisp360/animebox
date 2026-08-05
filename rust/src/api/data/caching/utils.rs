@@ -11,10 +11,20 @@ use std::{
   time::Duration,
 };
 
+use crate::impl_string_representation;
+
 static CACHE_TTL: LazyLock<Duration> = LazyLock::new(|| Duration::from_hours(48));
 
+#[derive(thiserror::Error, Debug)]
+pub enum CacheError {
+  #[error("I/O error: {0}")]
+  InputOutput(String),
+}
+
+impl_string_representation!(CacheError, (InputOutput, io::Error));
+
 pub trait CacheSource: for<'a> Deserialize<'a> + Serialize + ReadWrite + Default {
-  fn init() -> anyhow::Result<Self>
+  fn init() -> Result<Self, CacheError>
   where
     Self: Sized,
   {
@@ -33,13 +43,13 @@ pub trait CacheSource: for<'a> Deserialize<'a> + Serialize + ReadWrite + Default
     }
   }
 
-  fn update(&self) -> anyhow::Result<(), io::Error> {
+  fn update(&self) -> Result<(), io::Error> {
     self.write_to_file()
   }
 }
 
 pub trait ReadWrite: GetPath + ToString {
-  fn read_from_file() -> anyhow::Result<String, io::Error> {
+  fn read_from_file() -> Result<String, io::Error> {
     let path = Self::origin_path()?;
 
     let file = File::open(path)?;
@@ -50,7 +60,7 @@ pub trait ReadWrite: GetPath + ToString {
 
     Ok(contents)
   }
-  fn write_to_file(&self) -> anyhow::Result<(), io::Error> {
+  fn write_to_file(&self) -> Result<(), io::Error> {
     let path = PathBuf::from(Self::origin_path()?);
 
     if let Some(parent) = path.parent() {
@@ -66,7 +76,7 @@ pub trait ReadWrite: GetPath + ToString {
 }
 
 pub trait GetPath {
-  fn origin_path() -> anyhow::Result<String, io::Error>;
+  fn origin_path() -> Result<String, io::Error>;
 }
 
 pub trait Expirable {

@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 iWisp360
 // SPDX-License-Identifier: AGPL-3.0-only
 
-use crate::api::data::{metadata::utils::MetadataSources, video_providers::utils::VideoProvider};
+use crate::api::data::{metadata::utils::MetadataSources, video_providers::VideoProvider};
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, PartialEq, Eq, Clone)]
@@ -10,8 +10,6 @@ pub struct AnimeSource {
   pub pretty_name: String,
   pub id: String,
   pub url: String,
-  #[serde(rename = "otherUrls")]
-  pub other_urls: Vec<String>,
   /// disables metadata search on the client. Useful for donghua or sources with bad serie names
   #[serde(rename = "noMetaProvider")]
   pub no_meta: bool,

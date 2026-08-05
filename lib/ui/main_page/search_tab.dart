@@ -1,4 +1,5 @@
-import 'package:animebox/src/rust/api/server/handler.dart';
+import 'package:animebox/src/rust/api/server.dart';
+import 'package:animebox/src/rust/api/server/error.dart';
 import 'package:animebox/ui/utils.dart';
 import 'package:animebox/ui/widgets/search_result_card.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,16 @@ class _SearchTabState extends State<SearchTab> {
     super.dispose();
   }
 
+  String extractErrorMessage(Object? error) {
+    switch (error) {
+      case ServerError(:final field0):
+        return field0;
+
+      default:
+        return "Failed to get error";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -74,7 +85,7 @@ class _SearchTabState extends State<SearchTab> {
             child: snapshot.connectionState == .waiting
                 ? const Center(child: CircularProgressIndicator())
                 : snapshot.hasError
-                ? Center(child: Text("${snapshot.error}"))
+                ? Center(child: Text(extractErrorMessage(snapshot.error)))
                 : widget.query.isEmpty
                 ? const Center(child: Text("Enter your query"))
                 : snapshot.data!.isEmpty

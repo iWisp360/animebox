@@ -5,7 +5,6 @@ use anilist_moe::{
   enums::media::MediaStatus,
   objects::{common::FuzzyDate, media::Media},
 };
-use anyhow::Error;
 use flutter_rust_bridge::frb;
 use heck::ToTitleCase;
 use std::{cmp::Ordering, collections::HashSet};
@@ -13,6 +12,7 @@ use std::{cmp::Ordering, collections::HashSet};
 use crate::{
   api::data::{
     metadata::{
+      error::MetadataSourceError,
       myanimelist::match_confidence,
       utils::{
         ANILIST_CLIENT, MetadataSource, MetadataSources, SerieNames, SlimMetaGetter, ToDateObject,
@@ -32,7 +32,7 @@ impl MetadataSource for AniListMetadata {
     &self,
     serie: String,
     min_precision: f64,
-  ) -> Result<Option<SerieMetadata>, Error> {
+  ) -> Result<Option<SerieMetadata>, MetadataSourceError> {
     let serie = serie.to_title_case();
     let serie = serie.as_str();
 
@@ -49,7 +49,7 @@ impl MetadataSource for AniListMetadata {
           .iter()
           .max_by(|a, b| a.1.partial_cmp(&b.1).unwrap_or(Ordering::Equal))
           .map(|(a, p)| (*a, *p))
-          .ok_or_else(|| Error::msg("Error while parsing metadata titles precisions"))?;
+          .ok_or_else(|| MetadataSourceError::PrecisionsParsing)?;
 
         let mut result_metadata = matching_serie.to_serie_metadata();
 
@@ -68,7 +68,10 @@ impl MetadataSource for AniListMetadata {
     }
   }
 
-  async fn get_metadata_for_serie(&self, id: String) -> Result<Option<SerieMetadata>, Error> {
+  async fn get_metadata_for_serie(
+    &self,
+    id: String,
+  ) -> Result<Option<SerieMetadata>, MetadataSourceError> {
     let id = id.parse()?;
 
     match ANILIST_CLIENT.anime().get_anime_by_id(id).await {

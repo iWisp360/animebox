@@ -14,7 +14,6 @@ class AnimeSource {
   final String prettyName;
   final String id;
   final String url;
-  final List<String> otherUrls;
 
   /// disables metadata search on the client. Useful for donghua or sources with bad serie names
   final bool noMeta;
@@ -26,7 +25,6 @@ class AnimeSource {
     required this.prettyName,
     required this.id,
     required this.url,
-    required this.otherUrls,
     required this.noMeta,
     this.recommendations,
     required this.isHentaiSource,
@@ -38,7 +36,6 @@ class AnimeSource {
       prettyName.hashCode ^
       id.hashCode ^
       url.hashCode ^
-      otherUrls.hashCode ^
       noMeta.hashCode ^
       recommendations.hashCode ^
       isHentaiSource.hashCode ^
@@ -52,7 +49,6 @@ class AnimeSource {
           prettyName == other.prettyName &&
           id == other.id &&
           url == other.url &&
-          otherUrls == other.otherUrls &&
           noMeta == other.noMeta &&
           recommendations == other.recommendations &&
           isHentaiSource == other.isHentaiSource &&
