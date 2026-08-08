@@ -4,7 +4,7 @@
   anime series with friends.";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
+    nixpkgs.url = "nixpkgs/nixos-unstable";
   };
 
   outputs =
@@ -63,20 +63,16 @@
       devShells.${system}.default = pkgs.mkShell (
         commonEnv
         // {
-          LD_LIBRARY_PATH = "${pkgs.lib.makeLibraryPath (
-            with pkgs;
-            [
-              mpv
-            ]
-          )}";
+          nativeBuildInputs = with pkgs; [
+            pkg-config
+            mpv
+          ];
 
           buildInputs = with pkgs; [
             flutter
             glib
-            mpv
             libepoxy
             pango
-            pkg-config
             ninja
             at-spi2-core
             gtk3
