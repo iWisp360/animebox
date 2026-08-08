@@ -17,7 +17,7 @@ class ConfigPathRepositoryImplFallback implements ConfigPathRepository {
   }
 }
 
-class ConfigPathrepositoryImplLinux implements ConfigPathRepository {
+class ConfigPathRepositoryImplLinux implements ConfigPathRepository {
   @override
   Future<Directory> getConfigPath() async {
     var homeDir = Platform.environment["HOME"];

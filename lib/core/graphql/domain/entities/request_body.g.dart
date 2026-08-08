@@ -7,4 +7,7 @@ part of 'request_body.dart';
 // **************************************************************************
 
 Map<String, dynamic> _$GraphqlRequestBodyToJson(GraphqlRequestBody instance) =>
-    <String, dynamic>{'query': instance.query, 'variables': instance.variables};
+    <String, dynamic>{
+      'query': instance.query,
+      'variables': ?instance.variables,
+    };

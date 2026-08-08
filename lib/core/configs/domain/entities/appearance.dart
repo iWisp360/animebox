@@ -12,6 +12,8 @@ abstract class AppearanceConfig with _$AppearanceConfig {
     @Default(HomeScreenTab.home) HomeScreenTab defaultHomeScreenTab,
     @Default(ThemeMode.system) ThemeMode themeMode,
     @Default(AppColorPalette.dynamic) AppColorPalette colorPalette,
+    @Default(true) bool relativeDates,
+    @Default(false) bool pitchBlack,
   }) = _AppearanceConfig;
 
   factory AppearanceConfig.fromJson(Map<String, dynamic> json) =>

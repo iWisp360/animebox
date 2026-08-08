@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AppearanceConfig {
 
- Language get lang; HomeScreenTab get defaultHomeScreenTab; ThemeMode get themeMode; AppColorPalette get colorPalette;
+ Language get lang; HomeScreenTab get defaultHomeScreenTab; ThemeMode get themeMode; AppColorPalette get colorPalette; bool get relativeDates; bool get pitchBlack;
 /// Create a copy of AppearanceConfig
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $AppearanceConfigCopyWith<AppearanceConfig> get copyWith => _$AppearanceConfigCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppearanceConfig&&(identical(other.lang, lang) || other.lang == lang)&&(identical(other.defaultHomeScreenTab, defaultHomeScreenTab) || other.defaultHomeScreenTab == defaultHomeScreenTab)&&(identical(other.themeMode, themeMode) || other.themeMode == themeMode)&&(identical(other.colorPalette, colorPalette) || other.colorPalette == colorPalette));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppearanceConfig&&(identical(other.lang, lang) || other.lang == lang)&&(identical(other.defaultHomeScreenTab, defaultHomeScreenTab) || other.defaultHomeScreenTab == defaultHomeScreenTab)&&(identical(other.themeMode, themeMode) || other.themeMode == themeMode)&&(identical(other.colorPalette, colorPalette) || other.colorPalette == colorPalette)&&(identical(other.relativeDates, relativeDates) || other.relativeDates == relativeDates)&&(identical(other.pitchBlack, pitchBlack) || other.pitchBlack == pitchBlack));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,lang,defaultHomeScreenTab,themeMode,colorPalette);
+int get hashCode => Object.hash(runtimeType,lang,defaultHomeScreenTab,themeMode,colorPalette,relativeDates,pitchBlack);
 
 @override
 String toString() {
-  return 'AppearanceConfig(lang: $lang, defaultHomeScreenTab: $defaultHomeScreenTab, themeMode: $themeMode, colorPalette: $colorPalette)';
+  return 'AppearanceConfig(lang: $lang, defaultHomeScreenTab: $defaultHomeScreenTab, themeMode: $themeMode, colorPalette: $colorPalette, relativeDates: $relativeDates, pitchBlack: $pitchBlack)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $AppearanceConfigCopyWith<$Res>  {
   factory $AppearanceConfigCopyWith(AppearanceConfig value, $Res Function(AppearanceConfig) _then) = _$AppearanceConfigCopyWithImpl;
 @useResult
 $Res call({
- Language lang, HomeScreenTab defaultHomeScreenTab, ThemeMode themeMode, AppColorPalette colorPalette
+ Language lang, HomeScreenTab defaultHomeScreenTab, ThemeMode themeMode, AppColorPalette colorPalette, bool relativeDates, bool pitchBlack
 });
 
 
@@ -65,13 +65,15 @@ class _$AppearanceConfigCopyWithImpl<$Res>
 
 /// Create a copy of AppearanceConfig
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? lang = null,Object? defaultHomeScreenTab = null,Object? themeMode = null,Object? colorPalette = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? lang = null,Object? defaultHomeScreenTab = null,Object? themeMode = null,Object? colorPalette = null,Object? relativeDates = null,Object? pitchBlack = null,}) {
   return _then(_self.copyWith(
 lang: null == lang ? _self.lang : lang // ignore: cast_nullable_to_non_nullable
 as Language,defaultHomeScreenTab: null == defaultHomeScreenTab ? _self.defaultHomeScreenTab : defaultHomeScreenTab // ignore: cast_nullable_to_non_nullable
 as HomeScreenTab,themeMode: null == themeMode ? _self.themeMode : themeMode // ignore: cast_nullable_to_non_nullable
 as ThemeMode,colorPalette: null == colorPalette ? _self.colorPalette : colorPalette // ignore: cast_nullable_to_non_nullable
-as AppColorPalette,
+as AppColorPalette,relativeDates: null == relativeDates ? _self.relativeDates : relativeDates // ignore: cast_nullable_to_non_nullable
+as bool,pitchBlack: null == pitchBlack ? _self.pitchBlack : pitchBlack // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -156,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Language lang,  HomeScreenTab defaultHomeScreenTab,  ThemeMode themeMode,  AppColorPalette colorPalette)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Language lang,  HomeScreenTab defaultHomeScreenTab,  ThemeMode themeMode,  AppColorPalette colorPalette,  bool relativeDates,  bool pitchBlack)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AppearanceConfig() when $default != null:
-return $default(_that.lang,_that.defaultHomeScreenTab,_that.themeMode,_that.colorPalette);case _:
+return $default(_that.lang,_that.defaultHomeScreenTab,_that.themeMode,_that.colorPalette,_that.relativeDates,_that.pitchBlack);case _:
   return orElse();
 
 }
@@ -177,10 +179,10 @@ return $default(_that.lang,_that.defaultHomeScreenTab,_that.themeMode,_that.colo
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Language lang,  HomeScreenTab defaultHomeScreenTab,  ThemeMode themeMode,  AppColorPalette colorPalette)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Language lang,  HomeScreenTab defaultHomeScreenTab,  ThemeMode themeMode,  AppColorPalette colorPalette,  bool relativeDates,  bool pitchBlack)  $default,) {final _that = this;
 switch (_that) {
 case _AppearanceConfig():
-return $default(_that.lang,_that.defaultHomeScreenTab,_that.themeMode,_that.colorPalette);case _:
+return $default(_that.lang,_that.defaultHomeScreenTab,_that.themeMode,_that.colorPalette,_that.relativeDates,_that.pitchBlack);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +199,10 @@ return $default(_that.lang,_that.defaultHomeScreenTab,_that.themeMode,_that.colo
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Language lang,  HomeScreenTab defaultHomeScreenTab,  ThemeMode themeMode,  AppColorPalette colorPalette)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Language lang,  HomeScreenTab defaultHomeScreenTab,  ThemeMode themeMode,  AppColorPalette colorPalette,  bool relativeDates,  bool pitchBlack)?  $default,) {final _that = this;
 switch (_that) {
 case _AppearanceConfig() when $default != null:
-return $default(_that.lang,_that.defaultHomeScreenTab,_that.themeMode,_that.colorPalette);case _:
+return $default(_that.lang,_that.defaultHomeScreenTab,_that.themeMode,_that.colorPalette,_that.relativeDates,_that.pitchBlack);case _:
   return null;
 
 }
@@ -212,13 +214,15 @@ return $default(_that.lang,_that.defaultHomeScreenTab,_that.themeMode,_that.colo
 @JsonSerializable()
 
 class _AppearanceConfig implements AppearanceConfig {
-  const _AppearanceConfig({this.lang = Language.en, this.defaultHomeScreenTab = HomeScreenTab.home, this.themeMode = ThemeMode.system, this.colorPalette = AppColorPalette.dynamic});
+  const _AppearanceConfig({this.lang = Language.en, this.defaultHomeScreenTab = HomeScreenTab.home, this.themeMode = ThemeMode.system, this.colorPalette = AppColorPalette.dynamic, this.relativeDates = true, this.pitchBlack = false});
   factory _AppearanceConfig.fromJson(Map<String, dynamic> json) => _$AppearanceConfigFromJson(json);
 
 @override@JsonKey() final  Language lang;
 @override@JsonKey() final  HomeScreenTab defaultHomeScreenTab;
 @override@JsonKey() final  ThemeMode themeMode;
 @override@JsonKey() final  AppColorPalette colorPalette;
+@override@JsonKey() final  bool relativeDates;
+@override@JsonKey() final  bool pitchBlack;
 
 /// Create a copy of AppearanceConfig
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +237,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppearanceConfig&&(identical(other.lang, lang) || other.lang == lang)&&(identical(other.defaultHomeScreenTab, defaultHomeScreenTab) || other.defaultHomeScreenTab == defaultHomeScreenTab)&&(identical(other.themeMode, themeMode) || other.themeMode == themeMode)&&(identical(other.colorPalette, colorPalette) || other.colorPalette == colorPalette));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppearanceConfig&&(identical(other.lang, lang) || other.lang == lang)&&(identical(other.defaultHomeScreenTab, defaultHomeScreenTab) || other.defaultHomeScreenTab == defaultHomeScreenTab)&&(identical(other.themeMode, themeMode) || other.themeMode == themeMode)&&(identical(other.colorPalette, colorPalette) || other.colorPalette == colorPalette)&&(identical(other.relativeDates, relativeDates) || other.relativeDates == relativeDates)&&(identical(other.pitchBlack, pitchBlack) || other.pitchBlack == pitchBlack));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,lang,defaultHomeScreenTab,themeMode,colorPalette);
+int get hashCode => Object.hash(runtimeType,lang,defaultHomeScreenTab,themeMode,colorPalette,relativeDates,pitchBlack);
 
 @override
 String toString() {
-  return 'AppearanceConfig(lang: $lang, defaultHomeScreenTab: $defaultHomeScreenTab, themeMode: $themeMode, colorPalette: $colorPalette)';
+  return 'AppearanceConfig(lang: $lang, defaultHomeScreenTab: $defaultHomeScreenTab, themeMode: $themeMode, colorPalette: $colorPalette, relativeDates: $relativeDates, pitchBlack: $pitchBlack)';
 }
 
 
@@ -253,7 +257,7 @@ abstract mixin class _$AppearanceConfigCopyWith<$Res> implements $AppearanceConf
   factory _$AppearanceConfigCopyWith(_AppearanceConfig value, $Res Function(_AppearanceConfig) _then) = __$AppearanceConfigCopyWithImpl;
 @override @useResult
 $Res call({
- Language lang, HomeScreenTab defaultHomeScreenTab, ThemeMode themeMode, AppColorPalette colorPalette
+ Language lang, HomeScreenTab defaultHomeScreenTab, ThemeMode themeMode, AppColorPalette colorPalette, bool relativeDates, bool pitchBlack
 });
 
 
@@ -270,13 +274,15 @@ class __$AppearanceConfigCopyWithImpl<$Res>
 
 /// Create a copy of AppearanceConfig
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? lang = null,Object? defaultHomeScreenTab = null,Object? themeMode = null,Object? colorPalette = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? lang = null,Object? defaultHomeScreenTab = null,Object? themeMode = null,Object? colorPalette = null,Object? relativeDates = null,Object? pitchBlack = null,}) {
   return _then(_AppearanceConfig(
 lang: null == lang ? _self.lang : lang // ignore: cast_nullable_to_non_nullable
 as Language,defaultHomeScreenTab: null == defaultHomeScreenTab ? _self.defaultHomeScreenTab : defaultHomeScreenTab // ignore: cast_nullable_to_non_nullable
 as HomeScreenTab,themeMode: null == themeMode ? _self.themeMode : themeMode // ignore: cast_nullable_to_non_nullable
 as ThemeMode,colorPalette: null == colorPalette ? _self.colorPalette : colorPalette // ignore: cast_nullable_to_non_nullable
-as AppColorPalette,
+as AppColorPalette,relativeDates: null == relativeDates ? _self.relativeDates : relativeDates // ignore: cast_nullable_to_non_nullable
+as bool,pitchBlack: null == pitchBlack ? _self.pitchBlack : pitchBlack // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

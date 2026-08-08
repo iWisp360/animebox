@@ -26,9 +26,6 @@ _AnimeBoxConfig _$AnimeBoxConfigFromJson(Map<String, dynamic> json) =>
       library: json['library'] == null
           ? const LibraryConfig()
           : LibraryConfig.fromJson(json['library'] as Map<String, dynamic>),
-      servers: json['servers'] == null
-          ? const ServersConfig()
-          : ServersConfig.fromJson(json['servers'] as Map<String, dynamic>),
       localStorage: json['localStorage'] == null
           ? const LocalStorageConfig()
           : LocalStorageConfig.fromJson(
@@ -47,7 +44,6 @@ Map<String, dynamic> _$AnimeBoxConfigToJson(_AnimeBoxConfig instance) =>
       'downloads': instance.downloads,
       'playback': instance.playback,
       'library': instance.library,
-      'servers': instance.servers,
       'localStorage': instance.localStorage,
       'advanced': instance.advanced,
     };

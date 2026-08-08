@@ -21,6 +21,8 @@ _AppearanceConfig _$AppearanceConfigFromJson(Map<String, dynamic> json) =>
       colorPalette:
           $enumDecodeNullable(_$AppColorPaletteEnumMap, json['colorPalette']) ??
           AppColorPalette.dynamic,
+      relativeDates: json['relativeDates'] as bool? ?? true,
+      pitchBlack: json['pitchBlack'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$AppearanceConfigToJson(_AppearanceConfig instance) =>
@@ -30,6 +32,8 @@ Map<String, dynamic> _$AppearanceConfigToJson(_AppearanceConfig instance) =>
           _$HomeScreenTabEnumMap[instance.defaultHomeScreenTab]!,
       'themeMode': _$ThemeModeEnumMap[instance.themeMode]!,
       'colorPalette': _$AppColorPaletteEnumMap[instance.colorPalette]!,
+      'relativeDates': instance.relativeDates,
+      'pitchBlack': instance.pitchBlack,
     };
 
 const _$LanguageEnumMap = {Language.en: 'en', Language.es: 'es'};

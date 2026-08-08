@@ -15,7 +15,12 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DownloadsConfig {
 
-
+ bool get unmeteredNetworksOnly; String get downloadedEpisodesFormat; int get maxDownloadThreads;
+/// Create a copy of DownloadsConfig
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$DownloadsConfigCopyWith<DownloadsConfig> get copyWith => _$DownloadsConfigCopyWithImpl<DownloadsConfig>(this as DownloadsConfig, _$identity);
 
   /// Serializes this DownloadsConfig to a JSON map.
   Map<String, dynamic> toJson();
@@ -23,24 +28,52 @@ mixin _$DownloadsConfig {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DownloadsConfig);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DownloadsConfig&&(identical(other.unmeteredNetworksOnly, unmeteredNetworksOnly) || other.unmeteredNetworksOnly == unmeteredNetworksOnly)&&(identical(other.downloadedEpisodesFormat, downloadedEpisodesFormat) || other.downloadedEpisodesFormat == downloadedEpisodesFormat)&&(identical(other.maxDownloadThreads, maxDownloadThreads) || other.maxDownloadThreads == maxDownloadThreads));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,unmeteredNetworksOnly,downloadedEpisodesFormat,maxDownloadThreads);
 
 @override
 String toString() {
-  return 'DownloadsConfig()';
+  return 'DownloadsConfig(unmeteredNetworksOnly: $unmeteredNetworksOnly, downloadedEpisodesFormat: $downloadedEpisodesFormat, maxDownloadThreads: $maxDownloadThreads)';
 }
 
 
 }
 
 /// @nodoc
-class $DownloadsConfigCopyWith<$Res>  {
-$DownloadsConfigCopyWith(DownloadsConfig _, $Res Function(DownloadsConfig) __);
+abstract mixin class $DownloadsConfigCopyWith<$Res>  {
+  factory $DownloadsConfigCopyWith(DownloadsConfig value, $Res Function(DownloadsConfig) _then) = _$DownloadsConfigCopyWithImpl;
+@useResult
+$Res call({
+ bool unmeteredNetworksOnly, String downloadedEpisodesFormat, int maxDownloadThreads
+});
+
+
+
+
+}
+/// @nodoc
+class _$DownloadsConfigCopyWithImpl<$Res>
+    implements $DownloadsConfigCopyWith<$Res> {
+  _$DownloadsConfigCopyWithImpl(this._self, this._then);
+
+  final DownloadsConfig _self;
+  final $Res Function(DownloadsConfig) _then;
+
+/// Create a copy of DownloadsConfig
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? unmeteredNetworksOnly = null,Object? downloadedEpisodesFormat = null,Object? maxDownloadThreads = null,}) {
+  return _then(_self.copyWith(
+unmeteredNetworksOnly: null == unmeteredNetworksOnly ? _self.unmeteredNetworksOnly : unmeteredNetworksOnly // ignore: cast_nullable_to_non_nullable
+as bool,downloadedEpisodesFormat: null == downloadedEpisodesFormat ? _self.downloadedEpisodesFormat : downloadedEpisodesFormat // ignore: cast_nullable_to_non_nullable
+as String,maxDownloadThreads: null == maxDownloadThreads ? _self.maxDownloadThreads : maxDownloadThreads // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
 }
 
 
@@ -122,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function()?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool unmeteredNetworksOnly,  String downloadedEpisodesFormat,  int maxDownloadThreads)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DownloadsConfig() when $default != null:
-return $default();case _:
+return $default(_that.unmeteredNetworksOnly,_that.downloadedEpisodesFormat,_that.maxDownloadThreads);case _:
   return orElse();
 
 }
@@ -143,10 +176,10 @@ return $default();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function()  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool unmeteredNetworksOnly,  String downloadedEpisodesFormat,  int maxDownloadThreads)  $default,) {final _that = this;
 switch (_that) {
 case _DownloadsConfig():
-return $default();case _:
+return $default(_that.unmeteredNetworksOnly,_that.downloadedEpisodesFormat,_that.maxDownloadThreads);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -163,10 +196,10 @@ return $default();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function()?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool unmeteredNetworksOnly,  String downloadedEpisodesFormat,  int maxDownloadThreads)?  $default,) {final _that = this;
 switch (_that) {
 case _DownloadsConfig() when $default != null:
-return $default();case _:
+return $default(_that.unmeteredNetworksOnly,_that.downloadedEpisodesFormat,_that.maxDownloadThreads);case _:
   return null;
 
 }
@@ -178,11 +211,18 @@ return $default();case _:
 @JsonSerializable()
 
 class _DownloadsConfig implements DownloadsConfig {
-  const _DownloadsConfig();
+  const _DownloadsConfig({this.unmeteredNetworksOnly = false, this.downloadedEpisodesFormat = "%e %n", this.maxDownloadThreads = 4});
   factory _DownloadsConfig.fromJson(Map<String, dynamic> json) => _$DownloadsConfigFromJson(json);
 
+@override@JsonKey() final  bool unmeteredNetworksOnly;
+@override@JsonKey() final  String downloadedEpisodesFormat;
+@override@JsonKey() final  int maxDownloadThreads;
 
-
+/// Create a copy of DownloadsConfig
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$DownloadsConfigCopyWith<_DownloadsConfig> get copyWith => __$DownloadsConfigCopyWithImpl<_DownloadsConfig>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
@@ -191,22 +231,53 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DownloadsConfig);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DownloadsConfig&&(identical(other.unmeteredNetworksOnly, unmeteredNetworksOnly) || other.unmeteredNetworksOnly == unmeteredNetworksOnly)&&(identical(other.downloadedEpisodesFormat, downloadedEpisodesFormat) || other.downloadedEpisodesFormat == downloadedEpisodesFormat)&&(identical(other.maxDownloadThreads, maxDownloadThreads) || other.maxDownloadThreads == maxDownloadThreads));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,unmeteredNetworksOnly,downloadedEpisodesFormat,maxDownloadThreads);
 
 @override
 String toString() {
-  return 'DownloadsConfig()';
+  return 'DownloadsConfig(unmeteredNetworksOnly: $unmeteredNetworksOnly, downloadedEpisodesFormat: $downloadedEpisodesFormat, maxDownloadThreads: $maxDownloadThreads)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class _$DownloadsConfigCopyWith<$Res> implements $DownloadsConfigCopyWith<$Res> {
+  factory _$DownloadsConfigCopyWith(_DownloadsConfig value, $Res Function(_DownloadsConfig) _then) = __$DownloadsConfigCopyWithImpl;
+@override @useResult
+$Res call({
+ bool unmeteredNetworksOnly, String downloadedEpisodesFormat, int maxDownloadThreads
+});
 
 
+
+
+}
+/// @nodoc
+class __$DownloadsConfigCopyWithImpl<$Res>
+    implements _$DownloadsConfigCopyWith<$Res> {
+  __$DownloadsConfigCopyWithImpl(this._self, this._then);
+
+  final _DownloadsConfig _self;
+  final $Res Function(_DownloadsConfig) _then;
+
+/// Create a copy of DownloadsConfig
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? unmeteredNetworksOnly = null,Object? downloadedEpisodesFormat = null,Object? maxDownloadThreads = null,}) {
+  return _then(_DownloadsConfig(
+unmeteredNetworksOnly: null == unmeteredNetworksOnly ? _self.unmeteredNetworksOnly : unmeteredNetworksOnly // ignore: cast_nullable_to_non_nullable
+as bool,downloadedEpisodesFormat: null == downloadedEpisodesFormat ? _self.downloadedEpisodesFormat : downloadedEpisodesFormat // ignore: cast_nullable_to_non_nullable
+as String,maxDownloadThreads: null == maxDownloadThreads ? _self.maxDownloadThreads : maxDownloadThreads // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
 
 // dart format on

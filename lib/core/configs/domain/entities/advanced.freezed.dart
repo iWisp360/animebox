@@ -15,7 +15,12 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AdvancedConfig {
 
-
+ bool get debugLogs; String get userAgent;
+/// Create a copy of AdvancedConfig
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AdvancedConfigCopyWith<AdvancedConfig> get copyWith => _$AdvancedConfigCopyWithImpl<AdvancedConfig>(this as AdvancedConfig, _$identity);
 
   /// Serializes this AdvancedConfig to a JSON map.
   Map<String, dynamic> toJson();
@@ -23,24 +28,51 @@ mixin _$AdvancedConfig {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AdvancedConfig);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AdvancedConfig&&(identical(other.debugLogs, debugLogs) || other.debugLogs == debugLogs)&&(identical(other.userAgent, userAgent) || other.userAgent == userAgent));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,debugLogs,userAgent);
 
 @override
 String toString() {
-  return 'AdvancedConfig()';
+  return 'AdvancedConfig(debugLogs: $debugLogs, userAgent: $userAgent)';
 }
 
 
 }
 
 /// @nodoc
-class $AdvancedConfigCopyWith<$Res>  {
-$AdvancedConfigCopyWith(AdvancedConfig _, $Res Function(AdvancedConfig) __);
+abstract mixin class $AdvancedConfigCopyWith<$Res>  {
+  factory $AdvancedConfigCopyWith(AdvancedConfig value, $Res Function(AdvancedConfig) _then) = _$AdvancedConfigCopyWithImpl;
+@useResult
+$Res call({
+ bool debugLogs, String userAgent
+});
+
+
+
+
+}
+/// @nodoc
+class _$AdvancedConfigCopyWithImpl<$Res>
+    implements $AdvancedConfigCopyWith<$Res> {
+  _$AdvancedConfigCopyWithImpl(this._self, this._then);
+
+  final AdvancedConfig _self;
+  final $Res Function(AdvancedConfig) _then;
+
+/// Create a copy of AdvancedConfig
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? debugLogs = null,Object? userAgent = null,}) {
+  return _then(_self.copyWith(
+debugLogs: null == debugLogs ? _self.debugLogs : debugLogs // ignore: cast_nullable_to_non_nullable
+as bool,userAgent: null == userAgent ? _self.userAgent : userAgent // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
 }
 
 
@@ -122,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function()?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool debugLogs,  String userAgent)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AdvancedConfig() when $default != null:
-return $default();case _:
+return $default(_that.debugLogs,_that.userAgent);case _:
   return orElse();
 
 }
@@ -143,10 +175,10 @@ return $default();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function()  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool debugLogs,  String userAgent)  $default,) {final _that = this;
 switch (_that) {
 case _AdvancedConfig():
-return $default();case _:
+return $default(_that.debugLogs,_that.userAgent);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -163,10 +195,10 @@ return $default();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function()?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool debugLogs,  String userAgent)?  $default,) {final _that = this;
 switch (_that) {
 case _AdvancedConfig() when $default != null:
-return $default();case _:
+return $default(_that.debugLogs,_that.userAgent);case _:
   return null;
 
 }
@@ -178,11 +210,17 @@ return $default();case _:
 @JsonSerializable()
 
 class _AdvancedConfig implements AdvancedConfig {
-  const _AdvancedConfig();
+  const _AdvancedConfig({this.debugLogs = false, this.userAgent = "Mozilla/5.0 (X11; Linux x86_64; rv:150.0) Gecko/20100101 Firefox/150.0"});
   factory _AdvancedConfig.fromJson(Map<String, dynamic> json) => _$AdvancedConfigFromJson(json);
 
+@override@JsonKey() final  bool debugLogs;
+@override@JsonKey() final  String userAgent;
 
-
+/// Create a copy of AdvancedConfig
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AdvancedConfigCopyWith<_AdvancedConfig> get copyWith => __$AdvancedConfigCopyWithImpl<_AdvancedConfig>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
@@ -191,22 +229,52 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AdvancedConfig);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AdvancedConfig&&(identical(other.debugLogs, debugLogs) || other.debugLogs == debugLogs)&&(identical(other.userAgent, userAgent) || other.userAgent == userAgent));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,debugLogs,userAgent);
 
 @override
 String toString() {
-  return 'AdvancedConfig()';
+  return 'AdvancedConfig(debugLogs: $debugLogs, userAgent: $userAgent)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class _$AdvancedConfigCopyWith<$Res> implements $AdvancedConfigCopyWith<$Res> {
+  factory _$AdvancedConfigCopyWith(_AdvancedConfig value, $Res Function(_AdvancedConfig) _then) = __$AdvancedConfigCopyWithImpl;
+@override @useResult
+$Res call({
+ bool debugLogs, String userAgent
+});
 
 
+
+
+}
+/// @nodoc
+class __$AdvancedConfigCopyWithImpl<$Res>
+    implements _$AdvancedConfigCopyWith<$Res> {
+  __$AdvancedConfigCopyWithImpl(this._self, this._then);
+
+  final _AdvancedConfig _self;
+  final $Res Function(_AdvancedConfig) _then;
+
+/// Create a copy of AdvancedConfig
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? debugLogs = null,Object? userAgent = null,}) {
+  return _then(_AdvancedConfig(
+debugLogs: null == debugLogs ? _self.debugLogs : debugLogs // ignore: cast_nullable_to_non_nullable
+as bool,userAgent: null == userAgent ? _self.userAgent : userAgent // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
 
 // dart format on

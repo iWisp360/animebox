@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AnimeBoxConfig {
 
- bool get firstRun; AppearanceConfig get appearance; MetadataConfig get metadata; DownloadsConfig get downloads; PlaybackConfig get playback; LibraryConfig get library; ServersConfig get servers; LocalStorageConfig get localStorage; AdvancedConfig get advanced;
+ bool get firstRun; AppearanceConfig get appearance; MetadataConfig get metadata; DownloadsConfig get downloads; PlaybackConfig get playback; LibraryConfig get library; LocalStorageConfig get localStorage; AdvancedConfig get advanced;
 /// Create a copy of AnimeBoxConfig
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $AnimeBoxConfigCopyWith<AnimeBoxConfig> get copyWith => _$AnimeBoxConfigCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AnimeBoxConfig&&(identical(other.firstRun, firstRun) || other.firstRun == firstRun)&&(identical(other.appearance, appearance) || other.appearance == appearance)&&(identical(other.metadata, metadata) || other.metadata == metadata)&&(identical(other.downloads, downloads) || other.downloads == downloads)&&(identical(other.playback, playback) || other.playback == playback)&&(identical(other.library, library) || other.library == library)&&(identical(other.servers, servers) || other.servers == servers)&&(identical(other.localStorage, localStorage) || other.localStorage == localStorage)&&(identical(other.advanced, advanced) || other.advanced == advanced));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AnimeBoxConfig&&(identical(other.firstRun, firstRun) || other.firstRun == firstRun)&&(identical(other.appearance, appearance) || other.appearance == appearance)&&(identical(other.metadata, metadata) || other.metadata == metadata)&&(identical(other.downloads, downloads) || other.downloads == downloads)&&(identical(other.playback, playback) || other.playback == playback)&&(identical(other.library, library) || other.library == library)&&(identical(other.localStorage, localStorage) || other.localStorage == localStorage)&&(identical(other.advanced, advanced) || other.advanced == advanced));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,firstRun,appearance,metadata,downloads,playback,library,servers,localStorage,advanced);
+int get hashCode => Object.hash(runtimeType,firstRun,appearance,metadata,downloads,playback,library,localStorage,advanced);
 
 @override
 String toString() {
-  return 'AnimeBoxConfig(firstRun: $firstRun, appearance: $appearance, metadata: $metadata, downloads: $downloads, playback: $playback, library: $library, servers: $servers, localStorage: $localStorage, advanced: $advanced)';
+  return 'AnimeBoxConfig(firstRun: $firstRun, appearance: $appearance, metadata: $metadata, downloads: $downloads, playback: $playback, library: $library, localStorage: $localStorage, advanced: $advanced)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $AnimeBoxConfigCopyWith<$Res>  {
   factory $AnimeBoxConfigCopyWith(AnimeBoxConfig value, $Res Function(AnimeBoxConfig) _then) = _$AnimeBoxConfigCopyWithImpl;
 @useResult
 $Res call({
- bool firstRun, AppearanceConfig appearance, MetadataConfig metadata, DownloadsConfig downloads, PlaybackConfig playback, LibraryConfig library, ServersConfig servers, LocalStorageConfig localStorage, AdvancedConfig advanced
+ bool firstRun, AppearanceConfig appearance, MetadataConfig metadata, DownloadsConfig downloads, PlaybackConfig playback, LibraryConfig library, LocalStorageConfig localStorage, AdvancedConfig advanced
 });
 
 
-$AppearanceConfigCopyWith<$Res> get appearance;$MetadataConfigCopyWith<$Res> get metadata;$DownloadsConfigCopyWith<$Res> get downloads;$PlaybackConfigCopyWith<$Res> get playback;$LibraryConfigCopyWith<$Res> get library;$ServersConfigCopyWith<$Res> get servers;$LocalStorageConfigCopyWith<$Res> get localStorage;$AdvancedConfigCopyWith<$Res> get advanced;
+$AppearanceConfigCopyWith<$Res> get appearance;$MetadataConfigCopyWith<$Res> get metadata;$DownloadsConfigCopyWith<$Res> get downloads;$PlaybackConfigCopyWith<$Res> get playback;$LibraryConfigCopyWith<$Res> get library;$LocalStorageConfigCopyWith<$Res> get localStorage;$AdvancedConfigCopyWith<$Res> get advanced;
 
 }
 /// @nodoc
@@ -65,7 +65,7 @@ class _$AnimeBoxConfigCopyWithImpl<$Res>
 
 /// Create a copy of AnimeBoxConfig
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? firstRun = null,Object? appearance = null,Object? metadata = null,Object? downloads = null,Object? playback = null,Object? library = null,Object? servers = null,Object? localStorage = null,Object? advanced = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? firstRun = null,Object? appearance = null,Object? metadata = null,Object? downloads = null,Object? playback = null,Object? library = null,Object? localStorage = null,Object? advanced = null,}) {
   return _then(_self.copyWith(
 firstRun: null == firstRun ? _self.firstRun : firstRun // ignore: cast_nullable_to_non_nullable
 as bool,appearance: null == appearance ? _self.appearance : appearance // ignore: cast_nullable_to_non_nullable
@@ -73,8 +73,7 @@ as AppearanceConfig,metadata: null == metadata ? _self.metadata : metadata // ig
 as MetadataConfig,downloads: null == downloads ? _self.downloads : downloads // ignore: cast_nullable_to_non_nullable
 as DownloadsConfig,playback: null == playback ? _self.playback : playback // ignore: cast_nullable_to_non_nullable
 as PlaybackConfig,library: null == library ? _self.library : library // ignore: cast_nullable_to_non_nullable
-as LibraryConfig,servers: null == servers ? _self.servers : servers // ignore: cast_nullable_to_non_nullable
-as ServersConfig,localStorage: null == localStorage ? _self.localStorage : localStorage // ignore: cast_nullable_to_non_nullable
+as LibraryConfig,localStorage: null == localStorage ? _self.localStorage : localStorage // ignore: cast_nullable_to_non_nullable
 as LocalStorageConfig,advanced: null == advanced ? _self.advanced : advanced // ignore: cast_nullable_to_non_nullable
 as AdvancedConfig,
   ));
@@ -123,15 +122,6 @@ $LibraryConfigCopyWith<$Res> get library {
   
   return $LibraryConfigCopyWith<$Res>(_self.library, (value) {
     return _then(_self.copyWith(library: value));
-  });
-}/// Create a copy of AnimeBoxConfig
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$ServersConfigCopyWith<$Res> get servers {
-  
-  return $ServersConfigCopyWith<$Res>(_self.servers, (value) {
-    return _then(_self.copyWith(servers: value));
   });
 }/// Create a copy of AnimeBoxConfig
 /// with the given fields replaced by the non-null parameter values.
@@ -233,10 +223,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool firstRun,  AppearanceConfig appearance,  MetadataConfig metadata,  DownloadsConfig downloads,  PlaybackConfig playback,  LibraryConfig library,  ServersConfig servers,  LocalStorageConfig localStorage,  AdvancedConfig advanced)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool firstRun,  AppearanceConfig appearance,  MetadataConfig metadata,  DownloadsConfig downloads,  PlaybackConfig playback,  LibraryConfig library,  LocalStorageConfig localStorage,  AdvancedConfig advanced)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AnimeBoxConfig() when $default != null:
-return $default(_that.firstRun,_that.appearance,_that.metadata,_that.downloads,_that.playback,_that.library,_that.servers,_that.localStorage,_that.advanced);case _:
+return $default(_that.firstRun,_that.appearance,_that.metadata,_that.downloads,_that.playback,_that.library,_that.localStorage,_that.advanced);case _:
   return orElse();
 
 }
@@ -254,10 +244,10 @@ return $default(_that.firstRun,_that.appearance,_that.metadata,_that.downloads,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool firstRun,  AppearanceConfig appearance,  MetadataConfig metadata,  DownloadsConfig downloads,  PlaybackConfig playback,  LibraryConfig library,  ServersConfig servers,  LocalStorageConfig localStorage,  AdvancedConfig advanced)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool firstRun,  AppearanceConfig appearance,  MetadataConfig metadata,  DownloadsConfig downloads,  PlaybackConfig playback,  LibraryConfig library,  LocalStorageConfig localStorage,  AdvancedConfig advanced)  $default,) {final _that = this;
 switch (_that) {
 case _AnimeBoxConfig():
-return $default(_that.firstRun,_that.appearance,_that.metadata,_that.downloads,_that.playback,_that.library,_that.servers,_that.localStorage,_that.advanced);case _:
+return $default(_that.firstRun,_that.appearance,_that.metadata,_that.downloads,_that.playback,_that.library,_that.localStorage,_that.advanced);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -274,10 +264,10 @@ return $default(_that.firstRun,_that.appearance,_that.metadata,_that.downloads,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool firstRun,  AppearanceConfig appearance,  MetadataConfig metadata,  DownloadsConfig downloads,  PlaybackConfig playback,  LibraryConfig library,  ServersConfig servers,  LocalStorageConfig localStorage,  AdvancedConfig advanced)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool firstRun,  AppearanceConfig appearance,  MetadataConfig metadata,  DownloadsConfig downloads,  PlaybackConfig playback,  LibraryConfig library,  LocalStorageConfig localStorage,  AdvancedConfig advanced)?  $default,) {final _that = this;
 switch (_that) {
 case _AnimeBoxConfig() when $default != null:
-return $default(_that.firstRun,_that.appearance,_that.metadata,_that.downloads,_that.playback,_that.library,_that.servers,_that.localStorage,_that.advanced);case _:
+return $default(_that.firstRun,_that.appearance,_that.metadata,_that.downloads,_that.playback,_that.library,_that.localStorage,_that.advanced);case _:
   return null;
 
 }
@@ -289,7 +279,7 @@ return $default(_that.firstRun,_that.appearance,_that.metadata,_that.downloads,_
 @JsonSerializable()
 
 class _AnimeBoxConfig implements AnimeBoxConfig {
-  const _AnimeBoxConfig({this.firstRun = true, this.appearance = const AppearanceConfig(), this.metadata = const MetadataConfig(), this.downloads = const DownloadsConfig(), this.playback = const PlaybackConfig(), this.library = const LibraryConfig(), this.servers = const ServersConfig(), this.localStorage = const LocalStorageConfig(), this.advanced = const AdvancedConfig()});
+  const _AnimeBoxConfig({this.firstRun = true, this.appearance = const AppearanceConfig(), this.metadata = const MetadataConfig(), this.downloads = const DownloadsConfig(), this.playback = const PlaybackConfig(), this.library = const LibraryConfig(), this.localStorage = const LocalStorageConfig(), this.advanced = const AdvancedConfig()});
   factory _AnimeBoxConfig.fromJson(Map<String, dynamic> json) => _$AnimeBoxConfigFromJson(json);
 
 @override@JsonKey() final  bool firstRun;
@@ -298,7 +288,6 @@ class _AnimeBoxConfig implements AnimeBoxConfig {
 @override@JsonKey() final  DownloadsConfig downloads;
 @override@JsonKey() final  PlaybackConfig playback;
 @override@JsonKey() final  LibraryConfig library;
-@override@JsonKey() final  ServersConfig servers;
 @override@JsonKey() final  LocalStorageConfig localStorage;
 @override@JsonKey() final  AdvancedConfig advanced;
 
@@ -315,16 +304,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AnimeBoxConfig&&(identical(other.firstRun, firstRun) || other.firstRun == firstRun)&&(identical(other.appearance, appearance) || other.appearance == appearance)&&(identical(other.metadata, metadata) || other.metadata == metadata)&&(identical(other.downloads, downloads) || other.downloads == downloads)&&(identical(other.playback, playback) || other.playback == playback)&&(identical(other.library, library) || other.library == library)&&(identical(other.servers, servers) || other.servers == servers)&&(identical(other.localStorage, localStorage) || other.localStorage == localStorage)&&(identical(other.advanced, advanced) || other.advanced == advanced));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AnimeBoxConfig&&(identical(other.firstRun, firstRun) || other.firstRun == firstRun)&&(identical(other.appearance, appearance) || other.appearance == appearance)&&(identical(other.metadata, metadata) || other.metadata == metadata)&&(identical(other.downloads, downloads) || other.downloads == downloads)&&(identical(other.playback, playback) || other.playback == playback)&&(identical(other.library, library) || other.library == library)&&(identical(other.localStorage, localStorage) || other.localStorage == localStorage)&&(identical(other.advanced, advanced) || other.advanced == advanced));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,firstRun,appearance,metadata,downloads,playback,library,servers,localStorage,advanced);
+int get hashCode => Object.hash(runtimeType,firstRun,appearance,metadata,downloads,playback,library,localStorage,advanced);
 
 @override
 String toString() {
-  return 'AnimeBoxConfig(firstRun: $firstRun, appearance: $appearance, metadata: $metadata, downloads: $downloads, playback: $playback, library: $library, servers: $servers, localStorage: $localStorage, advanced: $advanced)';
+  return 'AnimeBoxConfig(firstRun: $firstRun, appearance: $appearance, metadata: $metadata, downloads: $downloads, playback: $playback, library: $library, localStorage: $localStorage, advanced: $advanced)';
 }
 
 
@@ -335,11 +324,11 @@ abstract mixin class _$AnimeBoxConfigCopyWith<$Res> implements $AnimeBoxConfigCo
   factory _$AnimeBoxConfigCopyWith(_AnimeBoxConfig value, $Res Function(_AnimeBoxConfig) _then) = __$AnimeBoxConfigCopyWithImpl;
 @override @useResult
 $Res call({
- bool firstRun, AppearanceConfig appearance, MetadataConfig metadata, DownloadsConfig downloads, PlaybackConfig playback, LibraryConfig library, ServersConfig servers, LocalStorageConfig localStorage, AdvancedConfig advanced
+ bool firstRun, AppearanceConfig appearance, MetadataConfig metadata, DownloadsConfig downloads, PlaybackConfig playback, LibraryConfig library, LocalStorageConfig localStorage, AdvancedConfig advanced
 });
 
 
-@override $AppearanceConfigCopyWith<$Res> get appearance;@override $MetadataConfigCopyWith<$Res> get metadata;@override $DownloadsConfigCopyWith<$Res> get downloads;@override $PlaybackConfigCopyWith<$Res> get playback;@override $LibraryConfigCopyWith<$Res> get library;@override $ServersConfigCopyWith<$Res> get servers;@override $LocalStorageConfigCopyWith<$Res> get localStorage;@override $AdvancedConfigCopyWith<$Res> get advanced;
+@override $AppearanceConfigCopyWith<$Res> get appearance;@override $MetadataConfigCopyWith<$Res> get metadata;@override $DownloadsConfigCopyWith<$Res> get downloads;@override $PlaybackConfigCopyWith<$Res> get playback;@override $LibraryConfigCopyWith<$Res> get library;@override $LocalStorageConfigCopyWith<$Res> get localStorage;@override $AdvancedConfigCopyWith<$Res> get advanced;
 
 }
 /// @nodoc
@@ -352,7 +341,7 @@ class __$AnimeBoxConfigCopyWithImpl<$Res>
 
 /// Create a copy of AnimeBoxConfig
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? firstRun = null,Object? appearance = null,Object? metadata = null,Object? downloads = null,Object? playback = null,Object? library = null,Object? servers = null,Object? localStorage = null,Object? advanced = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? firstRun = null,Object? appearance = null,Object? metadata = null,Object? downloads = null,Object? playback = null,Object? library = null,Object? localStorage = null,Object? advanced = null,}) {
   return _then(_AnimeBoxConfig(
 firstRun: null == firstRun ? _self.firstRun : firstRun // ignore: cast_nullable_to_non_nullable
 as bool,appearance: null == appearance ? _self.appearance : appearance // ignore: cast_nullable_to_non_nullable
@@ -360,8 +349,7 @@ as AppearanceConfig,metadata: null == metadata ? _self.metadata : metadata // ig
 as MetadataConfig,downloads: null == downloads ? _self.downloads : downloads // ignore: cast_nullable_to_non_nullable
 as DownloadsConfig,playback: null == playback ? _self.playback : playback // ignore: cast_nullable_to_non_nullable
 as PlaybackConfig,library: null == library ? _self.library : library // ignore: cast_nullable_to_non_nullable
-as LibraryConfig,servers: null == servers ? _self.servers : servers // ignore: cast_nullable_to_non_nullable
-as ServersConfig,localStorage: null == localStorage ? _self.localStorage : localStorage // ignore: cast_nullable_to_non_nullable
+as LibraryConfig,localStorage: null == localStorage ? _self.localStorage : localStorage // ignore: cast_nullable_to_non_nullable
 as LocalStorageConfig,advanced: null == advanced ? _self.advanced : advanced // ignore: cast_nullable_to_non_nullable
 as AdvancedConfig,
   ));
@@ -411,15 +399,6 @@ $LibraryConfigCopyWith<$Res> get library {
   
   return $LibraryConfigCopyWith<$Res>(_self.library, (value) {
     return _then(_self.copyWith(library: value));
-  });
-}/// Create a copy of AnimeBoxConfig
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$ServersConfigCopyWith<$Res> get servers {
-  
-  return $ServersConfigCopyWith<$Res>(_self.servers, (value) {
-    return _then(_self.copyWith(servers: value));
   });
 }/// Create a copy of AnimeBoxConfig
 /// with the given fields replaced by the non-null parameter values.

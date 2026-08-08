@@ -1,9 +1,8 @@
-import 'package:animebox/core/configs/domain/entities/config.dart';
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-abstract interface class ConfigRepository extends ChangeNotifier {
-  Future<void> saveToFile(final AnimeBoxConfig config);
-  Future<AnimeBoxConfig> loadFromFile();
-  void change(final AnimeBoxConfig config);
-  AnimeBoxConfig get current;
+import 'package:animebox/core/configs/domain/entities/config.dart';
+
+abstract interface class ConfigRepository {
+  Future<void> saveToFile(AnimeBoxConfig config, Directory configDirectory);
+  Future<AnimeBoxConfig> loadFromFile(Directory configDirectory);
 }

@@ -20,4 +20,9 @@ class FilesRepositoryImpl implements FilesRepository {
   Future<String> readFromFile(String path) async {
     return File(path).readAsString();
   }
+
+  @override
+  Future<void> ensureDirectory(Directory directory) {
+    return directory.create();
+  }
 }

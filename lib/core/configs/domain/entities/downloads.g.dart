@@ -7,7 +7,16 @@ part of 'downloads.dart';
 // **************************************************************************
 
 _DownloadsConfig _$DownloadsConfigFromJson(Map<String, dynamic> json) =>
-    _DownloadsConfig();
+    _DownloadsConfig(
+      unmeteredNetworksOnly: json['unmeteredNetworksOnly'] as bool? ?? false,
+      downloadedEpisodesFormat:
+          json['downloadedEpisodesFormat'] as String? ?? "%e %n",
+      maxDownloadThreads: (json['maxDownloadThreads'] as num?)?.toInt() ?? 4,
+    );
 
 Map<String, dynamic> _$DownloadsConfigToJson(_DownloadsConfig instance) =>
-    <String, dynamic>{};
+    <String, dynamic>{
+      'unmeteredNetworksOnly': instance.unmeteredNetworksOnly,
+      'downloadedEpisodesFormat': instance.downloadedEpisodesFormat,
+      'maxDownloadThreads': instance.maxDownloadThreads,
+    };
