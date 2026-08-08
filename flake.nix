@@ -5,33 +5,23 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
     {
       nixpkgs,
-      nixpkgs-stable,
-      rust-overlay,
       ...
     }:
     let
       system = "x86_64-linux";
       buildToolsVersion = "36.0.0";
-      overlays = [ (import rust-overlay) ];
       pkgs = import nixpkgs {
-        inherit system overlays;
+        inherit system;
         config = {
           allowUnfree = true;
           android_sdk.accept_license = true;
         };
       };
-
-      pkgs-stable = import nixpkgs-stable { inherit system; };
 
       androidSdk = pkgs.androidenv.composeAndroidPackages {
         platformVersions = [
@@ -85,20 +75,12 @@
             glib
             mpv
             libepoxy
-            pkgs-stable.chromium
             pango
             pkg-config
             ninja
             at-spi2-core
             gtk3
             rustup
-            (pkgs.rust-bin.stable.latest.default.override {
-              targets = [
-                "aarch64-linux-android"
-                "armv7-linux-androideabi"
-                "x86_64-linux-android"
-              ];
-            })
           ];
         }
       );
