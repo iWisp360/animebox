@@ -1,11 +1,11 @@
-import 'package:animebox/features/settings/domain/entities/advanced.dart';
-import 'package:animebox/features/settings/domain/entities/appearance.dart';
-import 'package:animebox/features/settings/domain/entities/downloads.dart';
-import 'package:animebox/features/settings/domain/entities/library.dart';
-import 'package:animebox/features/settings/domain/entities/local_storage.dart';
-import 'package:animebox/features/settings/domain/entities/metadata.dart';
-import 'package:animebox/features/settings/domain/entities/playback.dart';
-import 'package:animebox/features/settings/domain/entities/servers.dart';
+import 'package:animebox/core/configs/domain/entities/advanced.dart';
+import 'package:animebox/core/configs/domain/entities/appearance.dart';
+import 'package:animebox/core/configs/domain/entities/downloads.dart';
+import 'package:animebox/core/configs/domain/entities/library.dart';
+import 'package:animebox/core/configs/domain/entities/local_storage.dart';
+import 'package:animebox/core/configs/domain/entities/metadata.dart';
+import 'package:animebox/core/configs/domain/entities/playback.dart';
+import 'package:animebox/core/configs/domain/entities/servers.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'config.g.dart';

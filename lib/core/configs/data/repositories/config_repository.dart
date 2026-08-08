@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:animebox/core/configs/domain/entities/config.dart';
+import 'package:animebox/core/configs/domain/repositories/config_repository.dart';
 import 'package:animebox/core/files/data/repositories/config_path_repository.dart';
-import 'package:animebox/features/settings/domain/entities/config.dart';
-import 'package:animebox/features/settings/domain/repositories/config_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
@@ -18,9 +18,7 @@ class ConfigRepositoryImpl extends ChangeNotifier implements ConfigRepository {
   }
 
   @override
-  AnimeBoxConfig getCurrent() {
-    return _globalConfig;
-  }
+  AnimeBoxConfig get current => _globalConfig;
 
   @override
   Future<void> saveToFile(AnimeBoxConfig config) async {

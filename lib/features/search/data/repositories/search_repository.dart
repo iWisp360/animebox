@@ -1,5 +1,4 @@
-import 'package:animebox/features/search/domain/entities/search.dart';
-import 'package:animebox/features/search/domain/repositories/search.dart';
+import 'package:animebox/core/configs/data/repositories/config_repository.dart';
 
 class SearchRepositoryImpl implements SearchRepository {
   @override
