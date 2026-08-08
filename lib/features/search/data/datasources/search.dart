@@ -1,4 +1,4 @@
-import 'package:animebox/core/graphql/data/repositories/graphql_client_repository.dart';
+import 'package:animebox/core/graphql/data/repositories/graphql_client_repository_impl.dart';
 import 'package:animebox/core/graphql/domain/repositories/graphql_client_repository.dart';
 import 'package:animebox/core/servers/data/repositories/server_repository_impl.dart';
 import 'package:animebox/core/servers/domain/exceptions.dart';
