@@ -27,8 +27,13 @@ class GraphqlClientRepositoryImpl implements GraphqlClientRepository {
       body: requestBody,
     ));
 
+    final jsonSerialized = utf8.decode(
+      response.bodyBytes,
+      allowMalformed: true,
+    );
+
     final graphqlResponse = GraphqlResponse.fromJson(
-      jsonDecoder().convert(response.body) as Map<String, dynamic>,
+      jsonDecoder().convert(jsonSerialized) as Map<String, dynamic>,
     );
 
     final responseData = graphqlResponse.data;

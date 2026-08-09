@@ -47,3 +47,4 @@ app.*.map.json
 .direnv
 *.g.dart
 *.freezed.dart
+app_localizations*.dart
