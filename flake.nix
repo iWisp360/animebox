@@ -74,6 +74,7 @@
             flutter
             glib
             libepoxy
+            jdk21
             pango
             ninja
             at-spi2-core
