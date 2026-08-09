@@ -1,4 +1,4 @@
-import 'package:animebox/core/i18n/domain/entities/language.dart';
+import 'package:animebox/core/l10n/domain/entities/language.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
