@@ -33,10 +33,9 @@ class SearchSourceRemote implements SearchSource {
 
     if (expectedServer == null) throw MissingServerException(serverUuid);
 
-    clientRepository.url = expectedServer.url;
-
     final query = await clientRepository.query(
-      graphqlQuery,
+      serverUrl: expectedServer.url,
+      query: graphqlQuery,
       variables: {"pattern": pattern, "sourceId": sourceId},
     );
 

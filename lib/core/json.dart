@@ -1,5 +1,9 @@
 import 'dart:convert';
 
 JsonEncoder prettyEncoder() {
-  return JsonEncoder.withIndent("  ");
+  return const JsonEncoder.withIndent("  ");
+}
+
+JsonDecoder jsonDecoder() {
+  return const JsonDecoder();
 }

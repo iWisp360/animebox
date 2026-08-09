@@ -14,8 +14,10 @@ class ServerRemoteSourceImpl implements ServerRemoteSource {
 
   @override
   Future<Server> getFromEndpoint(String url) async {
-    clientRepository.url = url;
-    final query = await clientRepository.query(serverInfoGraphqlQuery);
+    final query = await clientRepository.query(
+      query: serverInfoGraphqlQuery,
+      serverUrl: url,
+    );
 
     final server = Server.fromJson(query);
     return server.copyWith(url: url);

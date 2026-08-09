@@ -4,35 +4,31 @@ import 'package:animebox/core/graphql/domain/entities/request_body.dart';
 import 'package:animebox/core/graphql/domain/entities/response.dart';
 import 'package:animebox/core/graphql/domain/repositories/graphql_client_repository.dart';
 import 'package:animebox/core/graphql/exceptions.dart';
+import 'package:animebox/core/json.dart';
 import 'package:animebox/core/network/http_client.dart';
 import 'package:http/http.dart';
 
 class GraphqlClientRepositoryImpl implements GraphqlClientRepository {
   final Client _client;
 
-  @override
-  String? url;
-
-  GraphqlClientRepositoryImpl({this.url, Client? client})
+  GraphqlClientRepositoryImpl({Client? client})
     : _client = client ?? globalHttpClient;
 
   @override
-  Future<Map<String, dynamic>> query(
-    String query, {
+  Future<Map<String, dynamic>> query({
+    required String query,
     Map<String, dynamic>? variables,
+    required String serverUrl,
   }) async {
     final requestBody = createRequestBody(query, variables);
 
-    final targetUrl = url;
-    if (targetUrl == null || targetUrl.isEmpty) throw UnspecifiedUrlException();
-
     final response = (await _client.post(
-      Uri.parse(targetUrl),
+      Uri.parse(serverUrl),
       body: requestBody,
     ));
 
     final graphqlResponse = GraphqlResponse.fromJson(
-      jsonDecode(response.body) as Map<String, dynamic>,
+      jsonDecoder().convert(response.body) as Map<String, dynamic>,
     );
 
     final responseData = graphqlResponse.data;

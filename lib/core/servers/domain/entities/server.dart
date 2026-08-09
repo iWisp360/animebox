@@ -9,7 +9,7 @@ abstract class Server with _$Server {
   const factory Server({
     String? name,
     String? logoUrl,
-    String? url,
+    @Default("") String url,
     required String uuid,
     required int minCompat,
     required List<AnimeSource> supportedAnimeSources,

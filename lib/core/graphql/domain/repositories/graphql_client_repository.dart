@@ -1,11 +1,10 @@
 abstract class GraphqlClientRepository {
-  String? url;
-
-  Future<Map<String, dynamic>> query(
-    String query, {
+  Future<Map<String, dynamic>> query({
     Map<String, dynamic>? variables,
+    required String query,
+    required String serverUrl,
   });
 
   String createRequestBody(String query, Map<String, dynamic>? variables);
-  GraphqlClientRepository({this.url});
+  GraphqlClientRepository();
 }
