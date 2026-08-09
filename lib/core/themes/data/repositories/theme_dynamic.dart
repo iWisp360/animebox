@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:animebox/core/configs/domain/entities/config.dart';
 import 'package:animebox/core/themes/domain/repositories/theme_repository.dart';
 import 'package:dynamic_color/dynamic_color.dart';
@@ -9,20 +11,39 @@ class ThemeDynamic extends AnimeBoxTheme {
     AnimeBoxConfig config,
     BuildContext context,
   ) async {
-    final corePalette = await DynamicColorPlugin.getCorePalette();
+    if (context.mounted) {
+      final actualBrightness = getBrightness(config, context);
 
-    if (!context.mounted) throw Exception("Unmounted context exception");
+      final colorScheme = await getColorScheme(actualBrightness);
+      final themeData = ThemeData.from(colorScheme: colorScheme);
 
-    final actualBrightness = getBrightness(config, context);
+      return (config.appearance.pitchBlack)
+          ? themeData.copyWith(scaffoldBackgroundColor: Colors.black)
+          : themeData;
+    }
 
-    final colorScheme =
-        corePalette?.toColorScheme(brightness: actualBrightness) ??
-        fallbackColorScheme(actualBrightness);
+    throw Exception("Unmounted context exception");
+  }
 
-    final themeData = ThemeData.from(colorScheme: colorScheme);
+  Future<ColorScheme> getColorScheme(Brightness actualBrightness) async {
+    if (Platform.isAndroid) {
+      final corePalette = await DynamicColorPlugin.getCorePalette();
 
-    return (config.appearance.pitchBlack)
-        ? themeData.copyWith(scaffoldBackgroundColor: Colors.black)
-        : themeData;
+      final colorScheme = corePalette?.toColorScheme(
+        brightness: actualBrightness,
+      );
+
+      if (colorScheme != null) {
+        return colorScheme;
+      }
+    }
+
+    final accentColor = await DynamicColorPlugin.getAccentColor();
+
+    if (accentColor != null) {
+      return .fromSeed(seedColor: accentColor, brightness: actualBrightness);
+    } else {
+      return fallbackColorScheme(actualBrightness);
+    }
   }
 }
