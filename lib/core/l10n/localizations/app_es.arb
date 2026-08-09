@@ -1,3 +1,5 @@
 {
-  "settingsPageHeader": "Preferencias"
+  "settingsPageHeader": "Preferencias",
+  "homePageLabelNavBar": "Inicio",
+  "libraryPageLabelNavBar": "Mis Animes"
 }
