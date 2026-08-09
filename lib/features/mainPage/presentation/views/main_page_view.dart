@@ -36,9 +36,7 @@ class _MainPageViewState extends State<MainPageView> {
               title: filtering ? null : const Text("Anime Box"),
               leading: filtering
                   ? IconButton(
-                      onPressed: () => setState(() {
-                        filtering = false;
-                      }),
+                      onPressed: () => setState(() => filtering = false),
                       icon: const Icon(Icons.arrow_back),
                     )
                   : null,

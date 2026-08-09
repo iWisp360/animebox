@@ -33,6 +33,17 @@ class _NavigationBarBuilderState extends State<NavigationBarBuilder> {
   }
 
   @override
+  void didUpdateWidget(covariant NavigationBarBuilder oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    final newSelectedIndex = widget.selectedIndex;
+    if (newSelectedIndex != null &&
+        oldWidget.selectedIndex != newSelectedIndex) {
+      selectedIndex = newSelectedIndex;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return widget.builder(
       NavigationBar(
