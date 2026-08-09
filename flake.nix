@@ -1,7 +1,9 @@
 {
-  description = "Anime Box is an Anime Client which targets both desktop and Mobile 
-  platforms using Flutter, to ensure users get a fancy experience watching their favorite 
-  anime series with friends.";
+  description = ''
+    Anime Box is an Anime Client which targets both desktop and Mobile 
+    platforms built in Flutter, to ensure users get a fancy experience watching their favorite 
+    anime series with friends.
+  '';
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
