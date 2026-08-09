@@ -46,6 +46,7 @@ class GraphqlClientRepositoryImpl implements GraphqlClientRepository {
     return jsonEncode(body.toJson());
   }
 
+  /// Tries to get the only element on a map, if not possible, `object` is returned instead
   Map<String, dynamic> unwrapRoot(Map<String, dynamic> object) {
     if (object.values.length == 1) {
       final firstObject = object.values.first;

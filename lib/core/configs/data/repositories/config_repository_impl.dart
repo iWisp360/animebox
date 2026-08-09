@@ -27,7 +27,7 @@ class ConfigRepositoryImpl implements ConfigRepository {
     String configPath = _configPath(configDirectory);
 
     if (!await File(configPath).exists()) {
-      final defaultConfig = AnimeBoxConfig();
+      const defaultConfig = AnimeBoxConfig();
       await saveToFile(defaultConfig, configDirectory);
       return defaultConfig;
     }

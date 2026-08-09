@@ -7,7 +7,7 @@ import 'package:animebox/core/files/data/factories/config_path_factory.dart';
 import 'package:flutter/material.dart';
 
 class ConfigController extends ChangeNotifier {
-  static AnimeBoxConfig _globalConfig = AnimeBoxConfig();
+  static AnimeBoxConfig _globalConfig = const AnimeBoxConfig();
   final ConfigRepository _configRepository = ConfigRepositoryImpl();
   static final List<Function()> _listeners = [];
 
