@@ -70,7 +70,18 @@ class ServerRepositoryImpl implements ServerRepository {
   }
 
   @override
-  Future<bool> updateServerFromEndpoint(String url) {
-    throw UnimplementedError();
+  Future<bool> updateServerFromEndpoint(String url) async {
+    final currentServers = await getCurrent();
+
+    final server = await serverRemoteSource.getFromEndpoint(url);
+    final oldServer = currentServers[server.uuid];
+
+    if (oldServer != null && server != oldServer) {
+      currentServers[server.uuid] = server;
+      await serverFileSource.writeToFile(currentServers);
+      return true;
+    } else {
+      return false;
+    }
   }
 }
