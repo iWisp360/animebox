@@ -3,7 +3,7 @@ import 'package:animebox/core/graphql/domain/repositories/graphql_client_reposit
 import 'package:animebox/core/servers/data/repositories/server_repository_impl.dart';
 import 'package:animebox/core/servers/domain/exceptions.dart';
 import 'package:animebox/core/servers/domain/repositories/server_repository.dart';
-import 'package:animebox/features/search/domain/entities/search.dart';
+import 'package:animebox/features/browse/domain/entities/search.dart';
 
 abstract class SearchSource {
   Future<Search> searchPattern({

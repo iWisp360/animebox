@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 List<Widget> homeAppBarActions(
   BuildContext context, {
+  bool showSettingsAction = true,
   required bool isFiltering,
   required Function(bool) filterSetter,
   required bool isOnSearchTab,
@@ -13,7 +14,7 @@ List<Widget> homeAppBarActions(
       icon: const Icon(Icons.search),
     ),
 
-  if (!isFiltering)
+  if (!isFiltering && showSettingsAction)
     IconButton(
       onPressed: () => Navigator.of(
         context,

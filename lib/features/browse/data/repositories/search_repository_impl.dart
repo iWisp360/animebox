@@ -1,8 +1,8 @@
-import 'package:animebox/features/search/data/datasources/search.dart';
-import 'package:animebox/features/search/domain/entities/search.dart';
-import 'package:animebox/features/search/domain/repositories/search_repository.dart';
+import 'package:animebox/features/browse/data/datasources/search.dart';
+import 'package:animebox/features/browse/domain/entities/search.dart';
+import 'package:animebox/features/browse/domain/repositories/search_repository.dart';
 
-class SearchRepositoryImpl implements SearchRepository {
+class BrowseRepositoryImpl implements BrowseRepository {
   @override
   Future<Search> searchPattern({
     required String pattern,
