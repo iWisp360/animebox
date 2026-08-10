@@ -11,18 +11,14 @@ class ThemeDynamic extends AnimeBoxTheme {
     AnimeBoxConfig config,
     BuildContext context,
   ) async {
-    if (context.mounted) {
-      final actualBrightness = getBrightness(config, context);
+    final actualBrightness = getBrightness(config, context);
+    final colorScheme = await getColorScheme(actualBrightness);
 
-      final colorScheme = await getColorScheme(actualBrightness);
-      final themeData = ThemeData.from(colorScheme: colorScheme);
+    final themeData = ThemeData.from(colorScheme: colorScheme);
 
-      return (config.appearance.pitchBlack)
-          ? themeData.copyWith(scaffoldBackgroundColor: Colors.black)
-          : themeData;
-    }
-
-    throw Exception("Unmounted context exception");
+    return (config.appearance.pitchBlack)
+        ? themeData.copyWith(scaffoldBackgroundColor: Colors.black)
+        : themeData;
   }
 
   Future<ColorScheme> getColorScheme(Brightness actualBrightness) async {

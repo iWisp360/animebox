@@ -14,12 +14,9 @@ abstract class AnimeBoxTheme {
     }
   }
 
-  ColorScheme fallbackColorScheme(Brightness brightness) {
-    switch (brightness) {
-      case .light:
-        return const ColorScheme.light();
-      case .dark:
-        return const ColorScheme.dark();
-    }
-  }
+  ColorScheme fallbackColorScheme(Brightness brightness) =>
+      ColorScheme.fromSeed(
+        seedColor: Colors.cyan.shade500,
+        brightness: brightness,
+      );
 }
