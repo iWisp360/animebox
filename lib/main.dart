@@ -11,6 +11,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   try {
+    WidgetsFlutterBinding.ensureInitialized();
+
     final configController = ConfigController();
     await configController.loadFromFile();
 
