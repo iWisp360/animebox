@@ -1,1 +1,7 @@
-enum SpritesKind { errorSprite, loadingSprite, searchSprite }
+enum SpritesKind {
+  errorSprite,
+  loadingSprite,
+  searchSprite,
+  notFoundSprite,
+  happySprite,
+}

@@ -16,5 +16,11 @@ class SpritesMayuri implements SpritesPack {
   // TODO: implement searchSprite
   Image get searchSprite => throw UnimplementedError();
 
+  @override
+  Image get notFoundSprite => Image.asset(provider.assetMayuriNotFound());
+
+  @override
+  Image get happySprite => Image.asset(provider.assetMayuriHappy());
+
   const SpritesMayuri();
 }

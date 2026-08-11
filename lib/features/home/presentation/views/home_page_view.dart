@@ -1,3 +1,4 @@
+import 'package:animebox/core/widgets/page_information.dart';
 import 'package:flutter/material.dart';
 
 class HomePageView extends StatelessWidget {
@@ -5,6 +6,9 @@ class HomePageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text("home"));
+    return const PageInformation(
+      message: "Working on it~",
+      spritesKind: .happySprite,
+    );
   }
 }

@@ -24,6 +24,7 @@ class _BrowsePageViewState extends ConsumerState<BrowsePageView> {
           appBar: browsePageAppBar(context, activePage: servers.isNotEmpty),
           body: (servers.isEmpty)
               ? PageInformation(
+                  spritesKind: .notFoundSprite,
                   message: "There are currently no servers.",
                   customAction: FilledButton.tonal(
                     onPressed: () => Navigator.of(context).push(
@@ -40,7 +41,10 @@ class _BrowsePageViewState extends ConsumerState<BrowsePageView> {
 
       error: (exception, st) => Scaffold(
         appBar: browsePageAppBar(context, activePage: false),
-        body: PageInformation(message: exception.toString()),
+        body: PageInformation(
+          spritesKind: .errorSprite,
+          message: exception.toString(),
+        ),
       ),
       loading: () => Scaffold(
         appBar: browsePageAppBar(context, activePage: false),

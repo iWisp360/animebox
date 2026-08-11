@@ -24,7 +24,10 @@ class PageInformation extends StatelessWidget {
     final image = switch (spritesKind) {
       .loadingSprite => spritesPack.loadingSprite,
       .searchSprite => spritesPack.searchSprite,
-      _ => spritesPack.errorSprite,
+      .notFoundSprite => spritesPack.notFoundSprite,
+      .happySprite => spritesPack.happySprite,
+      .errorSprite => spritesPack.errorSprite,
+      _ => spritesPack.notFoundSprite,
     };
 
     final bool chooseRow =

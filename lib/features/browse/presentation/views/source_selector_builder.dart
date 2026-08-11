@@ -32,6 +32,8 @@ class _SourceSelectorBuilderState extends State<SourceSelectorBuilder>
       child: Column(
         children: [
           TabBar(
+            isScrollable: true,
+            tabAlignment: .center,
             controller: _tabController,
             tabs: [
               for (final server in widget.servers)
