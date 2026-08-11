@@ -62,7 +62,7 @@ class _NavigationBuilderState extends State<NavigationBuilder> {
               selectedIndex: selectedIndex,
               labelType: .all,
               onDestinationSelected: onDestinationSelected,
-
+              scrollable: true,
               leading: widget.leadingRailAction,
               trailing: Padding(
                 padding: const .symmetric(vertical: 12),

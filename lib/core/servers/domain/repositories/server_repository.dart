@@ -4,7 +4,7 @@ abstract class ServerRepository {
   Future<void> addServer(Server server);
 
   /// Returns `true` if the server was present and removed successfully
-  Future<bool> removeServer(Server server);
+  Future<bool> removeServer(String uuid);
   Future<Server?> getServer(String uuid);
   Future<List<Server>> getServers();
   Future<void> updateServer(Server updatedServer);

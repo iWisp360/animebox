@@ -3,7 +3,7 @@ import 'package:animebox/features/sprites/domain/repositories/sprites_pack.dart'
 import 'package:flutter/material.dart';
 
 class SpritesMayuri implements SpritesPack {
-  final provider = SpritesMayuriProvider();
+  final provider = const SpritesMayuriProvider();
 
   @override
   Image get errorSprite => Image.asset(provider.assetMayuriError());
@@ -15,4 +15,6 @@ class SpritesMayuri implements SpritesPack {
   @override
   // TODO: implement searchSprite
   Image get searchSprite => throw UnimplementedError();
+
+  const SpritesMayuri();
 }

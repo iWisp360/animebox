@@ -20,7 +20,11 @@ class ServerFileSourceImpl implements ServerFileSource {
     );
 
     final serialized = prettyEncoder().convert(jsonServers);
-    await File(await _getServersFilePath()).writeAsString(serialized);
+    try {
+      await File(await _getServersFilePath()).writeAsString(serialized);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
@@ -51,4 +55,6 @@ class ServerFileSourceImpl implements ServerFileSource {
 
     return join(configPath.path, "servers.json");
   }
+
+  const ServerFileSourceImpl();
 }

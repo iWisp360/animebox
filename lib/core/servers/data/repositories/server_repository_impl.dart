@@ -13,7 +13,7 @@ class ServerRepositoryImpl implements ServerRepository {
   ServerRepositoryImpl({
     ServerFileSource? serverFileSource,
     ServerRemoteSource? serverRemoteSource,
-  }) : serverFileSource = serverFileSource ?? ServerFileSourceImpl(),
+  }) : serverFileSource = serverFileSource ?? const ServerFileSourceImpl(),
        serverRemoteSource = serverRemoteSource ?? ServerRemoteSourceImpl();
 
   Future<ServerMap> getCurrent() async {
@@ -30,11 +30,15 @@ class ServerRepositoryImpl implements ServerRepository {
   }
 
   @override
-  Future<bool> removeServer(Server server) async {
+  Future<bool> removeServer(String uuid) async {
     final serverMap = await getCurrent();
 
-    final result = serverMap.remove(server.uuid);
-    await serverFileSource.writeToFile(serverMap);
+    final result = serverMap.remove(uuid);
+    try {
+      await serverFileSource.writeToFile(serverMap);
+    } catch (e) {
+      rethrow;
+    }
 
     return result != null;
   }

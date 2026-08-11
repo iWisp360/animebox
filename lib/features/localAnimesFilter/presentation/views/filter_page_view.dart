@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class FilterPageView extends StatelessWidget {
-  const FilterPageView({super.key});
+  final String? query;
+  const FilterPageView({super.key, this.query});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text("Filter"));
+    return Center(child: (query != null) ? const Text("Filter") : null);
   }
 }

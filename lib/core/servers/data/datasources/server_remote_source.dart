@@ -1,26 +1,42 @@
-import 'package:animebox/core/graphql/data/repositories/graphql_client_repository_impl.dart';
-import 'package:animebox/core/graphql/domain/repositories/graphql_client_repository.dart';
+import 'dart:convert';
+
+import 'package:animebox/core/json.dart';
+import 'package:animebox/core/schema/data/repositories/server_info_mapper_impl.dart';
+import 'package:animebox/core/schema/domain/entities/agnostic_wrapper.dart';
+import 'package:animebox/core/schema/domain/repositories/server_info_mapper.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
+import 'package:http/http.dart';
 
 abstract class ServerRemoteSource {
   Future<Server> getFromEndpoint(String url);
 }
 
 class ServerRemoteSourceImpl implements ServerRemoteSource {
-  final GraphqlClientRepository clientRepository;
+  final ServerInfoMapper serverInfoMapper;
 
-  ServerRemoteSourceImpl({GraphqlClientRepository? clientRepository})
-    : clientRepository = clientRepository ?? GraphqlClientRepositoryImpl();
+  ServerRemoteSourceImpl({ServerInfoMapper? serverInfoMapper})
+    : serverInfoMapper = serverInfoMapper ?? ServerInfoMapperImpl();
 
   @override
   Future<Server> getFromEndpoint(String url) async {
-    final query = await clientRepository.query(
-      query: serverInfoGraphqlQuery,
-      serverUrl: url,
-    );
+    try {
+      final parsedUrl = Uri.parse(url);
+      final responseBodyUnparsed = (await get(parsedUrl)).bodyBytes;
+      final responseBody = utf8.decode(responseBodyUnparsed);
 
-    final server = Server.fromJson(query);
-    return server.copyWith(url: url);
+      final serverInfo =
+          jsonDecoder().convert(responseBody) as Map<String, dynamic>;
+
+      final server = AgnosticWrapper.fromJson(serverInfo);
+
+      final storedUrl = Uri.parse(
+        "${parsedUrl.scheme.isEmpty ? "" : "${parsedUrl.scheme}://"}${parsedUrl.authority}",
+      );
+
+      return serverInfoMapper.mapFromSchema(server).copyWith(url: storedUrl);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   static const serverInfoGraphqlQuery = """

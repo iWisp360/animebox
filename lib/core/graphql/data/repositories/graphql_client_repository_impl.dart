@@ -18,14 +18,11 @@ class GraphqlClientRepositoryImpl implements GraphqlClientRepository {
   Future<Map<String, dynamic>> query({
     required String query,
     Map<String, dynamic>? variables,
-    required String serverUrl,
+    required Uri serverUrl,
   }) async {
     final requestBody = createRequestBody(query, variables);
 
-    final response = (await _client.post(
-      Uri.parse(serverUrl),
-      body: requestBody,
-    ));
+    final response = (await _client.post(serverUrl, body: requestBody));
 
     final jsonSerialized = utf8.decode(
       response.bodyBytes,

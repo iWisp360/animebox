@@ -5,6 +5,7 @@ import 'package:animebox/core/l10n/localizations/app_localizations.dart';
 import 'package:animebox/core/themes/presentation/views/themes_builder.dart';
 import 'package:animebox/features/mainPage/presentation/views/main_page_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
 
 Future<void> main() async {
@@ -16,7 +17,7 @@ Future<void> main() async {
 
     setupInjector();
 
-    runApp(const AnimeBoxApp());
+    runApp(const ProviderScope(child: AnimeBoxApp()));
   } on Exception catch (e, st) {
     runApp(ErrorApp(exception: e, stackTrace: st));
   }
