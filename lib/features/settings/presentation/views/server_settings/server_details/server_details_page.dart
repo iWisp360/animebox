@@ -1,6 +1,6 @@
 import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/features/settings/presentation/views/server_settings/server_details/server_delete_dialog.dart';
-import 'package:animebox/features/settings/presentation/views/server_settings/server_details/source_recommendations_dialog.dart';
+import 'package:animebox/features/settings/presentation/views/server_settings/server_details/source_details_dialog.dart';
 import 'package:flutter/material.dart';
 
 class ServerDetailsPage extends StatelessWidget {
@@ -80,17 +80,11 @@ class ServerDetailsPage extends StatelessWidget {
                           child: Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: (source.recommendations != null)
-                                  ? () => showDialog(
-                                      context: context,
-                                      builder: (context) =>
-                                          SourceRecommendationsDialog(
-                                            sourceName: source.prettyName,
-                                            recommendation:
-                                                source.recommendations!,
-                                          ),
-                                    )
-                                  : null,
+                              onTap: () => showDialog(
+                                context: context,
+                                builder: (context) =>
+                                    SourceDetailsDialog(source: source),
+                              ),
                               child: Padding(
                                 padding: const .symmetric(
                                   vertical: 10,
@@ -101,8 +95,8 @@ class ServerDetailsPage extends StatelessWidget {
                                     Column(
                                       crossAxisAlignment: .start,
                                       children: [
-                                        SelectableText(source.prettyName),
-                                        SelectableText(
+                                        Text(source.prettyName),
+                                        Text(
                                           "Identifier: ${source.id}",
                                           style: TextStyle(
                                             color: Theme.of(
@@ -113,19 +107,7 @@ class ServerDetailsPage extends StatelessWidget {
                                       ],
                                     ),
                                     const Expanded(child: SizedBox.shrink()),
-                                    if (source.isHentaiSource)
-                                      Text(
-                                        "18+",
-                                        style: TextStyle(
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.error,
-                                        ),
-                                      ),
-                                    if (source.recommendations != null) ...[
-                                      const SizedBox(width: 10),
-                                      const Text("Recommendations"),
-                                    ],
+                                    const Icon(Icons.chevron_right),
                                   ],
                                 ),
                               ),

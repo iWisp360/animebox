@@ -1,33 +1,51 @@
 import 'package:animebox/core/servers/data/providers.dart';
 import 'package:animebox/core/widgets/page_information.dart';
+import 'package:animebox/features/browse/presentation/views/app_bar.dart';
+import 'package:animebox/features/browse/presentation/views/source_selector_builder.dart';
 import 'package:animebox/features/settings/presentation/views/server_settings/servers_settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BrowsePageView extends ConsumerWidget {
+class BrowsePageView extends ConsumerStatefulWidget {
   const BrowsePageView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<BrowsePageView> createState() => _BrowsePageViewState();
+}
+
+class _BrowsePageViewState extends ConsumerState<BrowsePageView> {
+  @override
+  Widget build(BuildContext context) {
     final watchedServers = ref.watch(serverListProvider);
 
     return watchedServers.when(
-      data: (servers) => (servers.isEmpty)
-          ? PageInformation(
-              message:
-                  "There are currently no servers. Add one in the servers settings.",
-              customAction: FilledButton.tonal(
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const ServersSettingsPage(),
+      data: (servers) {
+        return Scaffold(
+          appBar: browsePageAppBar(context, activePage: servers.isNotEmpty),
+          body: (servers.isEmpty)
+              ? PageInformation(
+                  message: "There are currently no servers.",
+                  customAction: FilledButton.tonal(
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ServersSettingsPage(),
+                      ),
+                    ),
+                    child: const Text("Go to servers"),
                   ),
-                ),
-                child: const Text("Go to servers"),
-              ),
-            )
-          : Center(child: Text("$servers")),
-      error: (exception, st) => PageInformation(message: exception.toString()),
-      loading: () => const Center(child: CircularProgressIndicator()),
+                )
+              : SourceSelectorBuilder(servers: servers),
+        );
+      },
+
+      error: (exception, st) => Scaffold(
+        appBar: browsePageAppBar(context, activePage: false),
+        body: PageInformation(message: exception.toString()),
+      ),
+      loading: () => Scaffold(
+        appBar: browsePageAppBar(context, activePage: false),
+        body: const Center(child: CircularProgressIndicator()),
+      ),
     );
   }
 }

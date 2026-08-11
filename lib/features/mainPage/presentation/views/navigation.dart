@@ -64,6 +64,7 @@ class _NavigationBuilderState extends State<NavigationBuilder> {
               onDestinationSelected: onDestinationSelected,
               scrollable: true,
               leading: widget.leadingRailAction,
+              elevation: 2,
               trailing: Padding(
                 padding: const .symmetric(vertical: 12),
                 child: widget.trailingRailAction,

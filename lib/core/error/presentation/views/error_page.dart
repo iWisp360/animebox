@@ -1,5 +1,5 @@
 import 'package:animebox/core/error/presentation/controllers/error_page_controller.dart';
-import 'package:animebox/core/helpers/pages_helpers.dart';
+import 'package:animebox/core/helpers/convergence.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

@@ -7,6 +7,7 @@ import 'package:animebox/features/mainPage/presentation/views/main_page_view.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   try {
@@ -15,7 +16,7 @@ Future<void> main() async {
 
     MediaKit.ensureInitialized();
 
-    setupInjector();
+    setupInjector(sharedPreferences: await SharedPreferences.getInstance());
 
     runApp(const ProviderScope(child: AnimeBoxApp()));
   } on Exception catch (e, st) {

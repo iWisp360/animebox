@@ -4,9 +4,8 @@ import 'package:animebox/core/l10n/context.dart';
 import 'package:animebox/features/browse/presentation/views/browse_page_view.dart';
 import 'package:animebox/features/home/presentation/views/home_page_view.dart';
 import 'package:animebox/features/library/presentation/views/library_page_view.dart';
-import 'package:animebox/features/localAnimesFilter/presentation/views/filter_page_view.dart';
 import 'package:animebox/features/mainPage/presentation/controllers/main_page_controller.dart';
-import 'package:animebox/features/mainPage/presentation/views/app_bar.dart';
+import 'package:animebox/features/mainPage/presentation/views/main_page_scaffold.dart';
 import 'package:animebox/features/mainPage/presentation/views/navigation.dart';
 import 'package:animebox/features/settings/presentation/views/settings_page.dart';
 import 'package:flutter/material.dart';
@@ -54,26 +53,14 @@ class _MainPageViewState extends State<MainPageView> {
         child: NavigationBuilder(
           onDestinationChangeAction: () => setState(() => filtering = false),
           builder: (navigationWidget, activeTab) {
-            final scaffold = Scaffold(
-              drawerEnableOpenDragGesture: !filtering,
-              appBar: AppBar(
-                title: filtering ? null : const Text("Anime Box"),
-                leading: filtering
-                    ? IconButton(
-                        onPressed: () => setState(() => filtering = false),
-                        icon: const Icon(Icons.arrow_back),
-                      )
-                    : null,
-                actions: homeAppBarActions(
-                  isFiltering: filtering,
-                  showSettingsAction: !isDesktop,
-                  filterSetter: (value) => setState(() => filtering = value),
-                  isOnSearchTab: false,
-                  context,
-                ),
-              ),
-              body: (filtering) ? const FilterPageView() : activeTab,
-              bottomNavigationBar: (!isDesktop) ? navigationWidget : null,
+            final isOnBrowsePage = activeTab is BrowsePageView;
+            final scaffold = MainPageScaffold(
+              filtering: filtering,
+              isOnBrowsePage: isOnBrowsePage,
+              isDesktop: isDesktop,
+              filteringSetter: (value) => setState(() => filtering = value),
+              navigationWidget: navigationWidget,
+              activeTab: activeTab,
             );
 
             if (isDesktop) {

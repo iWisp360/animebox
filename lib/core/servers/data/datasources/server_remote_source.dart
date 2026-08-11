@@ -5,6 +5,7 @@ import 'package:animebox/core/schema/data/repositories/server_info_mapper_impl.d
 import 'package:animebox/core/schema/domain/entities/agnostic_wrapper.dart';
 import 'package:animebox/core/schema/domain/repositories/server_info_mapper.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
+import 'package:collection/collection.dart';
 import 'package:http/http.dart';
 
 abstract class ServerRemoteSource {
@@ -33,7 +34,14 @@ class ServerRemoteSourceImpl implements ServerRemoteSource {
         "${parsedUrl.scheme.isEmpty ? "" : "${parsedUrl.scheme}://"}${parsedUrl.authority}",
       );
 
-      return serverInfoMapper.mapFromSchema(server).copyWith(url: storedUrl);
+      final parsedServer = serverInfoMapper.mapFromSchema(server);
+
+      return parsedServer.copyWith(
+        url: storedUrl,
+        supportedAnimeSources: parsedServer.supportedAnimeSources.sorted(
+          (a, b) => a.prettyName.compareTo(b.prettyName),
+        ),
+      );
     } catch (e) {
       rethrow;
     }

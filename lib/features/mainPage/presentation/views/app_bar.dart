@@ -1,4 +1,4 @@
-import 'package:animebox/features/settings/presentation/views/settings_page.dart';
+import 'package:animebox/features/settings/presentation/views/navigate_to_settings.dart';
 import 'package:flutter/material.dart';
 
 List<Widget> homeAppBarActions(
@@ -16,9 +16,7 @@ List<Widget> homeAppBarActions(
 
   if (!isFiltering && showSettingsAction)
     IconButton(
-      onPressed: () => Navigator.of(
-        context,
-      ).push(MaterialPageRoute(builder: (context) => const SettingsPage())),
+      onPressed: () => navigateToSettings(context),
       icon: const Icon(Icons.settings),
     ),
 ];
