@@ -1,3 +1,4 @@
+import 'package:animebox/core/helpers/convergence.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/features/settings/presentation/views/server_settings/server_details/server_delete_dialog.dart';
 import 'package:animebox/features/settings/presentation/views/server_settings/server_details/source_details_dialog.dart';
@@ -55,61 +56,55 @@ class ServerDetailsPage extends StatelessWidget {
               ),
               const SizedBox(height: 40, width: 40),
               Padding(
-                padding: const .symmetric(horizontal: 10),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 800),
-                  child: ExpansionTile(
-                    title: const Text("Anime sources"),
-                    subtitle: Text(
-                      switch (server.supportedAnimeSources.length) {
-                        0 => "This server has no sources",
-                        1 => "This server has 1 source",
-                        _ =>
-                          "This server has ${server.supportedAnimeSources.length} sources",
-                      },
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      ),
-                    ),
+                padding: calculateDefaultPadding(context),
+                child: Padding(
+                  padding: const .symmetric(horizontal: 15),
+                  child: Column(
+                    crossAxisAlignment: .start,
                     children: [
+                      const Text("Anime sources"),
+                      Text(
+                        switch (server.supportedAnimeSources.length) {
+                          0 => "This server has no sources",
+                          1 => "This server has 1 source",
+                          _ =>
+                            "This server has ${server.supportedAnimeSources.length} sources",
+                        },
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      const Divider(),
                       for (final source in server.supportedAnimeSources)
-                        Card.filled(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.surfaceContainerHigh,
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () => showDialog(
-                                context: context,
-                                builder: (context) =>
-                                    SourceDetailsDialog(source: source),
-                              ),
-                              child: Padding(
-                                padding: const .symmetric(
-                                  vertical: 10,
-                                  horizontal: 10,
-                                ),
-                                child: Row(
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: .start,
-                                      children: [
-                                        Text(source.prettyName),
-                                        Text(
-                                          "Identifier: ${source.id}",
-                                          style: TextStyle(
-                                            color: Theme.of(
-                                              context,
-                                            ).colorScheme.onSurfaceVariant,
-                                          ),
+                        Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () => showDialog(
+                              context: context,
+                              builder: (context) =>
+                                  SourceDetailsDialog(source: source),
+                            ),
+                            child: Padding(
+                              padding: const .symmetric(vertical: 10),
+                              child: Row(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: .start,
+                                    children: [
+                                      Text(source.prettyName),
+                                      Text(
+                                        "Identifier: ${source.id}",
+                                        style: TextStyle(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onSurfaceVariant,
                                         ),
-                                      ],
-                                    ),
-                                    const Expanded(child: SizedBox.shrink()),
-                                    const Icon(Icons.chevron_right),
-                                  ],
-                                ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Expanded(child: SizedBox.shrink()),
+                                  const Icon(Icons.chevron_right),
+                                ],
                               ),
                             ),
                           ),
