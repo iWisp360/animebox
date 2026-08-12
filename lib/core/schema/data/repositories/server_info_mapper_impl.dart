@@ -1,4 +1,4 @@
-import 'package:animebox/core/schema/domain/entities/agnostic_wrapper.dart';
+import 'package:animebox/core/schema/domain/entities/agnostic_server_info.dart';
 import 'package:animebox/core/schema/domain/entities/schema_v1/server_info.dart';
 import 'package:animebox/core/schema/domain/repositories/server_info_mapper.dart';
 import 'package:animebox/core/schema/exceptions.dart';
@@ -7,7 +7,7 @@ import 'package:animebox/core/servers/domain/entities/server.dart';
 
 class ServerInfoMapperImpl implements ServerInfoMapper {
   @override
-  Server mapFromSchema(AgnosticWrapper serverInfo) =>
+  Server mapFromSchema(AgnosticServerInfo serverInfo) =>
       switch (serverInfo.schemaVersion) {
         1 => handleSchemaV1(serverInfo.info),
         _ => throw UnsupportedSchemaVersionException(

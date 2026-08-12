@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:animebox/core/json.dart';
 import 'package:animebox/core/schema/data/repositories/server_info_mapper_impl.dart';
-import 'package:animebox/core/schema/domain/entities/agnostic_wrapper.dart';
+import 'package:animebox/core/schema/domain/entities/agnostic_server_info.dart';
 import 'package:animebox/core/schema/domain/repositories/server_info_mapper.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:collection/collection.dart';
@@ -28,7 +28,7 @@ class ServerRemoteSourceImpl implements ServerRemoteSource {
       final serverInfo =
           jsonDecoder().convert(responseBody) as Map<String, dynamic>;
 
-      final server = AgnosticWrapper.fromJson(serverInfo);
+      final server = AgnosticServerInfo.fromJson(serverInfo);
 
       final storedUrl = Uri.parse(
         "${parsedUrl.scheme.isEmpty ? "" : "${parsedUrl.scheme}://"}${parsedUrl.authority}",
