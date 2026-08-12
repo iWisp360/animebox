@@ -1,4 +1,4 @@
-import 'package:animebox/features/settings/presentation/views/settings_page.dart';
+import 'package:animebox/ui/settings/presentation/views/settings_page.dart';
 import 'package:flutter/material.dart';
 
 void navigateToSettings(BuildContext context) => Navigator.of(

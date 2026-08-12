@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 class ErrorPage extends StatefulWidget {
   final bool isRecoverable;
-  final Exception exception;
+  final Object exception;
   final StackTrace? stackTrace;
   const ErrorPage({
     super.key,

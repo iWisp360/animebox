@@ -1,7 +1,7 @@
 import 'package:animebox/core/helpers/convergence.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
-import 'package:animebox/features/settings/presentation/views/server_settings/server_details/server_delete_dialog.dart';
-import 'package:animebox/features/settings/presentation/views/server_settings/server_details/source_details_dialog.dart';
+import 'package:animebox/ui/settings/presentation/views/server_settings/server_details/server_delete_dialog.dart';
+import 'package:animebox/ui/settings/presentation/views/server_settings/server_details/source_details_dialog.dart';
 import 'package:flutter/material.dart';
 
 class ServerDetailsPage extends StatelessWidget {

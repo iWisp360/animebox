@@ -1,8 +1,8 @@
 import 'package:animebox/core/servers/data/providers.dart';
 import 'package:animebox/core/widgets/page_information.dart';
-import 'package:animebox/features/settings/presentation/views/server_settings/server_add_dialog.dart';
-import 'package:animebox/features/settings/presentation/views/server_settings/server_details/server_details_page.dart';
-import 'package:animebox/features/settings/presentation/views/settings_ui_theming.dart';
+import 'package:animebox/ui/settings/presentation/views/server_settings/server_add_dialog.dart';
+import 'package:animebox/ui/settings/presentation/views/server_settings/server_details/server_details_page.dart';
+import 'package:animebox/ui/settings/presentation/views/settings_ui_theming.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';

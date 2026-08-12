@@ -1,7 +1,7 @@
 import 'package:animebox/core/helpers/convergence.dart';
 import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
-import 'package:animebox/features/browse/presentation/views/clickable_source.dart';
-import 'package:animebox/features/browse/presentation/views/source_navigation_page/source_navigation_page.dart';
+import 'package:animebox/ui/browse/presentation/views/clickable_source.dart';
+import 'package:animebox/ui/browse/presentation/views/source_navigation_page/source_navigation_page.dart';
 import 'package:flutter/material.dart';
 
 class SourceSelector extends StatelessWidget {

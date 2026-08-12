@@ -1,5 +1,5 @@
 import 'package:animebox/core/servers/domain/entities/server.dart';
-import 'package:animebox/features/browse/presentation/views/source_selector.dart';
+import 'package:animebox/ui/browse/presentation/views/source_selector.dart';
 import 'package:flutter/material.dart';
 
 class SourceSelectorBuilder extends StatefulWidget {

@@ -1,4 +1,4 @@
-import 'package:animebox/features/settings/presentation/views/navigate_to_settings.dart';
+import 'package:animebox/ui/settings/presentation/views/navigate_to_settings.dart';
 import 'package:flutter/material.dart';
 
 List<Widget> homeAppBarActions(

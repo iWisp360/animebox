@@ -1,13 +1,13 @@
 import 'package:animebox/core/configs/presentation/views/config_builder.dart';
 import 'package:animebox/core/helpers/convergence.dart';
 import 'package:animebox/core/l10n/context.dart';
-import 'package:animebox/features/browse/presentation/views/browse_page_view.dart';
-import 'package:animebox/features/home/presentation/views/home_page_view.dart';
-import 'package:animebox/features/library/presentation/views/library_page_view.dart';
-import 'package:animebox/features/mainPage/presentation/controllers/main_page_controller.dart';
-import 'package:animebox/features/mainPage/presentation/views/main_page_scaffold.dart';
-import 'package:animebox/features/mainPage/presentation/views/navigation.dart';
-import 'package:animebox/features/settings/presentation/views/settings_page.dart';
+import 'package:animebox/ui/browse/presentation/views/browse_page_view.dart';
+import 'package:animebox/ui/home/presentation/views/home_page_view.dart';
+import 'package:animebox/ui/library/presentation/views/library_page_view.dart';
+import 'package:animebox/ui/mainPage/presentation/controllers/main_page_controller.dart';
+import 'package:animebox/ui/mainPage/presentation/views/main_page_scaffold.dart';
+import 'package:animebox/ui/mainPage/presentation/views/navigation.dart';
+import 'package:animebox/ui/settings/presentation/views/settings_page.dart';
 import 'package:flutter/material.dart';
 
 class MainPageView extends StatefulWidget {

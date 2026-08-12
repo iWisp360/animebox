@@ -1,8 +1,8 @@
 import 'package:animebox/core/helpers/convergence.dart';
-import 'package:animebox/features/browse/presentation/views/global_search_page_view.dart';
-import 'package:animebox/features/browse/presentation/views/server_selector_app_bar.dart';
-import 'package:animebox/features/settings/presentation/views/navigate_to_settings.dart';
-import 'package:animebox/features/settings/presentation/views/server_settings/navigate_to_server_settings.dart';
+import 'package:animebox/ui/browse/presentation/views/global_search_page/global_search_page_view.dart';
+import 'package:animebox/ui/browse/presentation/views/server_selector_app_bar.dart';
+import 'package:animebox/ui/settings/presentation/views/navigate_to_settings.dart';
+import 'package:animebox/ui/settings/presentation/views/server_settings/navigate_to_server_settings.dart';
 import 'package:flutter/material.dart';
 
 PreferredSizeWidget globalSearchPageAppBar(BuildContext context) {

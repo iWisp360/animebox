@@ -1,8 +1,8 @@
 import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
 import 'package:animebox/core/widgets/tab_view/tab_bar_container.dart';
-import 'package:animebox/features/browse/presentation/views/source_navigation_page/app_bar.dart';
-import 'package:animebox/features/browse/presentation/views/source_navigation_page/popular_anime_tab.dart';
-import 'package:animebox/features/browse/presentation/views/source_navigation_page/latest_anime_tab.dart';
+import 'package:animebox/ui/browse/presentation/views/source_navigation_page/latest_anime_tab.dart';
+import 'package:animebox/ui/browse/presentation/views/source_navigation_page/popular_anime_tab.dart';
+import 'package:animebox/ui/browse/presentation/views/source_navigation_page/app_bar.dart';
 import 'package:flutter/material.dart';
 
 // The styling for this page was inspired by Aniyomi

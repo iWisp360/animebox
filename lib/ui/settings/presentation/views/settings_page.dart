@@ -1,6 +1,6 @@
 import 'package:animebox/core/l10n/context.dart';
-import 'package:animebox/features/settings/presentation/views/server_settings/servers_settings_page.dart';
-import 'package:animebox/features/settings/presentation/views/settings_ui_theming.dart';
+import 'package:animebox/ui/settings/presentation/views/server_settings/servers_settings_page.dart';
+import 'package:animebox/ui/settings/presentation/views/settings_ui_theming.dart';
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
 
