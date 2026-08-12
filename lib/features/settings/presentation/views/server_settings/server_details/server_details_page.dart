@@ -129,7 +129,7 @@ class ServerDetailsPage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: .center,
             children: [
-              FilledButton.tonal(
+              FilledButton.tonalIcon(
                 onPressed: () async {
                   final response = await showDialog<bool>(
                     context: context,
@@ -140,7 +140,8 @@ class ServerDetailsPage extends StatelessWidget {
                     Navigator.of(context).pop(true);
                   }
                 },
-                child: const Text("Delete this server"),
+                icon: const Icon(Icons.delete),
+                label: const Text("Delete this server"),
               ),
             ],
           ),

@@ -92,6 +92,7 @@ class _MainPageViewState extends State<MainPageView> {
           ),
 
           trailingRailAction: FloatingActionButton(
+            elevation: 0,
             tooltip: context.l10n.settingsPageHeader,
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const SettingsPage()),

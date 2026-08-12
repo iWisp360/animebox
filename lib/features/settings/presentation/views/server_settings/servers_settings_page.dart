@@ -88,7 +88,7 @@ class _ServersSettingsPageState extends ConsumerState<ServersSettingsPage> {
                   child: Padding(
                     padding: const .symmetric(vertical: 10),
                     child: Center(
-                      child: FilledButton.tonal(
+                      child: FilledButton(
                         onPressed: () async {
                           await showDialog(
                             context: context,

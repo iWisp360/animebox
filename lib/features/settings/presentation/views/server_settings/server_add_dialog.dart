@@ -64,7 +64,7 @@ class _ServerAddDialogState extends ConsumerState<ServerAddDialog> {
       ),
       constraints: const .new(minWidth: 300, maxWidth: .infinity),
       actions: [
-        FilledButton.tonal(
+        FilledButton(
           onPressed: (!loadingServer && actualText.isNotEmpty && validUrl)
               ? () async {
                   setState(() => loadingServer = true);
@@ -83,7 +83,7 @@ class _ServerAddDialogState extends ConsumerState<ServerAddDialog> {
               : null,
           child: const Text("Add"),
         ),
-        FilledButton.tonal(
+        OutlinedButton(
           onPressed: () => Navigator.of(context).pop(),
           child: const Text("Cancel"),
         ),

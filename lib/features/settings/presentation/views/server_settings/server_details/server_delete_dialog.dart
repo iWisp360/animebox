@@ -12,11 +12,15 @@ class ServerDeleteDialog extends StatelessWidget {
         "This server will be permanently deleted from Anime Box. The series you added from this server won't be deleted.",
       ),
       actions: [
-        FilledButton.tonal(
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.error,
+            foregroundColor: Theme.of(context).colorScheme.onError,
+          ),
           onPressed: () => Navigator.of(context).pop(true),
           child: const Text("Delete"),
         ),
-        FilledButton.tonal(
+        OutlinedButton(
           onPressed: () => Navigator.of(context).pop(),
           child: const Text("Cancel"),
         ),

@@ -14,7 +14,7 @@ class ClickableSource extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Padding(
-            padding: const .symmetric(vertical: 15, horizontal: 10),
+            padding: const .symmetric(vertical: 15, horizontal: 15),
             child: Text(source.prettyName),
           ),
         ),

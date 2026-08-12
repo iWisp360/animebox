@@ -1,3 +1,4 @@
+import 'package:animebox/core/helpers/convergence.dart';
 import 'package:animebox/features/browse/presentation/views/global_search_page_view.dart';
 import 'package:animebox/features/browse/presentation/views/server_selector_app_bar.dart';
 import 'package:animebox/features/settings/presentation/views/navigate_to_settings.dart';
@@ -21,6 +22,8 @@ PreferredSizeWidget browsePageAppBar(
   BuildContext context, {
   required bool activePage,
 }) {
+  final isDesktop = isDesktopWidth(context);
+
   return AppBar(
     title: const Text("Anime Box"),
     actions: [
@@ -38,10 +41,11 @@ PreferredSizeWidget browsePageAppBar(
           ),
           icon: const Icon(Icons.travel_explore),
         ),
-      IconButton(
-        onPressed: () => navigateToSettings(context),
-        icon: const Icon(Icons.settings),
-      ),
+      if (!isDesktop)
+        IconButton(
+          onPressed: () => navigateToSettings(context),
+          icon: const Icon(Icons.settings),
+        ),
     ],
   );
 }

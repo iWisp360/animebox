@@ -7,28 +7,32 @@ class SourceDetailsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      constraints: const BoxConstraints(maxWidth: 400),
-      title: SelectableText(source.prettyName),
-      content: Column(
-        spacing: 5,
-        crossAxisAlignment: .start,
-        mainAxisSize: .min,
-        children: [
-          SelectableText("Identifier: ${source.id}"),
-          SelectableText(
-            "Recommendations: ${source.recommendations ?? "None"}",
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    return Padding(
+      padding: .only(bottom: keyboardHeight),
+      child: AlertDialog(
+        constraints: const BoxConstraints(minWidth: 300, maxWidth: 400),
+        title: SelectableText(source.prettyName),
+        content: Column(
+          spacing: 5,
+          crossAxisAlignment: .start,
+          mainAxisSize: .min,
+          children: [
+            SelectableText("Identifier: ${source.id}"),
+            SelectableText(
+              "Recommendations: ${source.recommendations ?? "None"}",
+            ),
+            SelectableText("Hentai: ${source.isHentaiSource ? "Yes" : "No"}"),
+          ],
+        ),
+        actionsAlignment: .center,
+        actions: [
+          FilledButton.tonal(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text("Done"),
           ),
-          SelectableText("Hentai: ${source.isHentaiSource ? "Yes" : "No"}"),
         ],
       ),
-      actionsAlignment: .center,
-      actions: [
-        FilledButton.tonal(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text("Done"),
-        ),
-      ],
     );
   }
 }
