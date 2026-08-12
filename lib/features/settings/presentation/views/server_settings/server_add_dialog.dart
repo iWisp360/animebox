@@ -48,7 +48,11 @@ class _ServerAddDialogState extends ConsumerState<ServerAddDialog> {
             setState(() => loadingServer = false);
           }
         },
-        decoration: InputDecoration(errorText: errorText, errorMaxLines: 10),
+        decoration: InputDecoration(
+          errorText: errorText,
+          errorMaxLines: 10,
+          labelText: "Server's Info Url",
+        ),
         controller: textEditingController,
         onChanged: (text) => setState(() {
           try {
