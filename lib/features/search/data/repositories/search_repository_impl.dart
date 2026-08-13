@@ -1,17 +1,18 @@
-import 'package:animebox/features/browse/data/datasources/search.dart';
-import 'package:animebox/features/browse/domain/entities/search.dart';
-import 'package:animebox/features/browse/domain/repositories/search_repository.dart';
+import 'package:animebox/core/servers/domain/entities/server.dart';
+import 'package:animebox/features/search/data/datasources/search.dart';
+import 'package:animebox/features/search/domain/entities/search.dart';
+import 'package:animebox/features/search/domain/repositories/search_repository.dart';
 
-class BrowseRepositoryImpl implements BrowseRepository {
+class SearchRepositoryImpl implements SearchRepository {
   @override
-  Future<Search> searchPattern({
-    required String pattern,
-    required String serverUuid,
+  Future<Search> searchQuery({
+    required String query,
+    required Server server,
     required String sourceId,
   }) async {
-    return SearchSourceRemote().searchPattern(
-      pattern: pattern,
-      serverUuid: serverUuid,
+    return SearchSourceRemote().searchQuery(
+      query: query,
+      server: server,
       sourceId: sourceId,
     );
   }

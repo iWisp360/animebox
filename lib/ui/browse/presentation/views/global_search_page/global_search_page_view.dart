@@ -1,13 +1,15 @@
 import 'package:animebox/core/error/presentation/views/error_page.dart';
 import 'package:animebox/core/helpers/convergence.dart';
 import 'package:animebox/core/servers/data/providers.dart';
+import 'package:animebox/features/search/data/providers/search_provider.dart';
 import 'package:animebox/ui/browse/presentation/views/global_search_page/source_search_row.dart';
 import 'package:animebox/ui/browse/presentation/views/server_selector_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class GlobalSearchPageView extends ConsumerStatefulWidget {
-  const GlobalSearchPageView({super.key});
+  final String? query;
+  const GlobalSearchPageView({super.key, this.query});
 
   @override
   ConsumerState<GlobalSearchPageView> createState() =>
@@ -16,20 +18,23 @@ class GlobalSearchPageView extends ConsumerStatefulWidget {
 
 class _GlobalSearchPageViewState extends ConsumerState<GlobalSearchPageView> {
   late final TextEditingController _textEditingController;
+  late final ScrollController _scrollController;
   late String sendedQuery;
   late String currentQuery;
 
   @override
   void initState() {
     _textEditingController = TextEditingController();
-    sendedQuery = "";
-    currentQuery = "";
+    _scrollController = ScrollController();
+    sendedQuery = widget.query ?? "";
+    currentQuery = widget.query ?? "";
     super.initState();
   }
 
   @override
   void dispose() {
     _textEditingController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -62,21 +67,23 @@ class _GlobalSearchPageViewState extends ConsumerState<GlobalSearchPageView> {
                         controller: _textEditingController,
                         leading: const Icon(Icons.search),
                         onChanged: (query) {
-                          if (query.isEmpty) {
-                            setState(() {
-                              sendedQuery = "";
-                            });
-                          }
-
                           setState(() {
                             currentQuery = query;
+                            if (query.isEmpty) {
+                              sendedQuery = "";
+                            }
                           });
                         },
                         onSubmitted: (query) => setState(() {
                           sendedQuery = query;
                         }),
                         trailing: [
-                          if (currentQuery.isNotEmpty)
+                          if (currentQuery.isNotEmpty) ...[
+                            if (sendedQuery.isNotEmpty)
+                              IconButton(
+                                onPressed: () => refreshAll(ref),
+                                icon: const Icon(Icons.refresh),
+                              ),
                             IconButton(
                               onPressed: () {
                                 setState(() {
@@ -84,9 +91,11 @@ class _GlobalSearchPageViewState extends ConsumerState<GlobalSearchPageView> {
                                   currentQuery = "";
                                 });
                                 _textEditingController.clear();
+                                _scrollController.jumpTo(0);
                               },
                               icon: const Icon(Icons.clear),
                             ),
+                          ],
                         ],
                       ),
                     ),
@@ -95,16 +104,31 @@ class _GlobalSearchPageViewState extends ConsumerState<GlobalSearchPageView> {
               ),
               if (sendedQuery.isNotEmpty)
                 Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        for (final source in server.supportedAnimeSources)
-                          SourceSearchRow(
-                            server: server,
-                            source: source,
-                            query: sendedQuery,
-                          ),
-                      ],
+                  child: RefreshIndicator(
+                    onRefresh: () => refreshAll(ref),
+                    child: SingleChildScrollView(
+                      controller: _scrollController,
+                      child: Padding(
+                        padding: const .symmetric(horizontal: 16),
+                        child: Column(
+                          children: [
+                            for (final source
+                                in server.supportedAnimeSources) ...[
+                              ConstrainedBox(
+                                constraints: const BoxConstraints(
+                                  minWidth: .infinity,
+                                ),
+                                child: SourceSearchRow(
+                                  server: server,
+                                  source: source,
+                                  query: sendedQuery,
+                                ),
+                              ),
+                              const Divider(),
+                            ],
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -115,5 +139,9 @@ class _GlobalSearchPageViewState extends ConsumerState<GlobalSearchPageView> {
       error: (e, st) =>
           ErrorPage(isRecoverable: true, exception: e, stackTrace: st),
     );
+  }
+
+  Future<void> refreshAll(WidgetRef ref) async {
+    ref.invalidate(asReload: true, searchRepositoryProvider);
   }
 }

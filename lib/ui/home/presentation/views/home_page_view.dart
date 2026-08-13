@@ -1,4 +1,4 @@
-import 'package:animebox/core/widgets/page_information.dart';
+import 'package:animebox/ui/widgets/page_information.dart';
 import 'package:flutter/material.dart';
 
 class HomePageView extends StatelessWidget {

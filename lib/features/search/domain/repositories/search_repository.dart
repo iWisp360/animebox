@@ -1,9 +1,10 @@
-import 'package:animebox/features/browse/domain/entities/search.dart';
+import 'package:animebox/core/servers/domain/entities/server.dart';
+import 'package:animebox/features/search/domain/entities/search.dart';
 
-abstract class BrowseRepository {
-  Future<Search> searchPattern({
-    required String pattern,
-    required String serverUuid,
+abstract class SearchRepository {
+  Future<Search> searchQuery({
+    required String query,
+    required Server server,
     required String sourceId,
   });
 }

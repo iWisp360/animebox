@@ -10,17 +10,14 @@ class ServerDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lowHeight = MediaQuery.of(context).size.height < 520;
-
     return Scaffold(
-      appBar: AppBar(title: Text(server.name ?? server.uuid)),
+      appBar: AppBar(title: const Text("Server Details")),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(padding: .only(top: (lowHeight) ? 10 : 160)),
               SizedBox(
                 width: 120,
                 child: (server.logoUrl != null)
@@ -57,60 +54,70 @@ class ServerDetailsPage extends StatelessWidget {
               const SizedBox(height: 40, width: 40),
               Padding(
                 padding: calculateDefaultPadding(context),
-                child: Padding(
-                  padding: const .symmetric(horizontal: 15),
-                  child: Column(
-                    crossAxisAlignment: .start,
-                    children: [
-                      const Text("Anime sources"),
-                      Text(
-                        switch (server.supportedAnimeSources.length) {
-                          0 => "This server has no sources",
-                          1 => "This server has 1 source",
-                          _ =>
-                            "This server has ${server.supportedAnimeSources.length} sources",
-                        },
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                      const Divider(),
-                      for (final source in server.supportedAnimeSources)
-                        Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () => showDialog(
-                              context: context,
-                              builder: (context) =>
-                                  SourceDetailsDialog(source: source),
+                child: Column(
+                  crossAxisAlignment: .start,
+                  children: [
+                    Padding(
+                      padding: const .symmetric(horizontal: 15),
+                      child: Column(
+                        crossAxisAlignment: .start,
+                        children: [
+                          const Text("Anime sources"),
+                          Text(
+                            switch (server.supportedAnimeSources.length) {
+                              0 => "This server has no sources",
+                              1 => "This server has 1 source",
+                              _ =>
+                                "This server has ${server.supportedAnimeSources.length} sources",
+                            },
+                            style: TextStyle(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
                             ),
-                            child: Padding(
-                              padding: const .symmetric(vertical: 10),
-                              child: Row(
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: .start,
-                                    children: [
-                                      Text(source.prettyName),
-                                      Text(
-                                        "Identifier: ${source.id}",
-                                        style: TextStyle(
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.onSurfaceVariant,
-                                        ),
+                          ),
+                          const Divider(),
+                        ],
+                      ),
+                    ),
+                    for (final source in server.supportedAnimeSources)
+                      Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () => showDialog(
+                            context: context,
+                            builder: (context) =>
+                                SourceDetailsDialog(source: source),
+                          ),
+                          child: Padding(
+                            padding: const .symmetric(
+                              vertical: 10,
+                              horizontal: 15,
+                            ),
+                            child: Row(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: .start,
+                                  children: [
+                                    Text(source.prettyName),
+                                    Text(
+                                      "Identifier: ${source.id}",
+                                      style: TextStyle(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurfaceVariant,
                                       ),
-                                    ],
-                                  ),
-                                  const Expanded(child: SizedBox.shrink()),
-                                  const Icon(Icons.chevron_right),
-                                ],
-                              ),
+                                    ),
+                                  ],
+                                ),
+                                const Expanded(child: SizedBox.shrink()),
+                                const Icon(Icons.chevron_right),
+                              ],
                             ),
                           ),
                         ),
-                    ],
-                  ),
+                      ),
+                  ],
                 ),
               ),
             ],
