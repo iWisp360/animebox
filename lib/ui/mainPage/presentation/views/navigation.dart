@@ -1,7 +1,19 @@
 import 'package:animebox/core/helpers/convergence.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class NavigationBuilder extends StatefulWidget {
+class SelectedIndexNotifier extends Notifier<int> {
+  @override
+  int build() {
+    return 0;
+  }
+
+  void change(int destination) => state = destination;
+}
+
+final selectedIndexProvider = NotifierProvider(() => SelectedIndexNotifier());
+
+class NavigationBuilder extends ConsumerWidget {
   final Widget Function(Widget navigationWidget, Widget activeTab) builder;
   final List<Widget> tabs;
   final List<NavigationDestination> navBarDestinations;
@@ -9,7 +21,6 @@ class NavigationBuilder extends StatefulWidget {
   final Widget? leadingRailAction;
   final Widget? trailingRailAction;
   final Function()? onDestinationChangeAction;
-  final int? selectedIndex;
 
   const NavigationBuilder({
     super.key,
@@ -20,80 +31,42 @@ class NavigationBuilder extends StatefulWidget {
     this.leadingRailAction,
     this.trailingRailAction,
     this.onDestinationChangeAction,
-    this.selectedIndex,
-  });
+  }) : assert(tabs.length == navBarDestinations.length),
+       assert(tabs.length == navRailDestinations.length);
 
   @override
-  State<NavigationBuilder> createState() => _NavigationBuilderState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedIndex = ref.watch(selectedIndexProvider);
 
-class _NavigationBuilderState extends State<NavigationBuilder> {
-  int selectedIndex = 0;
-
-  @override
-  void initState() {
-    assertions();
-    final widgetSelectedIndex = widget.selectedIndex;
-    if (widgetSelectedIndex != null) {
-      selectedIndex = widgetSelectedIndex;
-    }
-
-    super.initState();
-  }
-
-  @override
-  void didUpdateWidget(covariant NavigationBuilder oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    final newSelectedIndex = widget.selectedIndex;
-    if (newSelectedIndex != null &&
-        oldWidget.selectedIndex != newSelectedIndex) {
-      selectedIndex = newSelectedIndex;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return widget.builder(
+    return builder(
       (isDesktopWidth(context))
           ? NavigationRail(
               backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-              destinations: widget.navRailDestinations,
+              destinations: navRailDestinations,
               selectedIndex: selectedIndex,
               labelType: .all,
-              onDestinationSelected: onDestinationSelected,
+              onDestinationSelected: (dest) => onDestinationSelected(dest, ref),
               scrollable: true,
-              leading: widget.leadingRailAction,
+              leading: leadingRailAction,
               elevation: 2,
               trailing: Padding(
                 padding: const .symmetric(vertical: 12),
-                child: widget.trailingRailAction,
+                child: trailingRailAction,
               ),
               trailingAtBottom: true,
             )
           : NavigationBar(
-              destinations: widget.navBarDestinations,
+              destinations: navBarDestinations,
               selectedIndex: selectedIndex,
-              onDestinationSelected: onDestinationSelected,
+              onDestinationSelected: (dest) => onDestinationSelected(dest, ref),
 
               labelBehavior: .onlyShowSelected,
               animationDuration: const Duration(seconds: 1),
             ),
-      widget.tabs[selectedIndex],
+      tabs[selectedIndex],
     );
   }
 
-  void onDestinationSelected(int destination) {
-    setState(() => selectedIndex = destination);
-    final onDestinationChangeAction = widget.onDestinationChangeAction;
-
-    if (onDestinationChangeAction != null) {
-      onDestinationChangeAction();
-    }
-  }
-
-  void assertions() {
-    assert(widget.tabs.length == widget.navBarDestinations.length);
-    assert(widget.tabs.length == widget.navRailDestinations.length);
-  }
+  void onDestinationSelected(int destination, WidgetRef ref) =>
+      ref.read(selectedIndexProvider.notifier).change(destination);
 }
