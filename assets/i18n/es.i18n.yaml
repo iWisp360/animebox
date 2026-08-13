@@ -29,7 +29,7 @@ settings:
     title: Apariencia
     description: Personaliza tu experiencia
     pitchBlack:
-      title: Negro Total
+      title: Negro Absoluto
       description: |
         El fondo se vuelve completamente negro.
         Recomendado para pantallas AMOLED.
