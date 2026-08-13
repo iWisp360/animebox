@@ -1,4 +1,5 @@
 import 'package:animebox/core/i18n/context.dart';
+import 'package:animebox/ui/settings/presentation/views/appearance_settings/appearance_settings_page.dart';
 import 'package:animebox/ui/settings/presentation/views/server_settings/servers_settings_page.dart';
 import 'package:animebox/ui/settings/presentation/views/settings_ui_theming.dart';
 import 'package:flutter/material.dart';
@@ -18,14 +19,24 @@ class SettingsPage extends StatelessWidget {
           SettingsSection(
             tiles: [
               SettingsTile.navigation(
+                title: Text(settingsTranslations.appearance.title),
+                value: Text(settingsTranslations.appearance.description),
+                leading: const Icon(Icons.palette),
+                onPressed: (context) => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const AppearanceSettingsPage(),
+                  ),
+                ),
+              ),
+              SettingsTile.navigation(
                 title: Text(settingsTranslations.servers.title),
                 value: Text(settingsTranslations.servers.description),
+                leading: const Icon(Icons.cloud),
                 onPressed: (context) => Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const ServersSettingsPage(),
                   ),
                 ),
-                leading: const Icon(Icons.cloud),
               ),
             ],
           ),

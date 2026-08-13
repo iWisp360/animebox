@@ -1,43 +1,38 @@
-import 'package:animebox/core/configs/presentation/views/config_builder.dart';
+import 'package:animebox/ui/themes/data/providers/theme_provider.dart';
 import 'package:animebox/ui/themes/data/repositories/theme_fallback.dart';
-import 'package:animebox/ui/themes/presentation/controllers/themes_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ThemesBuilder extends StatefulWidget {
+class ThemesBuilder extends ConsumerWidget {
   final Widget Function(BuildContext context, ThemeData themeData) builder;
-  final ThemesController themesController;
 
-  const ThemesBuilder({
-    super.key,
-    required this.builder,
-    ThemesController? themesController,
-  }) : themesController = themesController ?? const ThemesController();
+  const ThemesBuilder({super.key, required this.builder});
 
   @override
-  State<ThemesBuilder> createState() => _ThemesBuilderState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final animeBoxTheme = ref.watch(themeDataProvider(context));
 
-class _ThemesBuilderState extends State<ThemesBuilder> {
-  @override
-  Widget build(BuildContext context) {
-    return ConfigBuilder(
-      builder: (configController, context) => FutureBuilder(
-        future: widget.themesController.chooseTheme(configController, context),
-        builder: (context, snapshot) {
-          final themeData =
-              snapshot.data ??
-              ThemeData.from(
-                colorScheme: ThemeFallback().fallbackColorScheme(
-                  MediaQuery.platformBrightnessOf(context),
-                ),
-              );
-
-          return AnimatedTheme(
-            data: themeData,
-            child: widget.builder(context, themeData),
-          );
-        },
-      ),
+    return animeBoxTheme.when(
+      loading: () {
+        final themeData = ThemeFallback().buildTheme(context: context);
+        return AnimatedTheme(
+          data: themeData,
+          child: builder(context, themeData),
+        );
+      },
+      data: (themeData) {
+        return AnimatedTheme(
+          data: themeData,
+          child: builder(context, themeData),
+        );
+      },
+      error: (e, st) {
+        final themeData = ThemeFallback().buildTheme(context: context);
+        return AnimatedTheme(
+          data: themeData,
+          child: builder(context, themeData),
+        );
+      },
     );
   }
 }

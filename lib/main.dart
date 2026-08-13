@@ -1,5 +1,5 @@
-import 'package:animebox/core/configs/presentation/controllers/config_controller.dart';
 import 'package:animebox/core/error/presentation/views/error_app.dart';
+import 'package:animebox/core/i18n/data/providers/i18n_provider.dart';
 import 'package:animebox/core/injector.dart';
 import 'package:animebox/gen/strings.g.dart';
 import 'package:animebox/ui/themes/presentation/views/themes_builder.dart';
@@ -13,11 +13,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 Future<void> main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
-    await LocaleSettings.useDeviceLocale();
-
-    final configController = ConfigController();
-    await configController.loadFromFile();
-
     MediaKit.ensureInitialized();
 
     setupInjector(sharedPreferences: await SharedPreferences.getInstance());
@@ -34,11 +29,13 @@ Future<void> main() async {
   }
 }
 
-class AnimeBoxApp extends StatelessWidget {
+class AnimeBoxApp extends ConsumerWidget {
   const AnimeBoxApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final i18n = ref.watch(i18nProvider);
+
     return ThemesBuilder(
       builder: (context, themeData) => MaterialApp(
         title: 'Anime Box',
@@ -46,7 +43,11 @@ class AnimeBoxApp extends StatelessWidget {
         supportedLocales: AppLocaleUtils.supportedLocales,
         debugShowCheckedModeBanner: false,
         theme: themeData,
-        home: const MainPageView(),
+        home: i18n.when(
+          data: (_) => const MainPageView(),
+          error: (e, _) => MainPageView(error: e),
+          loading: () => const Center(child: CircularProgressIndicator()),
+        ),
       ),
     );
   }

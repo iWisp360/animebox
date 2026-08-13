@@ -8,7 +8,7 @@ part 'appearance.freezed.dart';
 @freezed
 abstract class AppearanceConfig with _$AppearanceConfig {
   const factory AppearanceConfig({
-    @Default(Language.en) Language lang,
+    @Default(Language.system) Language lang,
     @Default(HomeScreenTab.home) HomeScreenTab defaultHomeScreenTab,
     @Default(ThemeMode.system) ThemeMode themeMode,
     @Default(AppColorPalette.dynamic) AppColorPalette colorPalette,

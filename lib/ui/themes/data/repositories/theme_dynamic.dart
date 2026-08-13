@@ -1,22 +1,22 @@
 import 'dart:io';
 
-import 'package:animebox/core/configs/domain/entities/config.dart';
 import 'package:animebox/ui/themes/domain/repositories/theme_repository.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 
 class ThemeDynamic extends AnimeBoxTheme {
   @override
-  Future<ThemeData> buildTheme(
-    AnimeBoxConfig config,
-    BuildContext context,
-  ) async {
-    final actualBrightness = getBrightness(config, context);
+  Future<ThemeData> buildTheme({
+    ThemeMode? themeMode,
+    bool? pitchBlack,
+    required BuildContext context,
+  }) async {
+    final actualBrightness = getBrightness(themeMode ?? .system, context);
     final colorScheme = await getColorScheme(actualBrightness);
 
     final themeData = ThemeData.from(colorScheme: colorScheme);
 
-    return (config.appearance.pitchBlack)
+    return (pitchBlack ?? false)
         ? themeData.copyWith(scaffoldBackgroundColor: Colors.black)
         : themeData;
   }

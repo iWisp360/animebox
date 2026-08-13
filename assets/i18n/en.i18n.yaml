@@ -14,8 +14,27 @@ commonStates:
     male: None
     female: None
 
+language:
+  title: Language
+  english: English 
+  spanish: Spanish
+  unknown: Unknown, using system language
+  system: 
+    title: System
+    description: System language
+  actual: "@:.english"
+
 settings:
   pageHeader: Settings
+  appearance:
+    title: Appearance
+    description: Customize your experience
+    pitchBlack:
+      title: Pitch Black 
+      description: |
+        The background becomes completely black.
+        Recommended for AMOLED screens.
+
   servers:
     title: Servers 
     description: Manage your servers to get anime

@@ -1,10 +1,16 @@
-import 'package:animebox/core/configs/domain/entities/config.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 abstract class AnimeBoxTheme {
-  Future<ThemeData> buildTheme(AnimeBoxConfig config, BuildContext context);
-  Brightness getBrightness(AnimeBoxConfig config, BuildContext context) {
-    switch (config.appearance.themeMode) {
+  FutureOr<ThemeData> buildTheme({
+    required ThemeMode themeMode,
+    bool? pitchBlack,
+    required BuildContext context,
+  });
+
+  Brightness getBrightness(ThemeMode themeMode, BuildContext context) {
+    switch (themeMode) {
       case .system:
         return MediaQuery.platformBrightnessOf(context);
       case .dark:
