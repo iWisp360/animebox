@@ -1,4 +1,4 @@
-import 'package:animebox/ui/metadata/domain/entities/metadata_sources.dart';
+import 'package:animebox/features/metadata/domain/entities/metadata_sources.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'metadata.g.dart';
