@@ -23,6 +23,45 @@ class AppearanceSettingsPage extends ConsumerWidget {
           darkTheme: getSettingsThemeData(context),
           sections: [
             SettingsSection(
+              title: const Text("Theme mode"),
+              tiles: [
+                CustomSettingsTile(
+                  child: Padding(
+                    padding: const .symmetric(vertical: 16),
+                    child: Center(
+                      child: SegmentedButton(
+                        multiSelectionEnabled: false,
+                        onSelectionChanged: (mode) => ref
+                            .read(configProvider.notifier)
+                            .change(
+                              config.copyWith(
+                                appearance: config.appearance.copyWith(
+                                  themeMode: mode.first,
+                                ),
+                              ),
+                            ),
+                        segments: [
+                          for (final mode in ThemeMode.values)
+                            ButtonSegment(
+                              value: mode,
+                              label: SizedBox(
+                                width: 54,
+                                child: Text(switch (mode) {
+                                  .system => "System",
+                                  .dark => "Dark",
+                                  .light => "Light",
+                                }, textAlign: .center),
+                              ),
+                            ),
+                        ],
+                        selected: {config.appearance.themeMode},
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SettingsSection(
               tiles: [
                 SettingsTile.switchTile(
                   initialValue: config.appearance.pitchBlack,
