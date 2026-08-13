@@ -11,7 +11,6 @@ abstract class AppearanceConfig with _$AppearanceConfig {
     @Default(Language.system) Language lang,
     @Default(HomeScreenTab.home) HomeScreenTab defaultHomeScreenTab,
     @Default(ThemeMode.system) ThemeMode themeMode,
-    @Default(AppColorPalette.dynamic) AppColorPalette colorPalette,
     @Default(true) bool relativeDates,
     @Default(false) bool pitchBlack,
   }) = _AppearanceConfig;
@@ -21,15 +20,3 @@ abstract class AppearanceConfig with _$AppearanceConfig {
 }
 
 enum HomeScreenTab { home, library, trackers, search }
-
-enum AppColorPalette {
-  dynamic,
-  catppuccinLatte,
-  catppuccinFrappe,
-  catppuccinMacchiato,
-  catppuccinMocha,
-  nord,
-  tokyoNight,
-  matrix,
-  monochrome,
-}

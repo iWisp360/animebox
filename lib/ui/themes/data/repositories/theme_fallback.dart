@@ -10,7 +10,7 @@ class ThemeFallback extends AnimeBoxTheme {
   }) {
     return ThemeData.from(
       colorScheme: fallbackColorScheme(
-        getBrightness(themeMode ?? .system, context),
+        getBrightness(themeMode: themeMode ?? .system, context: context),
       ),
     );
   }

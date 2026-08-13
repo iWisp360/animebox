@@ -11,9 +11,12 @@ class ThemeDynamic extends AnimeBoxTheme {
     bool? pitchBlack,
     required BuildContext context,
   }) async {
-    final actualBrightness = getBrightness(themeMode ?? .system, context);
-    final colorScheme = await getColorScheme(actualBrightness);
+    final actualBrightness = getBrightness(
+      themeMode: themeMode ?? .system,
+      context: context,
+    );
 
+    final colorScheme = await getColorScheme(actualBrightness);
     final themeData = ThemeData.from(colorScheme: colorScheme);
 
     return (pitchBlack ?? false)

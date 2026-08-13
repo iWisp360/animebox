@@ -9,7 +9,10 @@ abstract class AnimeBoxTheme {
     required BuildContext context,
   });
 
-  Brightness getBrightness(ThemeMode themeMode, BuildContext context) {
+  Brightness getBrightness({
+    required ThemeMode themeMode,
+    required BuildContext context,
+  }) {
     switch (themeMode) {
       case .system:
         return MediaQuery.platformBrightnessOf(context);
