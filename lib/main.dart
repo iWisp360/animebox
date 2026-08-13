@@ -46,7 +46,8 @@ class AnimeBoxApp extends ConsumerWidget {
         home: i18n.when(
           data: (_) => const MainPageView(),
           error: (e, _) => MainPageView(error: e),
-          loading: () => const Center(child: CircularProgressIndicator()),
+          loading: () =>
+              const Scaffold(body: Center(child: CircularProgressIndicator())),
         ),
       ),
     );
