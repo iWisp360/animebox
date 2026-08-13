@@ -1,9 +1,9 @@
 import 'package:animebox/core/configs/domain/entities/appearance.dart';
 import 'package:animebox/core/configs/domain/entities/config.dart';
 import 'package:animebox/core/configs/presentation/controllers/config_controller.dart';
-import 'package:animebox/core/themes/data/repositories/theme_dynamic.dart';
-import 'package:animebox/core/themes/data/repositories/theme_fallback.dart';
-import 'package:animebox/core/themes/domain/repositories/theme_repository.dart';
+import 'package:animebox/ui/themes/data/repositories/theme_dynamic.dart';
+import 'package:animebox/ui/themes/data/repositories/theme_fallback.dart';
+import 'package:animebox/ui/themes/domain/repositories/theme_repository.dart';
 import 'package:flutter/material.dart';
 
 class ThemesController {

@@ -1,6 +1,6 @@
 import 'package:animebox/core/configs/presentation/views/config_builder.dart';
-import 'package:animebox/core/themes/data/repositories/theme_fallback.dart';
-import 'package:animebox/core/themes/presentation/controllers/themes_controller.dart';
+import 'package:animebox/ui/themes/data/repositories/theme_fallback.dart';
+import 'package:animebox/ui/themes/presentation/controllers/themes_controller.dart';
 import 'package:flutter/material.dart';
 
 class ThemesBuilder extends StatefulWidget {

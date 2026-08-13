@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:animebox/core/configs/domain/entities/config.dart';
-import 'package:animebox/core/themes/domain/repositories/theme_repository.dart';
+import 'package:animebox/ui/themes/domain/repositories/theme_repository.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 
