@@ -1,5 +1,6 @@
 import 'package:animebox/core/error/presentation/views/error_page.dart';
 import 'package:animebox/core/helpers/convergence.dart';
+import 'package:animebox/core/i18n/context.dart';
 import 'package:animebox/core/servers/data/providers.dart';
 import 'package:animebox/features/search/data/providers/search_provider.dart';
 import 'package:animebox/ui/browse/presentation/views/global_search_page/source_search_row.dart';
@@ -19,14 +20,14 @@ class GlobalSearchPageView extends ConsumerStatefulWidget {
 class _GlobalSearchPageViewState extends ConsumerState<GlobalSearchPageView> {
   late final TextEditingController _textEditingController;
   late final ScrollController _scrollController;
-  late String sendedQuery;
+  late String sentQuery;
   late String currentQuery;
 
   @override
   void initState() {
     _textEditingController = TextEditingController();
     _scrollController = ScrollController();
-    sendedQuery = widget.query ?? "";
+    sentQuery = widget.query ?? "";
     currentQuery = widget.query ?? "";
     super.initState();
   }
@@ -40,6 +41,7 @@ class _GlobalSearchPageViewState extends ConsumerState<GlobalSearchPageView> {
 
   @override
   Widget build(BuildContext context) {
+    final globalSearchTranslations = context.i18n.browsePage.search.global;
     final activeServer = ref.watch(activeServerProvider);
 
     return activeServer.when(
@@ -63,23 +65,23 @@ class _GlobalSearchPageViewState extends ConsumerState<GlobalSearchPageView> {
                       constraints: const BoxConstraints(maxHeight: 48),
                       child: SearchBar(
                         autoFocus: true,
-                        hintText: "Search on all the sources...",
+                        hintText: globalSearchTranslations.allTheSources,
                         controller: _textEditingController,
                         leading: const Icon(Icons.search),
                         onChanged: (query) {
                           setState(() {
                             currentQuery = query;
                             if (query.isEmpty) {
-                              sendedQuery = "";
+                              sentQuery = "";
                             }
                           });
                         },
                         onSubmitted: (query) => setState(() {
-                          sendedQuery = query;
+                          sentQuery = query;
                         }),
                         trailing: [
                           if (currentQuery.isNotEmpty) ...[
-                            if (sendedQuery.isNotEmpty)
+                            if (sentQuery.isNotEmpty)
                               IconButton(
                                 onPressed: () => refreshAll(ref),
                                 icon: const Icon(Icons.refresh),
@@ -87,7 +89,7 @@ class _GlobalSearchPageViewState extends ConsumerState<GlobalSearchPageView> {
                             IconButton(
                               onPressed: () {
                                 setState(() {
-                                  sendedQuery = "";
+                                  sentQuery = "";
                                   currentQuery = "";
                                 });
                                 _textEditingController.clear();
@@ -102,7 +104,7 @@ class _GlobalSearchPageViewState extends ConsumerState<GlobalSearchPageView> {
                   ),
                 ),
               ),
-              if (sendedQuery.isNotEmpty)
+              if (sentQuery.isNotEmpty)
                 Expanded(
                   child: RefreshIndicator(
                     onRefresh: () => refreshAll(ref),
@@ -121,7 +123,7 @@ class _GlobalSearchPageViewState extends ConsumerState<GlobalSearchPageView> {
                                 child: SourceSearchRow(
                                   server: server,
                                   source: source,
-                                  query: sendedQuery,
+                                  query: sentQuery,
                                 ),
                               ),
                               const Divider(),

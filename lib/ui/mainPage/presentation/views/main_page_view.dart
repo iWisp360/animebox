@@ -1,6 +1,6 @@
 import 'package:animebox/core/configs/presentation/views/config_builder.dart';
 import 'package:animebox/core/helpers/convergence.dart';
-import 'package:animebox/core/l10n/context.dart';
+import 'package:animebox/core/i18n/context.dart';
 import 'package:animebox/ui/browse/presentation/views/browse_page_view.dart';
 import 'package:animebox/ui/home/presentation/views/home_page_view.dart';
 import 'package:animebox/ui/library/presentation/views/library_page_view.dart';
@@ -25,22 +25,23 @@ class _MainPageViewState extends State<MainPageView> {
   @override
   Widget build(BuildContext context) {
     final isDesktop = isDesktopWidth(context);
+    final mainPageTranslations = context.i18n.mainPage;
 
     final destinations = [
       (
         icon: const Icon(Icons.home_outlined),
         selectedIcon: const Icon(Icons.home),
-        label: context.l10n.homePageLabelNavigation,
+        label: mainPageTranslations.navigationWidgets.homeLabel,
       ),
       (
         icon: const Icon(Icons.video_library_outlined),
         selectedIcon: const Icon(Icons.video_library),
-        label: context.l10n.libraryPageLabelNavigation,
+        label: mainPageTranslations.navigationWidgets.libraryLabel,
       ),
       (
         icon: const Icon(Icons.explore_outlined),
         selectedIcon: const Icon(Icons.explore),
-        label: context.l10n.browsePageLabelNavigation,
+        label: mainPageTranslations.navigationWidgets.browseLabel,
       ),
     ];
 
@@ -93,7 +94,7 @@ class _MainPageViewState extends State<MainPageView> {
 
           trailingRailAction: FloatingActionButton(
             elevation: 0,
-            tooltip: context.l10n.settingsPageHeader,
+            tooltip: context.i18n.settings.pageHeader,
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const SettingsPage()),
             ),

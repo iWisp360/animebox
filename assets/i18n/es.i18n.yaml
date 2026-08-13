@@ -1,0 +1,98 @@
+commonActions:
+  ok: Ok
+  done: Listo
+  cancel: Cancelar
+  proceed: Proceder
+  delete: Eliminar
+  remove: Remover
+  add: Añadir
+  "yes": Sí
+  "no": "No"
+
+commonStates:
+  none(context=Gender, param=gender):
+    male: Ninguno
+    female: Ninguna
+
+settings:
+  pageHeader: Preferencias
+  servers:
+    title: Servidores
+    description: Administra tus servidores para obtener anime
+    details:
+      title: Propiedades del Servidor
+      apiUrl: "Url de la API: $url$endpoint"
+      infoUrl: "Url de la Información: $url$endpoint"
+      version: "Versión: $schemaVersion"
+      animeSources:
+        title: Fuentes de Anime
+        information: 
+          zero: Este servidor no tiene fuentes
+          one: Este servidor tiene $n fuente
+          other: Este servidor tiene $n fuentes
+          
+        details:
+          identifier: "Identificador: $sourceId" 
+          recommendations(context=HasRecommendations): 
+           "yes": "Recomendaciones: $recommendations"
+           "no": "Recomendaciones: @:commonStates.none"
+
+          hentai(context=ContainsHentai):
+            "yes": "Hentai: @:commonActions.yes"
+            "no": "Hentai: @:commonActions.no"
+
+      deleteServer:
+        action: Eliminar este servidor
+        dialog:
+          title: Eliminar servidor
+          description: |
+            Este servidor será eliminado permanentemente de Anime Box.
+
+            Las series que hayas añadido de este servidor no serán eliminadas.
+
+    state:
+      successDeletedServer: El servidor $serverName fue eliminado correctamente
+      noDeletedServer: No se eliminó ningún servidor
+
+    listSection:
+      title: Lista de servidores
+      noServersState: No hay servidores
+    
+    addServerDialog: 
+      action: Añadir servidor
+      formLabel: Url de Info. del Servidor
+    
+    customizationSection:
+      disableAddedHentaiSources:
+        title: Desactivar Fuentes Hentai
+        description: |
+          Desactiva las fuentes Hentai al agregar servidores.
+          No modifica los servidores existentes.
+
+mainPage:
+  navigationWidgets:
+    homeLabel: Inicio
+    libraryLabel: Mis Animes
+    browseLabel: Explorar
+
+browsePage:
+  noServersState:
+    message: Actualmente no hay servidores
+    actionGoToServers: Ir a servidores
+
+  search: 
+    global:
+      allTheSources: Buscar en todas las fuentes...
+    results:
+      missingUrlDialog:
+        header: Url Inexistente
+        description: |
+          Esta serie no se puede abrir porque el servidor no pudo retornar una url para esta.
+
+          Puedes intentar otra fuente u otro servidor hasta que el administrador del servidor
+          solucione esto.
+  
+  sources:
+    navigation:
+      popularAnimes: Popular 
+      latestAnimes: Recientes

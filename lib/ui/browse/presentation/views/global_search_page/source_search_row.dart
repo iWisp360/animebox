@@ -34,7 +34,13 @@ class SourceSearchRow extends ConsumerWidget {
         ),
         search.when(
           loading: () => paddingLoadingError(
-            child: const Center(child: CircularProgressIndicator()),
+            child: const Center(
+              child: SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(),
+              ),
+            ),
           ),
           data: (search) {
             if (search.results.isNotEmpty) {
@@ -69,8 +75,17 @@ class SourceSearchRow extends ConsumerWidget {
               );
             }
           },
-          error: (e, st) =>
-              paddingLoadingError(child: Center(child: Text(e.toString()))),
+          error: (e, st) => paddingLoadingError(
+            child: Center(
+              child: Text(
+                e.toString(),
+                textAlign: .center,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ),
+          ),
         ),
       ],
     );

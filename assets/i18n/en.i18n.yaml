@@ -1,0 +1,97 @@
+commonActions:
+  ok: Ok
+  done: Done
+  cancel: Cancel
+  proceed: Proceed
+  delete: Delete 
+  remove: Remove
+  add: Add
+  "yes": "Yes"
+  "no": "No"
+
+commonStates:
+  none(context=Gender, param=gender):
+    male: None
+    female: None
+
+settings:
+  pageHeader: Settings
+  servers:
+    title: Servers 
+    description: Manage your servers to get anime
+    details:
+      title: Server Properties
+      apiUrl: "API Url: $url$endpoint"
+      infoUrl: "Info Url: $url$endpoint"
+      version: "Version: $schemaVersion"
+      animeSources:
+        title: Anime Sources
+        information: 
+          zero: This server has no sources
+          one: This server has $n source
+          other: This server has $n sources
+          
+        details:
+          identifier: "Identifier: $sourceId" 
+          recommendations(context=HasRecommendations): 
+           "yes": "Recommendations: $recommendations"
+           "no": "Recommendations: @:commonStates.none"
+
+          hentai(context=ContainsHentai):
+            "yes": "Hentai: @:commonActions.yes"
+            "no": "Hentai: @:commonActions.no"
+
+      deleteServer:
+        action: Delete this server
+        dialog:
+          title: Delete server 
+          description: |
+            This server will be permanently deleted from Anime Box.
+
+            The series you added from this server won't be deleted.
+
+    state:
+      successDeletedServer: The server $serverName was deleted successfully
+      noDeletedServer: No server was deleted
+
+    listSection:
+      title: Server list
+      noServersState: There are no servers
+    
+    addServerDialog: 
+      action: Add server
+      formLabel: Server's Info Url
+    
+    customizationSection:
+      disableAddedHentaiSources:
+        title: Disable Hentai Sources
+        description: |
+          Disables Hentai sources when adding servers. 
+          Doesn't modify the existing servers
+
+mainPage:
+  navigationWidgets:
+    homeLabel: Home 
+    libraryLabel: My Animes 
+    browseLabel: Browse 
+
+browsePage:
+  noServersState:
+    message: There are currently no servers
+    actionGoToServers: Go to servers 
+
+  search: 
+    global:
+      allTheSources: Search on all the sources...
+    results:
+      missingUrlDialog:
+        header: Missing Url 
+        description: |
+          This serie isn't reachable because the server couldn't return a url for it.
+
+          You can try another source or another server until the server's administrator fixes this.
+  
+  sources:
+    navigation:
+      popularAnimes: Popular 
+      latestAnimes: Latest

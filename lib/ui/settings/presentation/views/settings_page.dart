@@ -1,4 +1,4 @@
-import 'package:animebox/core/l10n/context.dart';
+import 'package:animebox/core/i18n/context.dart';
 import 'package:animebox/ui/settings/presentation/views/server_settings/servers_settings_page.dart';
 import 'package:animebox/ui/settings/presentation/views/settings_ui_theming.dart';
 import 'package:flutter/material.dart';
@@ -9,15 +9,17 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final settingsTranslations = context.i18n.settings;
+
     return Scaffold(
-      appBar: AppBar(title: Text(context.l10n.settingsPageHeader)),
+      appBar: AppBar(title: Text(settingsTranslations.pageHeader)),
       body: SettingsList(
         sections: [
           SettingsSection(
             tiles: [
               SettingsTile.navigation(
-                title: const Text("Servers"),
-                value: const Text("Manage your servers to get anime"),
+                title: Text(settingsTranslations.servers.title),
+                value: Text(settingsTranslations.servers.description),
                 onPressed: (context) => Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const ServersSettingsPage(),

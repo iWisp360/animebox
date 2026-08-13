@@ -1,3 +1,4 @@
+import 'package:animebox/core/i18n/context.dart';
 import 'package:flutter/material.dart';
 
 class ServerDeleteDialog extends StatelessWidget {
@@ -5,12 +6,13 @@ class ServerDeleteDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dialogTranslations =
+        context.i18n.settings.servers.details.deleteServer.dialog;
+
     return AlertDialog(
       constraints: const BoxConstraints(maxWidth: 400),
-      title: const Text("Delete server"),
-      content: const Text(
-        "This server will be permanently deleted from Anime Box. The series you added from this server won't be deleted.",
-      ),
+      title: Text(dialogTranslations.title),
+      content: Text(dialogTranslations.description),
       actions: [
         ElevatedButton(
           style: ElevatedButton.styleFrom(
@@ -18,11 +20,11 @@ class ServerDeleteDialog extends StatelessWidget {
             foregroundColor: Theme.of(context).colorScheme.onError,
           ),
           onPressed: () => Navigator.of(context).pop(true),
-          child: const Text("Delete"),
+          child: Text(context.i18n.commonActions.delete),
         ),
         OutlinedButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text("Cancel"),
+          child: Text(context.i18n.commonActions.cancel),
         ),
       ],
     );

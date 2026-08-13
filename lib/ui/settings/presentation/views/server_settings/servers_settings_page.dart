@@ -1,4 +1,5 @@
 import 'package:animebox/core/configs/presentation/controllers/config_controller.dart';
+import 'package:animebox/core/i18n/context.dart';
 import 'package:animebox/core/injector.dart';
 import 'package:animebox/core/servers/data/providers.dart';
 import 'package:animebox/ui/settings/presentation/views/server_settings/server_add_dialog.dart';
@@ -27,16 +28,17 @@ class _ServersSettingsPageState extends ConsumerState<ServersSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final serverSettingsTranslations = context.i18n.settings.servers;
     final serverList = ref.watch(serverListProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Servers")),
+      appBar: AppBar(title: Text(serverSettingsTranslations.title)),
       body: SettingsList(
         lightTheme: getSettingsThemeData(context),
         darkTheme: getSettingsThemeData(context),
         sections: [
           SettingsSection(
-            title: const Text("Server list"),
+            title: Text(serverSettingsTranslations.listSection.title),
             tiles: [
               ...serverList.when(
                 error: (exception, st) => const [
@@ -77,8 +79,15 @@ class _ServersSettingsPageState extends ConsumerState<ServersSettingsPage> {
                                   SnackBar(
                                     content: Text(
                                       deleted
-                                          ? "The server ${server.name ?? server.uuid} was deleted successfully"
-                                          : "No server was deleted",
+                                          ? serverSettingsTranslations.state
+                                                .successDeletedServer(
+                                                  serverName:
+                                                      server.name ??
+                                                      server.uuid,
+                                                )
+                                          : serverSettingsTranslations
+                                                .state
+                                                .noDeletedServer,
                                     ),
                                   ),
                                 );
@@ -96,10 +105,16 @@ class _ServersSettingsPageState extends ConsumerState<ServersSettingsPage> {
                         value: Text(server.url.toString()),
                       )
                   else
-                    const CustomSettingsTile(
+                    CustomSettingsTile(
                       child: Padding(
-                        padding: .symmetric(vertical: 30),
-                        child: Center(child: Text("There are no servers.")),
+                        padding: const .symmetric(vertical: 30),
+                        child: Center(
+                          child: Text(
+                            serverSettingsTranslations
+                                .listSection
+                                .noServersState,
+                          ),
+                        ),
                       ),
                     ),
 
@@ -114,7 +129,9 @@ class _ServersSettingsPageState extends ConsumerState<ServersSettingsPage> {
                               builder: (context) => const ServerAddDialog(),
                             );
                           },
-                          child: const Text("Add server"),
+                          child: Text(
+                            serverSettingsTranslations.addServerDialog.action,
+                          ),
                         ),
                       ),
                     ),
@@ -135,9 +152,17 @@ class _ServersSettingsPageState extends ConsumerState<ServersSettingsPage> {
                     ),
                   ),
                 ),
-                title: const Text("Disable Hentai Sources"),
-                description: const Text(
-                  "Disables Hentai sources when adding servers. Doesn't modify the existing servers.",
+                title: Text(
+                  serverSettingsTranslations
+                      .customizationSection
+                      .disableAddedHentaiSources
+                      .title,
+                ),
+                description: Text(
+                  serverSettingsTranslations
+                      .customizationSection
+                      .disableAddedHentaiSources
+                      .description,
                 ),
               ),
             ],

@@ -1,4 +1,5 @@
 import 'package:animebox/core/helpers/convergence.dart';
+import 'package:animebox/core/i18n/context.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/ui/settings/presentation/views/server_settings/server_details/server_delete_dialog.dart';
 import 'package:animebox/ui/settings/presentation/views/server_settings/server_details/source_details_dialog.dart';
@@ -10,8 +11,10 @@ class ServerDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final detailsTranslations = context.i18n.settings.servers.details;
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Server Details")),
+      appBar: AppBar(title: Text(detailsTranslations.title)),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
@@ -40,13 +43,18 @@ class ServerDetailsPage extends StatelessWidget {
 
               const SizedBox(height: 2),
               SelectableText(
-                "API Url: ${server.url.toString()}${server.api}",
+                detailsTranslations.apiUrl(
+                  url: server.url.toString(),
+                  endpoint: server.api,
+                ),
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
               SelectableText(
-                "Version: ${server.schemaVersion}",
+                detailsTranslations.version(
+                  schemaVersion: server.schemaVersion,
+                ),
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
@@ -62,14 +70,20 @@ class ServerDetailsPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: .start,
                         children: [
-                          const Text("Anime sources"),
                           Text(
-                            switch (server.supportedAnimeSources.length) {
-                              0 => "This server has no sources",
-                              1 => "This server has 1 source",
-                              _ =>
-                                "This server has ${server.supportedAnimeSources.length} sources",
-                            },
+                            context
+                                .i18n
+                                .settings
+                                .servers
+                                .details
+                                .animeSources
+                                .title,
+                          ),
+                          Text(
+                            context.i18n.settings.servers.details.animeSources
+                                .information(
+                                  n: server.supportedAnimeSources.length,
+                                ),
                             style: TextStyle(
                               color: Theme.of(
                                 context,
@@ -101,7 +115,14 @@ class ServerDetailsPage extends StatelessWidget {
                                   children: [
                                     Text(source.prettyName),
                                     Text(
-                                      "Identifier: ${source.id}",
+                                      context
+                                          .i18n
+                                          .settings
+                                          .servers
+                                          .details
+                                          .animeSources
+                                          .details
+                                          .identifier(sourceId: source.id),
                                       style: TextStyle(
                                         color: Theme.of(
                                           context,
@@ -143,7 +164,9 @@ class ServerDetailsPage extends StatelessWidget {
                   }
                 },
                 icon: const Icon(Icons.delete),
-                label: const Text("Delete this server"),
+                label: Text(
+                  context.i18n.settings.servers.details.deleteServer.action,
+                ),
               ),
             ],
           ),

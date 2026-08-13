@@ -1,3 +1,4 @@
+import 'package:animebox/core/i18n/context.dart';
 import 'package:animebox/core/servers/data/providers.dart';
 import 'package:animebox/ui/widgets/page_information.dart';
 import 'package:animebox/ui/browse/presentation/views/app_bar.dart';
@@ -16,6 +17,7 @@ class BrowsePageView extends ConsumerStatefulWidget {
 class _BrowsePageViewState extends ConsumerState<BrowsePageView> {
   @override
   Widget build(BuildContext context) {
+    final browsePageTranslations = context.i18n.browsePage;
     final watchedServers = ref.watch(serverListProvider);
 
     return watchedServers.when(
@@ -25,14 +27,16 @@ class _BrowsePageViewState extends ConsumerState<BrowsePageView> {
           body: (servers.isEmpty)
               ? PageInformation(
                   spritesKind: .notFoundSprite,
-                  message: "There are currently no servers.",
+                  message: browsePageTranslations.noServersState.message,
                   customAction: FilledButton.tonal(
                     onPressed: () => Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const ServersSettingsPage(),
                       ),
                     ),
-                    child: const Text("Go to servers"),
+                    child: Text(
+                      browsePageTranslations.noServersState.actionGoToServers,
+                    ),
                   ),
                 )
               : SourceSelectorBuilder(servers: servers),

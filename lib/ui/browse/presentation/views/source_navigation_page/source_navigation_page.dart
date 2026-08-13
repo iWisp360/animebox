@@ -1,3 +1,4 @@
+import 'package:animebox/core/i18n/context.dart';
 import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
 import 'package:animebox/ui/widgets/tab_view/tab_bar_container.dart';
 import 'package:animebox/ui/browse/presentation/views/source_navigation_page/latest_anime_tab.dart';
@@ -24,6 +25,9 @@ class _SourceNavigationPageState extends State<SourceNavigationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final sourcesNavigationPageTranslations =
+        context.i18n.browsePage.sources.navigation;
+
     return Scaffold(
       appBar: sourceNavigationPageAppBar(context, widget.source),
       body: Center(
@@ -39,7 +43,9 @@ class _SourceNavigationPageState extends State<SourceNavigationPage> {
                     FilterChip(
                       showCheckmark: false,
                       avatar: const Icon(Icons.favorite),
-                      label: const Text("Popular"),
+                      label: Text(
+                        sourcesNavigationPageTranslations.popularAnimes,
+                      ),
                       selected: _actualPage == .popular,
                       onSelected: (selected) => setState(() {
                         _actualPage = .popular;
@@ -48,7 +54,9 @@ class _SourceNavigationPageState extends State<SourceNavigationPage> {
                     FilterChip(
                       showCheckmark: false,
                       avatar: const Icon(Icons.update),
-                      label: const Text("Latest"),
+                      label: Text(
+                        sourcesNavigationPageTranslations.latestAnimes,
+                      ),
                       selected: _actualPage == .latest,
                       onSelected: (selected) => setState(() {
                         _actualPage = .latest;
