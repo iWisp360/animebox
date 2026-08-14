@@ -9,16 +9,24 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 Future<void> main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
     MediaKit.ensureInitialized();
 
-    setupInjector(sharedPreferences: await SharedPreferences.getInstance());
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final packageInfo = await PackageInfo.fromPlatform();
 
     runApp(
-      ProviderScope(child: TranslationProvider(child: const AnimeBoxApp())),
+      ProviderScope(
+        overrides: [
+          sharedPreferencesProvider.overrideWith((ref) => sharedPreferences),
+          packageInfoProvider.overrideWith((ref) => packageInfo),
+        ],
+        child: TranslationProvider(child: const AnimeBoxApp()),
+      ),
     );
   } on Exception catch (e, st) {
     runApp(

@@ -7,7 +7,6 @@ import 'package:animebox/core/i18n/domain/entities/language.dart';
 import 'package:animebox/ui/settings/presentation/views/appearance_settings/language_set_page.dart';
 import 'package:animebox/ui/settings/presentation/views/page_builder.dart';
 import 'package:animebox/ui/settings/presentation/views/settings_ui_theming.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -83,7 +82,7 @@ class AppearanceSettingsPage extends ConsumerWidget {
                           ),
                         ),
                       ),
-                  enabled: _getBrightness(config.appearance) == .dark,
+                  enabled: _getBrightness(config.appearance, context) == .dark,
                   title: Text(appearanceSettingsTranslations.pitchBlack.title),
                   description: Text(
                     appearanceSettingsTranslations.pitchBlack.description,
@@ -144,10 +143,12 @@ class AppearanceSettingsPage extends ConsumerWidget {
       ? datesRepository.getRelativeDateFormat()
       : datesRepository.getAbsoluteDateFormat();
 
-  Brightness _getBrightness(AppearanceConfig appearanceConfig) =>
-      switch (appearanceConfig.themeMode) {
-        .dark => .dark,
-        .light => .light,
-        .system => PlatformDispatcher.instance.platformBrightness,
-      };
+  Brightness _getBrightness(
+    AppearanceConfig appearanceConfig,
+    BuildContext context,
+  ) => switch (appearanceConfig.themeMode) {
+    .dark => .dark,
+    .light => .light,
+    .system => MediaQuery.platformBrightnessOf(context),
+  };
 }

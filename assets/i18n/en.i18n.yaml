@@ -28,7 +28,7 @@ settings:
   pageHeader: Settings
   appearance:
     title: Appearance
-    description: Customize your experience
+    description: Make the app yours
     pitchBlack:
       title: Pitch Black 
       description: |

@@ -5,17 +5,17 @@ import 'package:animebox/core/servers/data/providers.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ActiveServerProvider extends AsyncNotifier<Server> {
   String? _activeServer;
-  final SharedPreferences sharedPreferences = injector();
 
   @override
   FutureOr<Server> build() async {
     final serverList = await ref.watch(serverListProvider.future);
     try {
-      _activeServer ??= sharedPreferences.getString("activeServer");
+      _activeServer ??= ref
+          .read(sharedPreferencesProvider)
+          .getString("activeServer");
     } catch (e) {
       return serverList.first;
     }
@@ -32,7 +32,7 @@ class ActiveServerProvider extends AsyncNotifier<Server> {
     final server = await serverList.getServer(uuid);
     if (server != null) {
       state = AsyncValue.data(server);
-      await sharedPreferences.setString("activeServer", uuid);
+      await ref.read(sharedPreferencesProvider).setString("activeServer", uuid);
       _activeServer = uuid;
     }
   }

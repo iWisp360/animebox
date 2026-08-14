@@ -4,4 +4,5 @@ import 'package:settings_ui/settings_ui.dart';
 SettingsThemeData getSettingsThemeData(BuildContext context) =>
     SettingsThemeData(
       settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
+      leadingIconsColor: Theme.of(context).colorScheme.primary,
     );

@@ -27,7 +27,7 @@ settings:
   pageHeader: Preferencias
   appearance:
     title: Apariencia
-    description: Personaliza tu experiencia
+    description: Haz la app tuya
     pitchBlack:
       title: Negro Absoluto
       description: |
