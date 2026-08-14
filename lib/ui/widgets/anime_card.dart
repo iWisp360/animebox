@@ -19,6 +19,7 @@ class AnimeCard extends StatelessWidget {
     return ClipRRect(
       borderRadius: .circular(_radius),
       child: Material(
+        color: Colors.transparent,
         child: InkWell(
           onTap: onClick,
           child: SizedBox(
