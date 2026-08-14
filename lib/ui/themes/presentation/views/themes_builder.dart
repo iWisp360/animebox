@@ -10,11 +10,15 @@ class ThemesBuilder extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final animeBoxTheme = ref.watch(themeDataProvider(context));
+    final systemBrightness = MediaQuery.platformBrightnessOf(context);
+    final animeBoxTheme = ref.watch(themeDataProvider(systemBrightness));
 
     return animeBoxTheme.when(
       loading: () {
-        final themeData = ThemeFallback().buildTheme(context: context);
+        final systemBrightness = MediaQuery.platformBrightnessOf(context);
+        final themeData = ThemeFallback().buildTheme(
+          systemBrightness: systemBrightness,
+        );
         return AnimatedTheme(
           data: themeData,
           child: builder(context, themeData),
@@ -27,7 +31,10 @@ class ThemesBuilder extends ConsumerWidget {
         );
       },
       error: (e, st) {
-        final themeData = ThemeFallback().buildTheme(context: context);
+        final systemBrightness = MediaQuery.platformBrightnessOf(context);
+        final themeData = ThemeFallback().buildTheme(
+          systemBrightness: systemBrightness,
+        );
         return AnimatedTheme(
           data: themeData,
           child: builder(context, themeData),

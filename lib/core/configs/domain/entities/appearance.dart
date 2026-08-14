@@ -9,7 +9,6 @@ part 'appearance.freezed.dart';
 abstract class AppearanceConfig with _$AppearanceConfig {
   const factory AppearanceConfig({
     @Default(Language.system) Language lang,
-    @Default(HomeScreenTab.home) HomeScreenTab defaultHomeScreenTab,
     @Default(ThemeMode.system) ThemeMode themeMode,
     @Default(true) bool relativeDates,
     @Default(false) bool pitchBlack,
@@ -18,5 +17,3 @@ abstract class AppearanceConfig with _$AppearanceConfig {
   factory AppearanceConfig.fromJson(Map<String, dynamic> json) =>
       _$AppearanceConfigFromJson(json);
 }
-
-enum HomeScreenTab { home, library, trackers, search }

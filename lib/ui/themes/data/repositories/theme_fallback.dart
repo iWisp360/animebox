@@ -6,12 +6,14 @@ class ThemeFallback extends AnimeBoxTheme {
   ThemeData buildTheme({
     ThemeMode? themeMode,
     bool? pitchBlack,
-    required BuildContext context,
+    required Brightness systemBrightness,
   }) {
     return ThemeData.from(
-      colorScheme: fallbackColorScheme(
-        getBrightness(themeMode: themeMode ?? .system, context: context),
-      ),
+      colorScheme: fallbackColorScheme(switch (themeMode) {
+        .light => .light,
+        .dark => .dark,
+        _ => systemBrightness,
+      }),
     );
   }
 }

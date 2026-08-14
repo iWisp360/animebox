@@ -11,6 +11,7 @@ class ClickableSource extends StatelessWidget {
     return SizedBox(
       width: .infinity,
       child: Material(
+        color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
           child: Padding(

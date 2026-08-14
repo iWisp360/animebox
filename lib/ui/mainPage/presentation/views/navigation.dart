@@ -41,7 +41,6 @@ class NavigationBuilder extends ConsumerWidget {
     return builder(
       (isDesktopWidth(context))
           ? NavigationRail(
-              backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
               destinations: navRailDestinations,
               selectedIndex: selectedIndex,
               labelType: .all,

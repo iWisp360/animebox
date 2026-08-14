@@ -29,6 +29,7 @@ class _SourceSelectorBuilderState extends State<SourceSelectorBuilder>
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.transparent,
       child: Column(
         children: [
           TabBar(

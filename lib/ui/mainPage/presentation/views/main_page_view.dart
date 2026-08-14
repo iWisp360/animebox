@@ -84,7 +84,6 @@ class _MainPageViewState extends State<MainPageView> {
             return Row(
               children: [
                 navigationWidget,
-                const VerticalDivider(width: 1),
                 Expanded(child: scaffold),
               ],
             );

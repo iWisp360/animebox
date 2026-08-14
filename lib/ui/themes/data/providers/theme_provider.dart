@@ -5,20 +5,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final animeBoxThemeProvider = NotifierProvider(() => AnimeBoxThemeProvider());
 
-final themeDataProvider = FutureProvider.family<ThemeData, BuildContext>((
+final themeDataProvider = FutureProvider.family<ThemeData, Brightness>((
   ref,
-  context,
+  systemBrightness,
 ) async {
   final animeBoxTheme = ref.watch(animeBoxThemeProvider);
   final appearanceConfig = await ref.watch(configProvider.future);
 
-  if (context.mounted) {
-    return animeBoxTheme.buildTheme(
-      context: context,
-      themeMode: appearanceConfig.appearance.themeMode,
-      pitchBlack: appearanceConfig.appearance.pitchBlack,
-    );
-  } else {
-    return ThemeData.light();
-  }
+  return animeBoxTheme.buildTheme(
+    systemBrightness: systemBrightness,
+    themeMode: appearanceConfig.appearance.themeMode,
+    pitchBlack: appearanceConfig.appearance.pitchBlack,
+  );
 });

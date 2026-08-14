@@ -2,8 +2,8 @@ import 'package:animebox/core/error/presentation/views/error_app.dart';
 import 'package:animebox/core/i18n/data/providers/i18n_provider.dart';
 import 'package:animebox/core/injector.dart';
 import 'package:animebox/gen/strings.g.dart';
-import 'package:animebox/ui/themes/presentation/views/themes_builder.dart';
 import 'package:animebox/ui/mainPage/presentation/views/main_page_view.dart';
+import 'package:animebox/ui/themes/presentation/views/themes_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,8 +41,8 @@ class AnimeBoxApp extends ConsumerWidget {
         title: 'Anime Box',
         localizationsDelegates: GlobalMaterialLocalizations.delegates,
         supportedLocales: AppLocaleUtils.supportedLocales,
-        debugShowCheckedModeBanner: false,
         theme: themeData,
+        debugShowCheckedModeBanner: false,
         home: i18n.when(
           data: (_) => const MainPageView(),
           error: (e, _) => MainPageView(error: e),

@@ -3,7 +3,9 @@ import 'package:animebox/features/search/data/datasources/search.dart';
 import 'package:animebox/features/search/domain/entities/search.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final searchSourceProvider = Provider((ref) => SearchSourceRemote());
+final searchSourceProvider = Provider.autoDispose(
+  (ref) => SearchSourceRemote(),
+);
 
 final searchRepositoryProvider =
     FutureProvider.family<

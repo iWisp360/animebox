@@ -1,15 +1,22 @@
 import 'package:animebox/core/configs/data/providers/config_provider.dart';
+import 'package:animebox/core/configs/domain/entities/appearance.dart';
+import 'package:animebox/core/dates/data/repositories/dates_repository_impl.dart';
+import 'package:animebox/core/dates/domain/repositories/dates_repository.dart';
 import 'package:animebox/core/i18n/context.dart';
 import 'package:animebox/core/i18n/domain/entities/language.dart';
 import 'package:animebox/ui/settings/presentation/views/appearance_settings/language_set_page.dart';
 import 'package:animebox/ui/settings/presentation/views/page_builder.dart';
 import 'package:animebox/ui/settings/presentation/views/settings_ui_theming.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class AppearanceSettingsPage extends ConsumerWidget {
-  const AppearanceSettingsPage({super.key});
+  final DatesRepository datesRepository;
+  const AppearanceSettingsPage({super.key, DatesRepository? datesRepository})
+    : datesRepository = datesRepository ?? const DatesRepositoryImpl();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,15 +38,17 @@ class AppearanceSettingsPage extends ConsumerWidget {
                     child: Center(
                       child: SegmentedButton(
                         multiSelectionEnabled: false,
-                        onSelectionChanged: (mode) => ref
-                            .read(configProvider.notifier)
-                            .change(
-                              config.copyWith(
-                                appearance: config.appearance.copyWith(
-                                  themeMode: mode.first,
-                                ),
+                        onSelectionChanged: (mode) async {
+                          final provider = ref.read(configProvider.notifier);
+
+                          await provider.change(
+                            config.copyWith(
+                              appearance: config.appearance.copyWith(
+                                themeMode: mode.first,
                               ),
                             ),
+                          );
+                        },
                         segments: [
                           for (final mode in ThemeMode.values)
                             ButtonSegment(
@@ -74,6 +83,7 @@ class AppearanceSettingsPage extends ConsumerWidget {
                           ),
                         ),
                       ),
+                  enabled: _getBrightness(config.appearance) == .dark,
                   title: Text(appearanceSettingsTranslations.pitchBlack.title),
                   description: Text(
                     appearanceSettingsTranslations.pitchBlack.description,
@@ -106,6 +116,22 @@ class AppearanceSettingsPage extends ConsumerWidget {
                     }
                   },
                 ),
+                SettingsTile.switchTile(
+                  initialValue: config.appearance.relativeDates,
+                  onToggle: (value) => ref
+                      .read(configProvider.notifier)
+                      .change(
+                        config.copyWith(
+                          appearance: config.appearance.copyWith(
+                            relativeDates: value,
+                          ),
+                        ),
+                      ),
+                  title: const Text("Relative dates"),
+                  description: Text(
+                    _getFormat(config.appearance.relativeDates).format(.now()),
+                  ),
+                ),
               ],
             ),
           ],
@@ -113,4 +139,15 @@ class AppearanceSettingsPage extends ConsumerWidget {
       ),
     );
   }
+
+  DateFormat _getFormat(bool relativeDates) => (relativeDates)
+      ? datesRepository.getRelativeDateFormat()
+      : datesRepository.getAbsoluteDateFormat();
+
+  Brightness _getBrightness(AppearanceConfig appearanceConfig) =>
+      switch (appearanceConfig.themeMode) {
+        .dark => .dark,
+        .light => .light,
+        .system => PlatformDispatcher.instance.platformBrightness,
+      };
 }

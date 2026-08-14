@@ -7,21 +7,35 @@ import 'package:flutter/material.dart';
 class ThemeDynamic extends AnimeBoxTheme {
   @override
   Future<ThemeData> buildTheme({
-    ThemeMode? themeMode,
+    required ThemeMode themeMode,
     bool? pitchBlack,
-    required BuildContext context,
+    required Brightness systemBrightness,
   }) async {
-    final actualBrightness = getBrightness(
-      themeMode: themeMode ?? .system,
-      context: context,
-    );
+    final Brightness actualBrightness = switch (themeMode) {
+      .light => .light,
+      .dark => .dark,
+      .system => systemBrightness,
+    };
 
     final colorScheme = await getColorScheme(actualBrightness);
     final themeData = ThemeData.from(colorScheme: colorScheme);
 
-    return (pitchBlack ?? false)
-        ? themeData.copyWith(scaffoldBackgroundColor: Colors.black)
-        : themeData;
+    return (actualBrightness == .dark && (pitchBlack ?? false))
+        ? themeData.copyWith(
+            scaffoldBackgroundColor: Colors.black,
+            appBarTheme: const AppBarTheme(backgroundColor: Colors.black),
+            navigationBarTheme: NavigationBarThemeData(
+              backgroundColor: colorScheme.surfaceContainerLowest,
+            ),
+            navigationRailTheme: NavigationRailThemeData(
+              backgroundColor: colorScheme.surfaceContainerLowest,
+            ),
+          )
+        : themeData.copyWith(
+            navigationRailTheme: NavigationRailThemeData(
+              backgroundColor: colorScheme.surfaceContainer,
+            ),
+          );
   }
 
   Future<ColorScheme> getColorScheme(Brightness actualBrightness) async {
