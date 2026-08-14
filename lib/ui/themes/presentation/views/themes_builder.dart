@@ -25,8 +25,10 @@ class ThemesBuilder extends ConsumerWidget {
         );
       },
       data: (themeData) {
+        final textTheme = themeData.textTheme.apply(fontFamily: "Inter");
+
         return AnimatedTheme(
-          data: themeData,
+          data: themeData.copyWith(textTheme: textTheme),
           child: builder(context, themeData),
         );
       },
