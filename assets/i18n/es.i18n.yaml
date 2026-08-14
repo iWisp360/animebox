@@ -6,6 +6,7 @@ commonActions:
   delete: Eliminar
   remove: Remover
   add: Añadir
+  default: Predeterminado
   "yes": Sí
   "no": "No"
 
@@ -86,6 +87,20 @@ settings:
         description: |
           Desactiva las fuentes Hentai al agregar servidores.
           No modifica los servidores existentes.
+  
+  advanced:
+    title: Avanzado
+    description: Para usuarios expertos
+    logsSection:
+      title: Registros
+      debugLogs:
+        title: Registros de depuración
+        description: Aumenta la verbosidad de los registros. Puede reducir el rendimiento.
+
+    networkSection:
+      title: Conexión
+      userAgent:
+        emptyError: El User Agent no puede estar vacío
 
 mainPage:
   navigationWidgets:

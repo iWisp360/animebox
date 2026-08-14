@@ -6,6 +6,7 @@ commonActions:
   delete: Delete 
   remove: Remove
   add: Add
+  default: Default
   "yes": "Yes"
   "no": "No"
 
@@ -87,6 +88,21 @@ settings:
         description: |
           Disables Hentai sources when adding servers. 
           Doesn't modify the existing servers
+
+  advanced:
+    title: Advanced 
+    description: For power users
+    logsSection:
+      title: Logs 
+      debugLogs:
+        title: Debug Logs 
+        description: Increases the verbosity of the logs. May reduce performance.
+
+    networkSection:
+      title: Network 
+      userAgent:
+        title: User Agent 
+        emptyError: The User Agent must not be empty
 
 mainPage:
   navigationWidgets:

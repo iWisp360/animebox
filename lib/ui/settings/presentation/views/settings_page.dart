@@ -110,8 +110,8 @@ class SettingsPage extends ConsumerWidget {
                 ),
               ),
               SettingsTile.navigation(
-                title: const Text("Advanced"),
-                description: const Text("For power users"),
+                title: Text(settingsTranslations.advanced.title),
+                description: Text(settingsTranslations.advanced.description),
                 leading: const Icon(Icons.data_object_outlined),
                 onPressed: (context) => Navigator.of(context).push(
                   MaterialPageRoute(
