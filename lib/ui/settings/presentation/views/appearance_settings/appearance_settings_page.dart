@@ -29,7 +29,7 @@ class AppearanceSettingsPage extends ConsumerWidget {
           darkTheme: getSettingsThemeData(context),
           sections: [
             SettingsSection(
-              title: const Text("Theme mode"),
+              title: Text(appearanceSettingsTranslations.themeMode.title),
               tiles: [
                 CustomSettingsTile(
                   child: Padding(
@@ -53,11 +53,20 @@ class AppearanceSettingsPage extends ConsumerWidget {
                             ButtonSegment(
                               value: mode,
                               label: SizedBox(
-                                width: 54,
+                                width: 60,
                                 child: Text(switch (mode) {
-                                  .system => "System",
-                                  .dark => "Dark",
-                                  .light => "Light",
+                                  .system =>
+                                    appearanceSettingsTranslations
+                                        .themeMode
+                                        .system,
+                                  .dark =>
+                                    appearanceSettingsTranslations
+                                        .themeMode
+                                        .light,
+                                  .light =>
+                                    appearanceSettingsTranslations
+                                        .themeMode
+                                        .dark,
                                 }, textAlign: .center),
                               ),
                             ),
@@ -85,7 +94,8 @@ class AppearanceSettingsPage extends ConsumerWidget {
                   enabled: _getBrightness(config.appearance, context) == .dark,
                   title: Text(appearanceSettingsTranslations.pitchBlack.title),
                   description: Text(
-                    appearanceSettingsTranslations.pitchBlack.description,
+                    appearanceSettingsTranslations.pitchBlack.description
+                        .trim(),
                   ),
                 ),
                 SettingsTile.navigation(
@@ -126,7 +136,9 @@ class AppearanceSettingsPage extends ConsumerWidget {
                           ),
                         ),
                       ),
-                  title: const Text("Relative dates"),
+                  title: Text(
+                    appearanceSettingsTranslations.relativeDates.title,
+                  ),
                   description: Text(
                     _getFormat(config.appearance.relativeDates).format(.now()),
                   ),

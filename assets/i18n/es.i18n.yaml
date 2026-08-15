@@ -7,6 +7,7 @@ commonActions:
   remove: Remover
   add: Añadir
   default: Predeterminado
+  help: Ayuda
   "yes": Sí
   "no": "No"
 
@@ -24,16 +25,62 @@ language:
     description: Idioma del sistema
   actual: "@:.spanish"
 
+downloads:
+  episode: Episodio
+
 settings:
   pageHeader: Preferencias
   appearance:
     title: Apariencia
     description: Haz la app tuya
+    themeMode:
+      title: Modo del Tema
+      system: Sistema
+      light: Claro
+      dark: Oscuro
+
+    relativeDates:
+      title: Fechas Relativas
+
     pitchBlack:
       title: Negro Absoluto
       description: |
         El fondo se vuelve completamente negro.
         Recomendado para pantallas AMOLED.
+
+  downloads:
+    title: Descargas
+    description: Configura cómo Anime Box administra las descargas
+    connectivitySection:
+      title: Conectividad
+      unmeteredNetworksOnly:
+        title: Solo Redes de Uso no Medido
+        description: Detendrá las descargas si se usa redes de uso medido como datos móviles
+
+    downloaderSection:
+      title: Descargador
+      episodesFormat:
+        title: Formato de los Episodios
+        description: Usado para nombrar episodios descargados
+        helpText: |
+          %d - Fecha relativa de inicio de la descarga.
+          %D - Fecha absoluta de inicio de la descarga.
+          %e - Nombre del episodio o la palabra "@:downloads.episode".
+          %E - La palabra "@:downloads.episode".
+          %n - El número del episodio; debe estar presente.
+
+        errorInvalidFormat: Formato Inválido
+        errorNoNumberFormat: "'%n' debe estar presente"
+
+      maxConcurrentDownloads:
+        title: Máximas Descargas Concurrentes
+        description: Configura la cantidad máxima de descargas que se ejecutarán concurrentemente 
+
+      maxDownloadThreads:
+        title: Máximos Hilos de Descarga
+        description: |
+          Configura la cantidad máxima de hilos que el descargador utilizará para descargar un archivo.
+          Puede aumentar las velocidades, úsalo cuidadosamente para evitar bloqueos de IP.
 
   servers:
     title: Servidores

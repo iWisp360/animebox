@@ -49,6 +49,7 @@ class AnimeBoxApp extends ConsumerWidget {
         title: 'Anime Box',
         localizationsDelegates: GlobalMaterialLocalizations.delegates,
         supportedLocales: AppLocaleUtils.supportedLocales,
+        locale: TranslationProvider.of(context).flutterLocale,
         theme: themeData,
         debugShowCheckedModeBanner: false,
         home: i18n.when(

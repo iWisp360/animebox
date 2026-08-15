@@ -42,10 +42,8 @@ class SettingsPage extends ConsumerWidget {
                 ),
               ),
               SettingsTile.navigation(
-                title: const Text("Downloads"),
-                description: const Text(
-                  "Configure how Anime Box manages downloads",
-                ),
+                title: Text(settingsTranslations.downloads.title),
+                description: Text(settingsTranslations.downloads.description),
                 leading: const Icon(Icons.download_outlined),
                 onPressed: (context) => Navigator.of(context).push(
                   MaterialPageRoute(

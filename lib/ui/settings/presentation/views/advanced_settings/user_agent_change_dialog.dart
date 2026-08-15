@@ -20,6 +20,12 @@ class _UserAgentChangeDialogState extends State<UserAgentChangeDialog> {
   }
 
   @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final userAgentTranslations =
         context.i18n.settings.advanced.networkSection.userAgent;

@@ -6,6 +6,7 @@ commonActions:
   delete: Delete 
   remove: Remove
   add: Add
+  help: Help
   default: Default
   "yes": "Yes"
   "no": "No"
@@ -17,24 +18,70 @@ commonStates:
 
 language:
   title: Language
-  english: English 
+  english: English
   spanish: Spanish
   unknown: Unknown, using system language
-  system: 
+  system:
     title: System
     description: System language
   actual: "@:.english"
+
+downloads:
+  episode: Episode
 
 settings:
   pageHeader: Settings
   appearance:
     title: Appearance
     description: Make the app yours
+    themeMode:
+      title: Theme Mode
+      system: System
+      light: Light
+      dark: Dark
+
+    relativeDates:
+      title: Relative Dates
+
     pitchBlack:
       title: Pitch Black 
       description: |
         The background becomes completely black.
         Recommended for AMOLED screens.
+
+  downloads:
+    title: Downloads
+    description: Configure how Anime Box manages downloads
+    connectivitySection:
+      title: Connectivity
+      unmeteredNetworksOnly:
+        title: Unmetered Networks Only 
+        description: Will stop downloads if using metered connections such as mobile data
+
+    downloaderSection:
+      title: Downloader
+      episodesFormat:
+        title: Episodes Format 
+        description: Used to name downloaded episodes 
+        helpText: |
+          %d - Relative date of start of download.
+          %D - Absolute date of start of download.
+          %e - Episode's name or the word "@:downloads.episode".
+          %E - The word "Episode".
+          %n - The episode's number; must be present.
+
+        errorInvalidFormat: Invalid Format
+        errorNoNumberFormat: "'%n' must be present"
+
+      maxConcurrentDownloads:
+        title: Max Concurrent Downloads
+        description: Sets the max amount of downloads that will run concurrently 
+
+      maxDownloadThreads:
+        title: Max Download Threads 
+        description: |
+          Sets the amount of threads the downloader will use to download a file.
+          May increase speeds, use carefully to avoid IP bans.
 
   servers:
     title: Servers 

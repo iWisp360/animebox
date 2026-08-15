@@ -12,7 +12,7 @@ class ServerDeleteDialog extends StatelessWidget {
     return AlertDialog(
       constraints: const BoxConstraints(maxWidth: 400),
       title: Text(dialogTranslations.title),
-      content: Text(dialogTranslations.description),
+      content: Text(dialogTranslations.description.trim()),
       actions: [
         ElevatedButton(
           style: ElevatedButton.styleFrom(
