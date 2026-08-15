@@ -1,6 +1,6 @@
 import 'package:animebox/core/i18n/context.dart';
 import 'package:animebox/core/injector.dart';
-import 'package:animebox/ui/settings/presentation/views/about_page.dart';
+import 'package:animebox/ui/settings/presentation/views/about_page/about_page.dart';
 import 'package:animebox/ui/settings/presentation/views/advanced_settings/advanced_settings_page.dart';
 import 'package:animebox/ui/settings/presentation/views/appearance_settings/appearance_settings_page.dart';
 import 'package:animebox/ui/settings/presentation/views/downloads_settings/downloads_settings_page.dart';
@@ -52,10 +52,8 @@ class SettingsPage extends ConsumerWidget {
                 ),
               ),
               SettingsTile.navigation(
-                title: const Text("Library"),
-                description: const Text(
-                  "Customize the experience of your local anime library",
-                ),
+                title: Text(settingsTranslations.library.title),
+                description: Text(settingsTranslations.library.description),
                 leading: const Icon(Icons.video_library_outlined),
                 onPressed: (context) => Navigator.of(context).push(
                   MaterialPageRoute(
@@ -118,11 +116,13 @@ class SettingsPage extends ConsumerWidget {
                 ),
               ),
               SettingsTile.navigation(
-                title: const Text("About"),
+                title: Text(settingsTranslations.about.title),
                 description: Text("Anime Box v$packageVersion"),
                 leading: const Icon(Icons.info_outlined),
                 onPressed: (context) => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const AboutPage()),
+                  MaterialPageRoute(
+                    builder: (context) => const AnimeBoxAboutPage(),
+                  ),
                 ),
               ),
             ],

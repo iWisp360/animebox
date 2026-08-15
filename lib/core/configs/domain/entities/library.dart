@@ -6,8 +6,12 @@ part 'library.freezed.dart';
 @freezed
 abstract class LibraryConfig with _$LibraryConfig {
   const factory LibraryConfig({
+    // TODO: Use when library page is implemented
     @Default([]) List<String> customCategories,
     String? defaultCategory,
+
+    @Default(LibraryAutoUpdateConfig())
+    LibraryAutoUpdateConfig libraryAutoUpdateParams,
   }) = _LibraryConfig;
 
   factory LibraryConfig.fromJson(Map<String, dynamic> json) =>

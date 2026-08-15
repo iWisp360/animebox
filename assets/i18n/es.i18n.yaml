@@ -44,9 +44,7 @@ settings:
 
     pitchBlack:
       title: Negro Absoluto
-      description: |
-        El fondo se vuelve completamente negro.
-        Recomendado para pantallas AMOLED.
+      description: Recomendado para pantallas AMOLED
 
   downloads:
     title: Descargas
@@ -55,7 +53,6 @@ settings:
       title: Conectividad
       unmeteredNetworksOnly:
         title: Solo Redes de Uso no Medido
-        description: Detendrá las descargas si se usa redes de uso medido como datos móviles
 
     downloaderSection:
       title: Descargador
@@ -74,13 +71,29 @@ settings:
 
       maxConcurrentDownloads:
         title: Máximas Descargas Concurrentes
-        description: Configura la cantidad máxima de descargas que se ejecutarán concurrentemente 
+        description: Configura la cantidad máxima de descargas que se ejecutarán a la vez
 
       maxDownloadThreads:
         title: Máximos Hilos de Descarga
-        description: |
-          Configura la cantidad máxima de hilos que el descargador utilizará para descargar un archivo.
-          Puede aumentar las velocidades, úsalo cuidadosamente para evitar bloqueos de IP.
+
+  library:
+    title: Librería
+    description: Personaliza la experiencia de tu librería de anime local
+    autoUpdateSeriesSection:
+      title: Actualizar Series Automáticamente
+      enable:
+        title: Actualizar tus series automáticamente
+
+      interval:
+        title: Intervalo de actualizaciones automáticas
+        description: En horas
+
+      allowMeteredNetworks:
+        title: Permitir Redes de Uso Medido
+
+      avoidCompletedSeries:
+        title: Evitar Series Completadas
+        description: No se actualizarán automáticamente series completadas
 
   servers:
     title: Servidores
@@ -148,6 +161,17 @@ settings:
       title: Conexión
       userAgent:
         emptyError: El User Agent no puede estar vacío
+
+  about:
+    title: Acerca de
+    version: Versión v$version
+    sourceCode: Código Fuente
+    website: Sitio Web
+    contribute: Contribuir
+    whatsnew: Qué hay de Nuevo
+    licenses: Licencias
+    credits: Créditos
+    checkForUpdates: Chequear Actualizaciones
 
 mainPage:
   navigationWidgets:

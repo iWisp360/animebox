@@ -44,12 +44,6 @@ class DownloadsSettingsPage extends ConsumerWidget {
                         .unmeteredNetworksOnly
                         .title,
                   ),
-                  description: Text(
-                    downloadsSettingsTranslations
-                        .connectivitySection
-                        .unmeteredNetworksOnly
-                        .description,
-                  ),
                 ),
               ],
             ),
@@ -132,13 +126,6 @@ class DownloadsSettingsPage extends ConsumerWidget {
                         .downloaderSection
                         .maxDownloadThreads
                         .title,
-                  ),
-                  description: Text(
-                    downloadsSettingsTranslations
-                        .downloaderSection
-                        .maxDownloadThreads
-                        .description
-                        .trim(),
                   ),
                   trailing: QuantityChanger(
                     initialQuantity: config.downloads.maxDownloadThreads,

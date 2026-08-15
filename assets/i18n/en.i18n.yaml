@@ -45,9 +45,7 @@ settings:
 
     pitchBlack:
       title: Pitch Black 
-      description: |
-        The background becomes completely black.
-        Recommended for AMOLED screens.
+      description: Recommended for AMOLED screens
 
   downloads:
     title: Downloads
@@ -56,7 +54,6 @@ settings:
       title: Connectivity
       unmeteredNetworksOnly:
         title: Unmetered Networks Only 
-        description: Will stop downloads if using metered connections such as mobile data
 
     downloaderSection:
       title: Downloader
@@ -75,13 +72,29 @@ settings:
 
       maxConcurrentDownloads:
         title: Max Concurrent Downloads
-        description: Sets the max amount of downloads that will run concurrently 
+        description: Sets the max amount of downloads that will run at the same time
 
       maxDownloadThreads:
         title: Max Download Threads 
-        description: |
-          Sets the amount of threads the downloader will use to download a file.
-          May increase speeds, use carefully to avoid IP bans.
+
+  library:
+    title: Library
+    description: Customize the experience of your local anime library
+    autoUpdateSeriesSection:
+      title: Auto Update Series
+      enable:
+        title: Update your series automatically
+
+      interval:
+        title: Auto updates interval
+        description: In hours
+
+      allowMeteredNetworks:
+        title: Allow Metered Networks
+
+      avoidCompletedSeries:
+        title: Avoid Completed Series
+        description: Won't auto update completed series
 
   servers:
     title: Servers 
@@ -150,6 +163,17 @@ settings:
       userAgent:
         title: User Agent 
         emptyError: The User Agent must not be empty
+
+  about:
+    title: About
+    version: Version v$version
+    sourceCode: Source Code
+    website: Website
+    contribute: Contribute
+    whatsnew: What's new
+    licenses: Licenses
+    credits: Credits
+    checkForUpdates: Check for Updates
 
 mainPage:
   navigationWidgets:
