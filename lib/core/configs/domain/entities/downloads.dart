@@ -7,8 +7,9 @@ part 'downloads.freezed.dart';
 abstract class DownloadsConfig with _$DownloadsConfig {
   const factory DownloadsConfig({
     @Default(false) bool unmeteredNetworksOnly,
-    @Default("%e %n") String downloadedEpisodesFormat,
+    @Default("%E %n") String downloadedEpisodesFormat,
     @Default(4) int maxDownloadThreads,
+    @Default(3) int maxConcurrentDownloads,
   }) = _DownloadsConfig;
 
   factory DownloadsConfig.fromJson(Map<String, dynamic> json) =>

@@ -1,0 +1,3 @@
+class InvalidFormatException {}
+
+class NoNumberFormatException {}
