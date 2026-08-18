@@ -1,6 +1,5 @@
-import 'package:animebox/ui/settings/presentation/views/server_settings/servers_settings_page.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-void navigateToServerSettings(BuildContext context) => Navigator.of(
-  context,
-).push(MaterialPageRoute(builder: (context) => const ServersSettingsPage()));
+void navigateToServerSettings(BuildContext context) =>
+    context.push("/settings/servers");

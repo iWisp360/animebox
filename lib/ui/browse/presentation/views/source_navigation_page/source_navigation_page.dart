@@ -6,15 +6,21 @@ import 'package:animebox/ui/browse/presentation/views/source_navigation_page/pop
 import 'package:animebox/ui/browse/presentation/views/source_navigation_page/app_bar.dart';
 import 'package:flutter/material.dart';
 
-// The styling for this page was inspired by Aniyomi
-class SourceNavigationPage extends StatefulWidget {
+class SourceNavigationPageParams {
   final int schemaVersion;
   final AnimeSource source;
-  const SourceNavigationPage({
-    super.key,
-    required this.source,
+
+  const SourceNavigationPageParams({
     required this.schemaVersion,
+    required this.source,
   });
+}
+
+// The styling for this page was inspired by Aniyomi
+class SourceNavigationPage extends StatefulWidget {
+  final SourceNavigationPageParams params;
+
+  const SourceNavigationPage({super.key, required this.params});
 
   @override
   State<SourceNavigationPage> createState() => _SourceNavigationPageState();
@@ -29,7 +35,7 @@ class _SourceNavigationPageState extends State<SourceNavigationPage> {
         context.i18n.browsePage.sources.navigation;
 
     return Scaffold(
-      appBar: sourceNavigationPageAppBar(context, widget.source),
+      appBar: sourceNavigationPageAppBar(context, widget.params.source),
       body: Center(
         child: Column(
           children: [
@@ -69,12 +75,12 @@ class _SourceNavigationPageState extends State<SourceNavigationPage> {
             Expanded(
               child: switch (_actualPage) {
                 .popular => PopularAnimeTab(
-                  source: widget.source,
-                  schemaVersion: widget.schemaVersion,
+                  source: widget.params.source,
+                  schemaVersion: widget.params.schemaVersion,
                 ),
                 .latest => LatestAnimeTab(
-                  source: widget.source,
-                  schemaVersion: widget.schemaVersion,
+                  source: widget.params.source,
+                  schemaVersion: widget.params.schemaVersion,
                 ),
               },
             ),

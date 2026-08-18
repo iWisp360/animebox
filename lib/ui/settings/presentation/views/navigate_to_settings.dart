@@ -1,6 +1,4 @@
-import 'package:animebox/ui/settings/presentation/views/settings_page.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-void navigateToSettings(BuildContext context) => Navigator.of(
-  context,
-).push(MaterialPageRoute(builder: (context) => const SettingsPage()));
+void navigateToSettings(BuildContext context) => context.go("/settings");

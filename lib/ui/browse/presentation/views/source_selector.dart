@@ -3,6 +3,7 @@ import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
 import 'package:animebox/ui/browse/presentation/views/clickable_source.dart';
 import 'package:animebox/ui/browse/presentation/views/source_navigation_page/source_navigation_page.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SourceSelector extends StatelessWidget {
   final List<AnimeSource> sources;
@@ -23,12 +24,11 @@ class SourceSelector extends StatelessWidget {
             for (final source in sources)
               ClickableSource(
                 source: source,
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => SourceNavigationPage(
-                      source: source,
-                      schemaVersion: schemaVersion,
-                    ),
+                onTap: () => context.go(
+                  "/navigateSource",
+                  extra: SourceNavigationPageParams(
+                    schemaVersion: schemaVersion,
+                    source: source,
                   ),
                 ),
               ),

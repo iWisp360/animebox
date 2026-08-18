@@ -1,8 +1,7 @@
 import 'package:animebox/core/error/presentation/views/error_app.dart';
-import 'package:animebox/core/i18n/data/providers/i18n_provider.dart';
 import 'package:animebox/core/injector.dart';
 import 'package:animebox/gen/strings.g.dart';
-import 'package:animebox/ui/mainPage/presentation/views/main_page_view.dart';
+import 'package:animebox/ui/routes.dart';
 import 'package:animebox/ui/themes/presentation/views/themes_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -42,22 +41,17 @@ class AnimeBoxApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final i18n = ref.watch(i18nProvider);
+    final mainRouter = ref.watch(mainRouterProvider);
 
     return ThemesBuilder(
-      builder: (context, themeData) => MaterialApp(
+      builder: (context, themeData) => MaterialApp.router(
         title: 'Anime Box',
         localizationsDelegates: GlobalMaterialLocalizations.delegates,
         supportedLocales: AppLocaleUtils.supportedLocales,
         locale: TranslationProvider.of(context).flutterLocale,
         theme: themeData,
         debugShowCheckedModeBanner: false,
-        home: i18n.when(
-          data: (_) => const MainPageView(),
-          error: (e, _) => MainPageView(error: e),
-          loading: () =>
-              const Scaffold(body: Center(child: CircularProgressIndicator())),
-        ),
+        routerConfig: mainRouter,
       ),
     );
   }

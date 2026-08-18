@@ -1,17 +1,9 @@
 import 'package:animebox/core/i18n/context.dart';
 import 'package:animebox/core/injector.dart';
-import 'package:animebox/ui/settings/presentation/views/about_page/about_page.dart';
-import 'package:animebox/ui/settings/presentation/views/advanced_settings/advanced_settings_page.dart';
-import 'package:animebox/ui/settings/presentation/views/appearance_settings/appearance_settings_page.dart';
-import 'package:animebox/ui/settings/presentation/views/downloads_settings/downloads_settings_page.dart';
-import 'package:animebox/ui/settings/presentation/views/library_settings/library_settings_page.dart';
-import 'package:animebox/ui/settings/presentation/views/local_storage_settings/local_storage_settings_page.dart';
-import 'package:animebox/ui/settings/presentation/views/metadata_settings/metadata_settings_page.dart';
-import 'package:animebox/ui/settings/presentation/views/playback_settings/playback_settings_page.dart';
-import 'package:animebox/ui/settings/presentation/views/server_settings/servers_settings_page.dart';
 import 'package:animebox/ui/settings/presentation/views/settings_ui_theming.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class SettingsPage extends ConsumerWidget {
@@ -35,41 +27,25 @@ class SettingsPage extends ConsumerWidget {
                 title: Text(settingsTranslations.appearance.title),
                 description: Text(settingsTranslations.appearance.description),
                 leading: const Icon(Icons.palette_outlined),
-                onPressed: (context) => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const AppearanceSettingsPage(),
-                  ),
-                ),
+                onPressed: (context) => context.go("/settings/appearance"),
               ),
               SettingsTile.navigation(
                 title: Text(settingsTranslations.downloads.title),
                 description: Text(settingsTranslations.downloads.description),
                 leading: const Icon(Icons.download_outlined),
-                onPressed: (context) => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const DownloadsSettingsPage(),
-                  ),
-                ),
+                onPressed: (context) => context.go("/settings/downloads"),
               ),
               SettingsTile.navigation(
                 title: Text(settingsTranslations.library.title),
                 description: Text(settingsTranslations.library.description),
                 leading: const Icon(Icons.video_library_outlined),
-                onPressed: (context) => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const LibrarySettingsPage(),
-                  ),
-                ),
+                onPressed: (context) => context.go("/settings/library"),
               ),
               SettingsTile.navigation(
                 title: const Text("Local Storage"),
                 description: const Text("Set your local storage preferences"),
                 leading: const Icon(Icons.storage_outlined),
-                onPressed: (context) => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const LocalStorageSettingsPage(),
-                  ),
-                ),
+                onPressed: (context) => context.go("/settings/localStorage"),
               ),
               SettingsTile.navigation(
                 title: const Text("Metadata Trackers"),
@@ -77,11 +53,7 @@ class SettingsPage extends ConsumerWidget {
                   "Trackers gives you the information and schedules for your anime",
                 ),
                 leading: const Icon(Icons.sync_outlined),
-                onPressed: (context) => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const MetadataSettingsPage(),
-                  ),
-                ),
+                onPressed: (context) => context.go("/settings/metadata"),
               ),
               SettingsTile.navigation(
                 title: const Text("Playback"),
@@ -89,41 +61,25 @@ class SettingsPage extends ConsumerWidget {
                   "Configure the video player for Anime Box",
                 ),
                 leading: const Icon(Icons.video_settings_outlined),
-                onPressed: (context) => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const PlaybackSettingsPage(),
-                  ),
-                ),
+                onPressed: (context) => context.go("/settings/playback"),
               ),
               SettingsTile.navigation(
                 title: Text(settingsTranslations.servers.title),
                 description: Text(settingsTranslations.servers.description),
                 leading: const Icon(Icons.cloud_outlined),
-                onPressed: (context) => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const ServersSettingsPage(),
-                  ),
-                ),
+                onPressed: (context) => context.go("/settings/servers"),
               ),
               SettingsTile.navigation(
                 title: Text(settingsTranslations.advanced.title),
                 description: Text(settingsTranslations.advanced.description),
                 leading: const Icon(Icons.data_object_outlined),
-                onPressed: (context) => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const AdvancedSettingsPage(),
-                  ),
-                ),
+                onPressed: (context) => context.go("/settings/advanced"),
               ),
               SettingsTile.navigation(
                 title: Text(settingsTranslations.about.title),
                 description: Text("Anime Box v$packageVersion"),
                 leading: const Icon(Icons.info_outlined),
-                onPressed: (context) => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const AnimeBoxAboutPage(),
-                  ),
-                ),
+                onPressed: (context) => context.go("/settings/about"),
               ),
             ],
           ),

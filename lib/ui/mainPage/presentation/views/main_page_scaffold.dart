@@ -1,4 +1,4 @@
-import 'package:animebox/ui/localAnimesFilter/presentation/views/filter_page_view.dart';
+import 'package:animebox/ui/local_animes_filter/presentation/views/filter_page_view.dart';
 import 'package:animebox/ui/mainPage/presentation/views/app_bar.dart';
 import 'package:flutter/material.dart';
 

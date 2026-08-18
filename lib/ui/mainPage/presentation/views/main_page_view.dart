@@ -6,38 +6,21 @@ import 'package:animebox/ui/library/presentation/views/library_page_view.dart';
 import 'package:animebox/ui/mainPage/presentation/controllers/main_page_controller.dart';
 import 'package:animebox/ui/mainPage/presentation/views/main_page_scaffold.dart';
 import 'package:animebox/ui/mainPage/presentation/views/navigation.dart';
-import 'package:animebox/ui/settings/presentation/views/settings_page.dart';
+import 'package:animebox/ui/settings/presentation/views/navigate_to_settings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MainPageView extends StatefulWidget {
+class MainPageView extends ConsumerStatefulWidget {
   final MainPageController mainPageController;
-  final Object? error;
-  const MainPageView({
-    super.key,
-    MainPageController? mainPageController,
-    this.error,
-  }) : mainPageController =
-           mainPageController ?? const MainPageControllerImpl();
+  const MainPageView({super.key, MainPageController? mainPageController})
+    : mainPageController = mainPageController ?? const MainPageControllerImpl();
 
   @override
-  State<MainPageView> createState() => _MainPageViewState();
+  ConsumerState<MainPageView> createState() => _MainPageViewState();
 }
 
-class _MainPageViewState extends State<MainPageView> {
+class _MainPageViewState extends ConsumerState<MainPageView> {
   bool filtering = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.error != null && context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(widget.error.toString())));
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,9 +93,7 @@ class _MainPageViewState extends State<MainPageView> {
         trailingRailAction: FloatingActionButton(
           elevation: 0,
           tooltip: context.i18n.settings.pageHeader,
-          onPressed: () => Navigator.of(
-            context,
-          ).push(MaterialPageRoute(builder: (context) => const SettingsPage())),
+          onPressed: () => navigateToSettings(context),
           child: const Icon(Icons.settings),
         ),
 
