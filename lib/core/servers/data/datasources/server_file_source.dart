@@ -1,7 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:animebox/core/files/data/factories/config_path_factory.dart';
+import 'package:animebox/core/files/data/datasources/internal_data_directory.dart';
 import 'package:animebox/core/json.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/core/servers/domain/types.dart';
@@ -50,11 +51,14 @@ class ServerFileSourceImpl implements ServerFileSource {
   }
 
   Future<String> _getServersFilePath() async {
-    final configPath = await ConfigPathRepositoryFactory.recommended()
-        .getConfigPath();
+    final dataPath = await animeBoxInternalData();
 
-    return join(configPath.path, "servers.json");
+    return join(dataPath.path, "servers.json");
   }
 
   const ServerFileSourceImpl();
+}
+
+abstract class ServersFileDirectory {
+  FutureOr<Directory> getDirectory();
 }

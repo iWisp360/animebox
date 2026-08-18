@@ -6,6 +6,8 @@ import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
 
 class ServerInfoMapperImpl implements ServerInfoMapper {
+  const ServerInfoMapperImpl();
+
   @override
   Server mapFromSchema(AgnosticServerInfo serverInfo) =>
       switch (serverInfo.schemaVersion) {

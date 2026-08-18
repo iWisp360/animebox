@@ -8,3 +8,5 @@ class ExistingServerException implements Exception {
     return "The server with uuid '$uuid' already exists";
   }
 }
+
+class ServersNotInitializedException implements Exception {}

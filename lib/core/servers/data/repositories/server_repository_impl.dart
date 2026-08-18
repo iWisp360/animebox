@@ -14,7 +14,8 @@ class ServerRepositoryImpl implements ServerRepository {
     ServerFileSource? serverFileSource,
     ServerRemoteSource? serverRemoteSource,
   }) : serverFileSource = serverFileSource ?? const ServerFileSourceImpl(),
-       serverRemoteSource = serverRemoteSource ?? ServerRemoteSourceImpl();
+       serverRemoteSource =
+           serverRemoteSource ?? const ServerRemoteSourceImpl();
 
   Future<ServerMap> getCurrent() async {
     return _serverMap ??= await serverFileSource.readFromFile();

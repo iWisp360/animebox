@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:animebox/core/configs/data/providers/repository_provider.dart';
 import 'package:animebox/core/configs/domain/entities/config.dart';
-import 'package:animebox/core/files/data/factories/config_path_factory.dart';
+import 'package:animebox/core/files/data/datasources/internal_data_directory.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ConfigProvider extends AsyncNotifier<AnimeBoxConfig> {
@@ -33,6 +33,5 @@ class ConfigProvider extends AsyncNotifier<AnimeBoxConfig> {
     );
   }
 
-  Future<Directory> get _configDirectory =>
-      ConfigPathRepositoryFactory.recommended().getConfigPath();
+  Future<Directory> get _configDirectory => animeBoxInternalData();
 }

@@ -54,4 +54,11 @@ class ServersListProvider extends AsyncNotifier<List<Server>> {
 
   Future<List<Server>> getServers() async =>
       _serverList ??= await _serverRepository.getServers();
+
+  Future<void> updateServers() async {
+    final currentServers = state.value;
+    if (currentServers == null) throw ServersNotInitializedException();
+
+    for (final url in currentServers) {}
+  }
 }

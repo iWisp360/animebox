@@ -6,7 +6,7 @@ part 'local_storage.freezed.dart';
 @freezed
 abstract class LocalStorageConfig with _$LocalStorageConfig {
   const factory LocalStorageConfig({
-    @Default("%d/AnimeBox") String dataPath,
+    String? dataPath,
     @Default(false) bool deleteWatchedEpisodes,
     @Default(false) bool automaticBackups,
 

@@ -15,8 +15,8 @@ abstract class ServerRemoteSource {
 class ServerRemoteSourceImpl implements ServerRemoteSource {
   final ServerInfoMapper serverInfoMapper;
 
-  ServerRemoteSourceImpl({ServerInfoMapper? serverInfoMapper})
-    : serverInfoMapper = serverInfoMapper ?? ServerInfoMapperImpl();
+  const ServerRemoteSourceImpl({ServerInfoMapper? serverInfoMapper})
+    : serverInfoMapper = serverInfoMapper ?? const ServerInfoMapperImpl();
 
   @override
   Future<Server> getFromEndpoint(String url) async {
