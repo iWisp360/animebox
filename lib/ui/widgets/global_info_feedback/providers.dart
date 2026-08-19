@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
+import 'package:animebox/gen/strings.g.dart';
 import 'package:animebox/ui/widgets/global_info_feedback/entities.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,22 +11,40 @@ final globalNotificationController = NotifierProvider(
 
 class GlobalNotificationController extends Notifier<NotificationState> {
   Timer? _hideTimer;
+  NotificationState? _currentState;
+  MessageBuilderFn? _messageBuilder;
 
   @override
   NotificationState build() {
     ref.onDispose(() => _hideTimer?.cancel());
-    return const NotificationState(enabled: false);
+
+    final translations = ref.watch(i18nProvider);
+    if (_messageBuilder != null) {
+      _currentState = _currentState?.copyWith(
+        message: _messageBuilder!(translations, ref),
+      );
+    }
+
+    return _currentState ??= const NotificationState(enabled: false);
   }
 
   void setState({
-    required Function() messageBuilder,
+    required MessageBuilderFn messageBuilder,
     required Priority priority,
-  }) => state = state.copyWith(message: messageBuilder(), priority: priority);
+  }) {
+    final translations = ref.read(i18nProvider);
+    _messageBuilder = messageBuilder;
+
+    _currentState = state = state.copyWith(
+      message: messageBuilder(translations, ref),
+      priority: priority,
+    );
+  }
 
   void toggle({bool persistent = false}) {
     _hideTimer?.cancel();
 
-    state = state.copyWith(enabled: !state.enabled);
+    _currentState = state = state.copyWith(enabled: !state.enabled);
 
     if (state.enabled && !persistent) {
       _hideTimer = Timer(
@@ -40,3 +60,5 @@ class GlobalNotificationController extends Notifier<NotificationState> {
     () => state = state.copyWith(enabled: false),
   );
 }
+
+typedef MessageBuilderFn = String Function(Translations translations, Ref ref);
