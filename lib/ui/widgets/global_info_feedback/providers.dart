@@ -16,8 +16,6 @@ class GlobalNotificationController extends Notifier<NotificationState> {
 
   @override
   NotificationState build() {
-    ref.onDispose(() => _hideTimer?.cancel());
-
     final translations = ref.watch(i18nProvider);
     if (_messageBuilder != null) {
       _currentState = _currentState?.copyWith(
@@ -60,7 +58,7 @@ class GlobalNotificationController extends Notifier<NotificationState> {
   void disablePersistence() => _hideTimer = timeoutTimer();
   Timer timeoutTimer() => Timer(
     const Duration(seconds: 5),
-    () => state = state.copyWith(enabled: false),
+    () => _currentState = state = state.copyWith(enabled: false),
   );
 }
 
