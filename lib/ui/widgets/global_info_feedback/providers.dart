@@ -41,10 +41,13 @@ class GlobalNotificationController extends Notifier<NotificationState> {
     );
   }
 
-  void toggle({bool persistent = false}) {
+  void toggle({bool persistent = false}) =>
+      set(enabled: !state.enabled, persistent: persistent);
+
+  void set({bool persistent = false, required bool enabled}) {
     _hideTimer?.cancel();
 
-    _currentState = state = state.copyWith(enabled: !state.enabled);
+    _currentState = state = state.copyWith(enabled: enabled);
 
     if (state.enabled && !persistent) {
       _hideTimer = Timer(
@@ -54,7 +57,7 @@ class GlobalNotificationController extends Notifier<NotificationState> {
     }
   }
 
-  void disablePersistence() => _hideTimer?.cancel();
+  void disablePersistence() => _hideTimer = timeoutTimer();
   Timer timeoutTimer() => Timer(
     const Duration(seconds: 5),
     () => state = state.copyWith(enabled: false),
