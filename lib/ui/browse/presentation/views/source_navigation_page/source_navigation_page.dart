@@ -1,10 +1,11 @@
-import 'package:animebox/core/i18n/context.dart';
+import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
 import 'package:animebox/ui/widgets/tab_view/tab_bar_container.dart';
 import 'package:animebox/ui/browse/presentation/views/source_navigation_page/latest_anime_tab.dart';
 import 'package:animebox/ui/browse/presentation/views/source_navigation_page/popular_anime_tab.dart';
 import 'package:animebox/ui/browse/presentation/views/source_navigation_page/app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SourceNavigationPageParams {
   final int schemaVersion;
@@ -17,22 +18,24 @@ class SourceNavigationPageParams {
 }
 
 // The styling for this page was inspired by Aniyomi
-class SourceNavigationPage extends StatefulWidget {
+class SourceNavigationPage extends ConsumerStatefulWidget {
   final SourceNavigationPageParams params;
 
   const SourceNavigationPage({super.key, required this.params});
 
   @override
-  State<SourceNavigationPage> createState() => _SourceNavigationPageState();
+  ConsumerState<SourceNavigationPage> createState() =>
+      _SourceNavigationPageState();
 }
 
-class _SourceNavigationPageState extends State<SourceNavigationPage> {
+class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage> {
   SourceNavigationPages _actualPage = .popular;
 
   @override
   Widget build(BuildContext context) {
+    final translations = ref.watch(i18nProvider);
     final sourcesNavigationPageTranslations =
-        context.i18n.browsePage.sources.navigation;
+        translations.browsePage.sources.navigation;
 
     return Scaffold(
       appBar: sourceNavigationPageAppBar(context, widget.params.source),

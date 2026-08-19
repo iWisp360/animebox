@@ -1,4 +1,4 @@
-import 'package:animebox/core/i18n/context.dart';
+import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/core/injector.dart';
 import 'package:animebox/ui/settings/presentation/views/settings_ui_theming.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,8 @@ class SettingsPage extends ConsumerWidget {
       packageInfoProvider.select((info) => info.version),
     );
 
-    final settingsTranslations = context.i18n.settings;
+    final translations = ref.watch(i18nProvider);
+    final settingsTranslations = translations.settings;
 
     return Scaffold(
       appBar: AppBar(title: Text(settingsTranslations.pageHeader)),

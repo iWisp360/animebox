@@ -1,4 +1,3 @@
-import 'package:animebox/core/configs/data/providers/config_provider.dart';
 import 'package:animebox/ui/widgets/global_info_feedback/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,9 +13,6 @@ class GlobalInfoFeedback extends ConsumerStatefulWidget {
 class _GlobalInfoFeedbackState extends ConsumerState<GlobalInfoFeedback> {
   bool _instantColor = true;
 
-  void setContextInNotifier() =>
-      ref.read(globalNotificationController.notifier).setContext(context);
-
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(globalNotificationController);
@@ -27,14 +23,6 @@ class _GlobalInfoFeedbackState extends ConsumerState<GlobalInfoFeedback> {
         _instantColor = (prev == null || !prev.enabled);
       }),
     );
-
-    ref.listen(configProvider, (prev, next) {
-      next.when(
-        data: (_) => setContextInNotifier(),
-        error: (_, _) => (),
-        loading: () => (),
-      );
-    });
 
     double topPadding = _calculateHeightOffset(context);
     final height = topPadding + 30;

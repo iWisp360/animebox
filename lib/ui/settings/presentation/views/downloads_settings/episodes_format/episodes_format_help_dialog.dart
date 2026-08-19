@@ -1,16 +1,18 @@
-import 'package:animebox/core/i18n/context.dart';
+import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class EpisodesFormatHelpDialog extends StatelessWidget {
+class EpisodesFormatHelpDialog extends ConsumerWidget {
   const EpisodesFormatHelpDialog({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final translations = ref.watch(i18nProvider);
+
     return AlertDialog(
-      title: Text(context.i18n.commonActions.help),
+      title: Text(translations.commonActions.help),
       content: Text(
-        context
-            .i18n
+        translations
             .settings
             .downloads
             .downloaderSection
@@ -21,7 +23,7 @@ class EpisodesFormatHelpDialog extends StatelessWidget {
       actions: [
         FilledButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(context.i18n.commonActions.ok),
+          child: Text(translations.commonActions.ok),
         ),
       ],
     );

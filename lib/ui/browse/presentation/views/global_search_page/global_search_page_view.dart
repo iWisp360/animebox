@@ -1,6 +1,6 @@
 import 'package:animebox/core/error/presentation/views/error_page.dart';
 import 'package:animebox/core/helpers/convergence.dart';
-import 'package:animebox/core/i18n/context.dart';
+import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/core/servers/data/providers.dart';
 import 'package:animebox/features/search/data/providers/search_provider.dart';
 import 'package:animebox/ui/browse/presentation/views/global_search_page/source_search_row.dart';
@@ -41,7 +41,8 @@ class _GlobalSearchPageViewState extends ConsumerState<GlobalSearchPageView> {
 
   @override
   Widget build(BuildContext context) {
-    final globalSearchTranslations = context.i18n.browsePage.search.global;
+    final translations = ref.watch(i18nProvider);
+    final globalSearchTranslations = translations.browsePage.search.global;
     final activeServer = ref.watch(activeServerProvider);
 
     return activeServer.when(

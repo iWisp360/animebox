@@ -2,8 +2,8 @@ import 'package:animebox/core/configs/data/providers/config_provider.dart';
 import 'package:animebox/core/configs/domain/entities/appearance.dart';
 import 'package:animebox/core/dates/data/repositories/dates_repository_impl.dart';
 import 'package:animebox/core/dates/domain/repositories/dates_repository.dart';
-import 'package:animebox/core/i18n/context.dart';
 import 'package:animebox/core/i18n/domain/entities/language.dart';
+import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/ui/settings/presentation/views/appearance_settings/language_set_page.dart';
 import 'package:animebox/ui/settings/presentation/views/page_builder.dart';
 import 'package:animebox/ui/settings/presentation/views/settings_ui_theming.dart';
@@ -19,7 +19,8 @@ class AppearanceSettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appearanceSettingsTranslations = context.i18n.settings.appearance;
+    final translations = ref.watch(i18nProvider);
+    final appearanceSettingsTranslations = translations.settings.appearance;
 
     return Scaffold(
       appBar: AppBar(title: Text(appearanceSettingsTranslations.title)),
@@ -41,11 +42,7 @@ class AppearanceSettingsPage extends ConsumerWidget {
                           final provider = ref.read(configProvider.notifier);
 
                           await provider.change(
-                            config.copyWith(
-                              appearance: config.appearance.copyWith(
-                                themeMode: mode.first,
-                              ),
-                            ),
+                            config.copyWith.appearance(themeMode: mode.first),
                           );
                         },
                         segments: [
@@ -99,10 +96,10 @@ class AppearanceSettingsPage extends ConsumerWidget {
                   ),
                 ),
                 SettingsTile.navigation(
-                  title: Text(context.i18n.language.title),
+                  title: Text(translations.language.title),
                   value: Text(switch (config.appearance.lang) {
-                    .system => context.i18n.language.system.title,
-                    _ => context.i18n.language.actual,
+                    .system => translations.language.system.title,
+                    _ => translations.language.actual,
                   }),
                   onPressed: (context) async {
                     final Language? changedLang = await Navigator.of(context)
@@ -116,11 +113,7 @@ class AppearanceSettingsPage extends ConsumerWidget {
                       await ref
                           .read(configProvider.notifier)
                           .change(
-                            config.copyWith(
-                              appearance: config.appearance.copyWith(
-                                lang: changedLang,
-                              ),
-                            ),
+                            config.copyWith.appearance(lang: changedLang),
                           );
                     }
                   },
@@ -129,13 +122,7 @@ class AppearanceSettingsPage extends ConsumerWidget {
                   initialValue: config.appearance.relativeDates,
                   onToggle: (value) => ref
                       .read(configProvider.notifier)
-                      .change(
-                        config.copyWith(
-                          appearance: config.appearance.copyWith(
-                            relativeDates: value,
-                          ),
-                        ),
-                      ),
+                      .change(config.copyWith.appearance(relativeDates: value)),
                   title: Text(
                     appearanceSettingsTranslations.relativeDates.title,
                   ),

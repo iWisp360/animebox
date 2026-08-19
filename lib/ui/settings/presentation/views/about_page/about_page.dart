@@ -1,4 +1,4 @@
-import 'package:animebox/core/i18n/context.dart';
+import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/core/injector.dart';
 import 'package:animebox/ui/settings/presentation/views/settings_ui_theming.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ class AnimeBoxAboutPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final packageInfo = ref.watch(packageInfoProvider);
 
-    final aboutPageTranslations = context.i18n.settings.about;
+    final aboutPageTranslations = ref.watch(i18nProvider).settings.about;
 
     return Scaffold(
       appBar: AppBar(title: Text(aboutPageTranslations.title)),

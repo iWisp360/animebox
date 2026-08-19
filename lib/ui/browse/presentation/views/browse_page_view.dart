@@ -1,4 +1,4 @@
-import 'package:animebox/core/i18n/context.dart';
+import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/core/servers/data/providers.dart';
 import 'package:animebox/ui/settings/presentation/views/server_settings/navigate_to_server_settings.dart';
 import 'package:animebox/ui/settings/presentation/views/server_settings/reset_servers_button.dart';
@@ -18,7 +18,8 @@ class BrowsePageView extends ConsumerStatefulWidget {
 class _BrowsePageViewState extends ConsumerState<BrowsePageView> {
   @override
   Widget build(BuildContext context) {
-    final browsePageTranslations = context.i18n.browsePage;
+    final translations = ref.watch(i18nProvider);
+    final browsePageTranslations = translations.browsePage;
     final watchedServers = ref.watch(serverListProvider);
 
     return watchedServers.when(

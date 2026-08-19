@@ -1,5 +1,5 @@
 import 'package:animebox/core/configs/data/providers/config_provider.dart';
-import 'package:animebox/core/i18n/context.dart';
+import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/core/servers/data/providers.dart';
 import 'package:animebox/ui/settings/presentation/views/page_builder.dart';
 import 'package:animebox/ui/settings/presentation/views/server_settings/reset_servers_button.dart';
@@ -15,7 +15,8 @@ class ServersSettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final serverSettingsTranslations = context.i18n.settings.servers;
+    final translations = ref.watch(i18nProvider);
+    final serverSettingsTranslations = translations.settings.servers;
     final serverList = ref.watch(serverListProvider);
 
     return Scaffold(

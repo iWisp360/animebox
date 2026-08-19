@@ -1,5 +1,5 @@
 import 'package:animebox/core/configs/data/providers/config_provider.dart';
-import 'package:animebox/core/i18n/context.dart';
+import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/ui/settings/presentation/views/downloads_settings/episodes_format/episodes_format_dialog.dart';
 import 'package:animebox/ui/settings/presentation/views/page_builder.dart';
 import 'package:animebox/ui/settings/presentation/views/settings_ui_theming.dart';
@@ -13,7 +13,10 @@ class DownloadsSettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final downloadsSettingsTranslations = context.i18n.settings.downloads;
+    final downloadsSettingsTranslations = ref
+        .watch(i18nProvider)
+        .settings
+        .downloads;
 
     return Scaffold(
       appBar: AppBar(title: Text(downloadsSettingsTranslations.title)),

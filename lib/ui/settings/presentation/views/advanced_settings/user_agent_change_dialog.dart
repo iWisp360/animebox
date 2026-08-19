@@ -1,15 +1,17 @@
 import 'package:animebox/core/configs/domain/entities/advanced.dart';
-import 'package:animebox/core/i18n/context.dart';
+import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UserAgentChangeDialog extends StatefulWidget {
+class UserAgentChangeDialog extends ConsumerStatefulWidget {
   const UserAgentChangeDialog({super.key});
 
   @override
-  State<UserAgentChangeDialog> createState() => _UserAgentChangeDialogState();
+  ConsumerState<UserAgentChangeDialog> createState() =>
+      _UserAgentChangeDialogState();
 }
 
-class _UserAgentChangeDialogState extends State<UserAgentChangeDialog> {
+class _UserAgentChangeDialogState extends ConsumerState<UserAgentChangeDialog> {
   String? _errorText;
   late final TextEditingController _textController;
 
@@ -27,8 +29,9 @@ class _UserAgentChangeDialogState extends State<UserAgentChangeDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final translations = ref.watch(i18nProvider);
     final userAgentTranslations =
-        context.i18n.settings.advanced.networkSection.userAgent;
+        translations.settings.advanced.networkSection.userAgent;
 
     return AlertDialog(
       title: Text(userAgentTranslations.title),
@@ -59,17 +62,17 @@ class _UserAgentChangeDialogState extends State<UserAgentChangeDialog> {
         FilledButton.tonal(
           onPressed: () =>
               Navigator.of(context).pop(const AdvancedConfig().userAgent),
-          child: Text(context.i18n.commonActions.kDefault),
+          child: Text(translations.commonActions.kDefault),
         ),
         FilledButton(
           onPressed: (_textController.text.isNotEmpty)
               ? () => Navigator.of(context).pop(_textController.text)
               : null,
-          child: Text(context.i18n.commonActions.done),
+          child: Text(translations.commonActions.done),
         ),
         OutlinedButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(context.i18n.commonActions.cancel),
+          child: Text(translations.commonActions.cancel),
         ),
       ],
     );

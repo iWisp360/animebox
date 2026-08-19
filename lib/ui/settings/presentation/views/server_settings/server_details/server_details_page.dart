@@ -1,18 +1,20 @@
 import 'package:animebox/core/helpers/convergence.dart';
-import 'package:animebox/core/i18n/context.dart';
+import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/core/servers/data/datasources/server_urls.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/ui/settings/presentation/views/server_settings/server_details/server_delete_dialog.dart';
 import 'package:animebox/ui/settings/presentation/views/server_settings/server_details/source_details_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ServerDetailsPage extends StatelessWidget {
+class ServerDetailsPage extends ConsumerWidget {
   const ServerDetailsPage({super.key, required this.server});
   final Server server;
 
   @override
-  Widget build(BuildContext context) {
-    final detailsTranslations = context.i18n.settings.servers.details;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final translations = ref.watch(i18nProvider);
+    final detailsTranslations = translations.settings.servers.details;
     return Scaffold(
       appBar: AppBar(title: Text(detailsTranslations.title)),
       body: SingleChildScrollView(
@@ -73,20 +75,11 @@ class ServerDetailsPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: .start,
                         children: [
+                          Text(detailsTranslations.animeSources.title),
                           Text(
-                            context
-                                .i18n
-                                .settings
-                                .servers
-                                .details
-                                .animeSources
-                                .title,
-                          ),
-                          Text(
-                            context.i18n.settings.servers.details.animeSources
-                                .information(
-                                  n: server.supportedAnimeSources.length,
-                                ),
+                            detailsTranslations.animeSources.information(
+                              n: server.supportedAnimeSources.length,
+                            ),
                             style: TextStyle(
                               color: Theme.of(
                                 context,
@@ -118,13 +111,7 @@ class ServerDetailsPage extends StatelessWidget {
                                   children: [
                                     Text(source.prettyName),
                                     Text(
-                                      context
-                                          .i18n
-                                          .settings
-                                          .servers
-                                          .details
-                                          .animeSources
-                                          .details
+                                      detailsTranslations.animeSources.details
                                           .identifier(sourceId: source.id),
                                       style: TextStyle(
                                         color: Theme.of(
@@ -167,9 +154,7 @@ class ServerDetailsPage extends StatelessWidget {
                   }
                 },
                 icon: const Icon(Icons.delete),
-                label: Text(
-                  context.i18n.settings.servers.details.deleteServer.action,
-                ),
+                label: Text(detailsTranslations.deleteServer.action),
               ),
             ],
           ),

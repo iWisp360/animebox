@@ -1,6 +1,5 @@
 import 'package:animebox/core/helpers/convergence.dart';
-import 'package:animebox/core/i18n/context.dart';
-import 'package:animebox/core/i18n/data/providers/i18n_provider.dart';
+import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/ui/browse/presentation/views/browse_page_view.dart';
 import 'package:animebox/ui/home/presentation/views/home_page_view.dart';
 import 'package:animebox/ui/library/presentation/views/library_page_view.dart';
@@ -25,20 +24,9 @@ class _MainPageViewState extends ConsumerState<MainPageView> {
 
   @override
   Widget build(BuildContext context) {
-    final i18n = ref.watch(i18nProvider);
-
-    i18n.when(
-      data: (_) => null,
-      error: (e, _) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(e.toString())));
-      },
-      loading: () => null,
-    );
-
     final isDesktop = isDesktopWidth(context);
-    final mainPageTranslations = context.i18n.mainPage;
+    final translations = ref.watch(i18nProvider);
+    final mainPageTranslations = translations.mainPage;
 
     final destinations = [
       (
@@ -105,7 +93,7 @@ class _MainPageViewState extends ConsumerState<MainPageView> {
 
         trailingRailAction: FloatingActionButton(
           elevation: 0,
-          tooltip: context.i18n.settings.pageHeader,
+          tooltip: translations.settings.pageHeader,
           onPressed: () => navigateToSettings(context),
           child: const Icon(Icons.settings),
         ),

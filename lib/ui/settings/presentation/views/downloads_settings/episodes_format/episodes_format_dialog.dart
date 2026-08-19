@@ -1,6 +1,6 @@
 import 'package:animebox/core/configs/domain/entities/downloads.dart';
 import 'package:animebox/core/dates/data/repositories/dates_repository_impl.dart';
-import 'package:animebox/core/i18n/context.dart';
+import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/features/episodes/data/providers/episodes_format_provider.dart';
 import 'package:animebox/features/episodes/domain/entities/episode.dart';
 import 'package:animebox/features/episodes/domain/exceptions.dart';
@@ -32,7 +32,7 @@ class _EpisodesFormatDialogState extends ConsumerState<EpisodesFormatDialog> {
         _renderedFormat = ref
             .read(
               episodesFormatProvider((
-                context.i18n.downloads.episode,
+                ref.read(i18nProvider).downloads.episode,
                 const DatesRepositoryImpl(),
               )),
             )
@@ -52,8 +52,9 @@ class _EpisodesFormatDialogState extends ConsumerState<EpisodesFormatDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final translations = ref.watch(i18nProvider);
     final episodesFormatTranslations =
-        context.i18n.settings.downloads.downloaderSection.episodesFormat;
+        translations.settings.downloads.downloaderSection.episodesFormat;
 
     return AlertDialog(
       title: Text(episodesFormatTranslations.title),
@@ -74,7 +75,7 @@ class _EpisodesFormatDialogState extends ConsumerState<EpisodesFormatDialog> {
                   final rendered = ref
                       .read(
                         episodesFormatProvider((
-                          context.i18n.downloads.episode,
+                          translations.downloads.episode,
                           const DatesRepositoryImpl(),
                         )),
                       )
@@ -107,23 +108,23 @@ class _EpisodesFormatDialogState extends ConsumerState<EpisodesFormatDialog> {
             context: context,
             builder: (context) => const EpisodesFormatHelpDialog(),
           ),
-          child: Text(context.i18n.commonActions.help),
+          child: Text(translations.commonActions.help),
         ),
         FilledButton.tonal(
           onPressed: () => Navigator.of(
             context,
           ).pop(const DownloadsConfig().downloadedEpisodesFormat),
-          child: Text(context.i18n.commonActions.kDefault),
+          child: Text(translations.commonActions.kDefault),
         ),
         FilledButton(
           onPressed: (_errorText == null)
               ? () => Navigator.of(context).pop(_textController.text)
               : null,
-          child: Text(context.i18n.commonActions.done),
+          child: Text(translations.commonActions.done),
         ),
         OutlinedButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(context.i18n.commonActions.cancel),
+          child: Text(translations.commonActions.cancel),
         ),
       ],
     );

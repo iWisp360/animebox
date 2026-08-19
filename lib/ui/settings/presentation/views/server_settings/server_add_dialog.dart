@@ -1,4 +1,4 @@
-import 'package:animebox/core/i18n/context.dart';
+import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/core/servers/data/providers.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:flutter/material.dart';
@@ -32,8 +32,9 @@ class _ServerAddDialogState extends ConsumerState<ServerAddDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final translations = ref.watch(i18nProvider);
     final addServerDialogTranslations =
-        context.i18n.settings.servers.addServerDialog;
+        translations.settings.servers.addServerDialog;
 
     return AlertDialog(
       title: Text(addServerDialogTranslations.action),
@@ -89,11 +90,11 @@ class _ServerAddDialogState extends ConsumerState<ServerAddDialog> {
                   }
                 }
               : null,
-          child: Text(context.i18n.commonActions.add),
+          child: Text(translations.commonActions.add),
         ),
         OutlinedButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(context.i18n.commonActions.cancel),
+          child: Text(translations.commonActions.cancel),
         ),
       ],
     );

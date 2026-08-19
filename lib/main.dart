@@ -1,8 +1,10 @@
 import 'package:animebox/core/error/presentation/views/error_app.dart';
+import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/core/injector.dart';
 import 'package:animebox/gen/strings.g.dart';
 import 'package:animebox/ui/routes.dart';
 import 'package:animebox/ui/themes/presentation/views/themes_builder.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,11 +20,14 @@ Future<void> main() async {
     final sharedPreferences = await SharedPreferences.getInstance();
     final packageInfo = await PackageInfo.fromPlatform();
 
+    final deviceTranslations = await LocaleSettings.useDeviceLocale();
+
     runApp(
       ProviderScope(
         overrides: [
           sharedPreferencesProvider.overrideWith((ref) => sharedPreferences),
           packageInfoProvider.overrideWith((ref) => packageInfo),
+          deviceTranslationsProvider.overrideWith((ref) => deviceTranslations),
         ],
         child: TranslationProvider(child: const AnimeBoxApp()),
       ),
@@ -42,13 +47,27 @@ class AnimeBoxApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mainRouter = ref.watch(mainRouterProvider);
+    final locale = ref.watch(i18nNotifier);
+
+    ref.listen(i18nNotifier, (prev, next) {
+      next.when(
+        data: (locale) =>
+            ref.read(i18nProvider.notifier).setLang(locale.translations),
+        error: (_, _) => (),
+        loading: () => (),
+      );
+    });
 
     return ThemesBuilder(
       builder: (context, themeData) => MaterialApp.router(
         title: 'Anime Box',
         localizationsDelegates: GlobalMaterialLocalizations.delegates,
         supportedLocales: AppLocaleUtils.supportedLocales,
-        locale: TranslationProvider.of(context).flutterLocale,
+        locale: locale.when(
+          data: (locale) => locale.flutterLocale,
+          error: (_, _) => PlatformDispatcher.instance.locale,
+          loading: () => PlatformDispatcher.instance.locale,
+        ),
         theme: themeData,
         debugShowCheckedModeBanner: false,
         routerConfig: mainRouter,

@@ -1,5 +1,5 @@
 import 'package:animebox/core/configs/data/providers/config_provider.dart';
-import 'package:animebox/core/i18n/context.dart';
+import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/ui/settings/presentation/views/advanced_settings/user_agent_change_dialog.dart';
 import 'package:animebox/ui/settings/presentation/views/page_builder.dart';
 import 'package:animebox/ui/settings/presentation/views/settings_ui_theming.dart';
@@ -12,7 +12,10 @@ class AdvancedSettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final advancedSettingsTranslations = context.i18n.settings.advanced;
+    final advancedSettingsTranslations = ref
+        .watch(i18nProvider)
+        .settings
+        .advanced;
 
     return Scaffold(
       appBar: AppBar(title: Text(advancedSettingsTranslations.title)),

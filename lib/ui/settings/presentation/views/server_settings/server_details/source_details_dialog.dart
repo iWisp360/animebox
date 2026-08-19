@@ -1,15 +1,18 @@
-import 'package:animebox/core/i18n/context.dart';
+import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SourceDetailsDialog extends StatelessWidget {
+class SourceDetailsDialog extends ConsumerWidget {
   final AnimeSource source;
   const SourceDetailsDialog({super.key, required this.source});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final translations = ref.watch(i18nProvider);
+
     final detailsTranslations =
-        context.i18n.settings.servers.details.animeSources.details;
+        translations.settings.servers.details.animeSources.details;
 
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     return Padding(
@@ -41,7 +44,7 @@ class SourceDetailsDialog extends StatelessWidget {
         actions: [
           FilledButton.tonal(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text(context.i18n.commonActions.done),
+            child: Text(translations.commonActions.done),
           ),
         ],
       ),

@@ -1,13 +1,15 @@
-import 'package:animebox/core/i18n/context.dart';
+import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ServerDeleteDialog extends StatelessWidget {
+class ServerDeleteDialog extends ConsumerWidget {
   const ServerDeleteDialog({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final translations = ref.watch(i18nProvider);
     final dialogTranslations =
-        context.i18n.settings.servers.details.deleteServer.dialog;
+        translations.settings.servers.details.deleteServer.dialog;
 
     return AlertDialog(
       constraints: const BoxConstraints(maxWidth: 400),
@@ -20,11 +22,11 @@ class ServerDeleteDialog extends StatelessWidget {
             foregroundColor: Theme.of(context).colorScheme.onError,
           ),
           onPressed: () => Navigator.of(context).pop(true),
-          child: Text(context.i18n.commonActions.delete),
+          child: Text(translations.commonActions.delete),
         ),
         OutlinedButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(context.i18n.commonActions.cancel),
+          child: Text(translations.commonActions.cancel),
         ),
       ],
     );
