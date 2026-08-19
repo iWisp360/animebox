@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:animebox/core/servers/domain/entities/server.dart';
 
 abstract class ServerRepository {
@@ -6,7 +8,7 @@ abstract class ServerRepository {
   /// Returns `true` if the server was present and removed successfully
   Future<bool> removeServer(String uuid);
   Future<Server?> getServer(String uuid);
-  Future<List<Server>> getServers();
+  FutureOr<List<Server>> getServers();
   Future<void> updateServer(Server updatedServer);
 
   /// Connects to the url, adds the server to the map and returns the server
@@ -14,4 +16,7 @@ abstract class ServerRepository {
 
   /// Returns true if the the server information changed
   Future<bool> updateServerFromEndpoint(String url);
+
+  /// Resets the server list. Use only in emergencies!!!
+  Future<void> resetServerList();
 }

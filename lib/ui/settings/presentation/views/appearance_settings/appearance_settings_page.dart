@@ -3,12 +3,10 @@ import 'package:animebox/core/configs/domain/entities/appearance.dart';
 import 'package:animebox/core/dates/data/repositories/dates_repository_impl.dart';
 import 'package:animebox/core/dates/domain/repositories/dates_repository.dart';
 import 'package:animebox/core/i18n/context.dart';
-import 'package:animebox/core/i18n/data/providers/i18n_provider.dart';
 import 'package:animebox/core/i18n/domain/entities/language.dart';
 import 'package:animebox/ui/settings/presentation/views/appearance_settings/language_set_page.dart';
 import 'package:animebox/ui/settings/presentation/views/page_builder.dart';
 import 'package:animebox/ui/settings/presentation/views/settings_ui_theming.dart';
-import 'package:animebox/ui/widgets/global_info_feedback/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -21,19 +19,6 @@ class AppearanceSettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final i18n = ref.watch(i18nProvider);
-
-    i18n.when(
-      data: (_) => null,
-      error: (e, _) {
-        final notifier = ref.read(globalNotificationController.notifier);
-
-        notifier.setState(message: e.toString(), priority: .error);
-        notifier.toggle();
-      },
-      loading: () => null,
-    );
-
     final appearanceSettingsTranslations = context.i18n.settings.appearance;
 
     return Scaffold(

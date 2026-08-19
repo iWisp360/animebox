@@ -101,8 +101,8 @@ settings:
     description: Manage your servers to get anime
     details:
       title: Server Properties
-      apiUrl: "API Url: $url$endpoint"
-      infoUrl: "Info Url: $url$endpoint"
+      apiUrl: "API Url: $url"
+      infoUrl: "Info Url: $url"
       version: "Version: $schemaVersion"
       animeSources:
         title: Anime Sources

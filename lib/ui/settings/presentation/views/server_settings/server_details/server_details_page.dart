@@ -1,5 +1,6 @@
 import 'package:animebox/core/helpers/convergence.dart';
 import 'package:animebox/core/i18n/context.dart';
+import 'package:animebox/core/servers/data/datasources/server_urls.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/ui/settings/presentation/views/server_settings/server_details/server_delete_dialog.dart';
 import 'package:animebox/ui/settings/presentation/views/server_settings/server_details/source_details_dialog.dart';
@@ -12,7 +13,6 @@ class ServerDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final detailsTranslations = context.i18n.settings.servers.details;
-
     return Scaffold(
       appBar: AppBar(title: Text(detailsTranslations.title)),
       body: SingleChildScrollView(
@@ -43,10 +43,13 @@ class ServerDetailsPage extends StatelessWidget {
 
               const SizedBox(height: 2),
               SelectableText(
-                detailsTranslations.apiUrl(
-                  url: server.url.toString(),
-                  endpoint: server.api,
+                detailsTranslations.apiUrl(url: server.apiUrl()),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
+              ),
+              SelectableText(
+                detailsTranslations.infoUrl(url: server.infoUrl()),
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),

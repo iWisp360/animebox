@@ -89,4 +89,10 @@ class ServerRepositoryImpl implements ServerRepository {
       return false;
     }
   }
+
+  @override
+  Future<void> resetServerList() async {
+    final newServerMap = _serverMap = {};
+    await serverFileSource.writeToFile(newServerMap);
+  }
 }

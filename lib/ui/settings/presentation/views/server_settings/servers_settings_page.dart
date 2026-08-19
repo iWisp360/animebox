@@ -2,6 +2,7 @@ import 'package:animebox/core/configs/data/providers/config_provider.dart';
 import 'package:animebox/core/i18n/context.dart';
 import 'package:animebox/core/servers/data/providers.dart';
 import 'package:animebox/ui/settings/presentation/views/page_builder.dart';
+import 'package:animebox/ui/settings/presentation/views/server_settings/reset_servers_button.dart';
 import 'package:animebox/ui/settings/presentation/views/server_settings/server_add_dialog.dart';
 import 'package:animebox/ui/settings/presentation/views/server_settings/server_details/server_details_page.dart';
 import 'package:animebox/ui/settings/presentation/views/settings_ui_theming.dart';
@@ -30,7 +31,15 @@ class ServersSettingsPage extends ConsumerWidget {
                 ...serverList.when(
                   error: (exception, st) => const [
                     CustomSettingsTile(
-                      child: Center(child: CircularProgressIndicator()),
+                      child: Center(
+                        child: Column(
+                          spacing: 10,
+                          children: [
+                            Text("The servers failed to load"),
+                            ResetServersButton(),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                   loading: () => [
@@ -108,18 +117,31 @@ class ServersSettingsPage extends ConsumerWidget {
                     CustomSettingsTile(
                       child: Padding(
                         padding: const .symmetric(vertical: 10),
-                        child: Center(
-                          child: FilledButton(
-                            onPressed: () async {
-                              await showDialog(
-                                context: context,
-                                builder: (context) => const ServerAddDialog(),
-                              );
-                            },
-                            child: Text(
-                              serverSettingsTranslations.addServerDialog.action,
+                        child: Row(
+                          mainAxisAlignment: .center,
+                          spacing: 16,
+                          children: [
+                            FilledButton(
+                              onPressed: () async {
+                                await showDialog(
+                                  context: context,
+                                  builder: (context) => const ServerAddDialog(),
+                                );
+                              },
+                              child: Text(
+                                serverSettingsTranslations
+                                    .addServerDialog
+                                    .action,
+                              ),
                             ),
-                          ),
+                            if (serverList.isNotEmpty)
+                              FilledButton.tonal(
+                                onPressed: () async => await ref
+                                    .read(serverListProvider.notifier)
+                                    .updateServers(),
+                                child: const Text("Update Servers"),
+                              ),
+                          ],
                         ),
                       ),
                     ),

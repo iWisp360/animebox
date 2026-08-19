@@ -25,7 +25,10 @@ class HomePageView extends ConsumerWidget {
             onPressed: () {
               final notifier = ref.read(globalNotificationController.notifier);
 
-              notifier.setState(message: "Info", priority: .info);
+              notifier.setState(
+                message: (i18n) => i18n.commonActions.delete,
+                priority: .info,
+              );
             },
             child: const Text("Info"),
           ),
@@ -33,7 +36,10 @@ class HomePageView extends ConsumerWidget {
             onPressed: () {
               final notifier = ref.read(globalNotificationController.notifier);
 
-              notifier.setState(message: "Warning", priority: .warning);
+              notifier.setState(
+                message: (i18n) => "Warning",
+                priority: .warning,
+              );
             },
             child: const Text("Warning"),
           ),
@@ -41,7 +47,7 @@ class HomePageView extends ConsumerWidget {
             onPressed: () {
               final notifier = ref.read(globalNotificationController.notifier);
 
-              notifier.setState(message: "Error", priority: .error);
+              notifier.setState(message: (i18n) => "Error", priority: .error);
             },
             child: const Text("Error"),
           ),

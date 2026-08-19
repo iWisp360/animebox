@@ -39,6 +39,7 @@ class ServerInfoMapperImpl implements ServerInfoMapper {
       name: deserializedInfo.name,
       logoUrl: deserializedInfo.logoUrl,
       url: Uri.base,
+      infoEndpoint: "",
       uuid: deserializedInfo.uuid,
       api: deserializedInfo.api,
       schemaVersion: 1,

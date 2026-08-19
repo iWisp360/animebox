@@ -11,6 +11,7 @@ abstract class Server with _$Server {
     String? logoUrl,
     required Uri url,
     required String api,
+    required String infoEndpoint,
     required String uuid,
     required int schemaVersion,
     required List<AnimeSource> supportedAnimeSources,

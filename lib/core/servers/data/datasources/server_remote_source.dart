@@ -38,6 +38,7 @@ class ServerRemoteSourceImpl implements ServerRemoteSource {
 
       return parsedServer.copyWith(
         url: storedUrl,
+        infoEndpoint: parsedUrl.path,
         supportedAnimeSources: parsedServer.supportedAnimeSources.sorted(
           (a, b) => a.prettyName.compareTo(b.prettyName),
         ),
