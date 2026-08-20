@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'entities.freezed.dart';
@@ -10,5 +11,6 @@ abstract class NotificationState with _$NotificationState {
     String? message,
     required bool enabled,
     Priority? priority,
+    Widget? leading,
   }) = _NotificationState;
 }

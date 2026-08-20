@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/gen/strings.g.dart';
 import 'package:animebox/ui/widgets/global_info_feedback/entities.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final globalNotificationController = NotifierProvider(
@@ -29,12 +30,15 @@ class GlobalNotificationController extends Notifier<NotificationState> {
   void setState({
     required MessageBuilderFn messageBuilder,
     required Priority priority,
+    Widget? leading,
   }) {
     final translations = ref.read(i18nProvider);
     _messageBuilder = messageBuilder;
 
-    _currentState = state = state.copyWith(
+    _currentState = state = NotificationState(
       message: messageBuilder(translations, ref),
+      enabled: state.enabled,
+      leading: leading,
       priority: priority,
     );
   }

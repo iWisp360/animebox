@@ -74,19 +74,50 @@ class _GlobalInfoFeedbackState extends ConsumerState<GlobalInfoFeedback> {
                     child: Padding(
                       padding: noPadding ? .zero : .only(top: topPadding),
                       child: Center(
-                        child: Text(
-                          state.message ?? "",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: switch (state.priority) {
-                              .warning => Theme.of(
-                                context,
-                              ).colorScheme.onTertiary,
-                              .error => Theme.of(context).colorScheme.onError,
-                              _ => Theme.of(context).colorScheme.onPrimary,
-                            },
-                            fontWeight: .w700,
-                          ),
+                        child: Row(
+                          spacing: 8,
+                          mainAxisSize: .min,
+                          children: [
+                            if (state.leading != null)
+                              SizedBox(
+                                width: 15,
+                                height: 15,
+                                child: Theme(
+                                  data: ThemeData.from(
+                                    colorScheme: ColorScheme.of(context)
+                                        .copyWith(
+                                          primary: ColorScheme.of(
+                                            context,
+                                          ).onPrimary,
+                                        ),
+                                  ),
+                                  child: state.leading!,
+                                ),
+                              ),
+
+                            Expanded(
+                              child: Text(
+                                state.message ?? "",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: switch (state.priority) {
+                                    .warning => Theme.of(
+                                      context,
+                                    ).colorScheme.onTertiary,
+                                    .error => Theme.of(
+                                      context,
+                                    ).colorScheme.onError,
+                                    _ => Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimary,
+                                  },
+                                  fontWeight: .w700,
+                                ),
+                                textAlign: .center,
+                                overflow: .visible,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
