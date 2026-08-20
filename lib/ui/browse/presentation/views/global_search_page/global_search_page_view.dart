@@ -1,3 +1,4 @@
+import 'package:animebox/core/configs/data/providers/config_provider.dart';
 import 'package:animebox/core/error/presentation/views/error_page.dart';
 import 'package:animebox/core/helpers/convergence.dart';
 import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
@@ -27,6 +28,7 @@ class _GlobalSearchPageViewState extends ConsumerState<GlobalSearchPageView> {
   void initState() {
     _textEditingController = TextEditingController();
     _scrollController = ScrollController();
+
     sentQuery = widget.query ?? "";
     currentQuery = widget.query ?? "";
     super.initState();
@@ -45,74 +47,38 @@ class _GlobalSearchPageViewState extends ConsumerState<GlobalSearchPageView> {
     final globalSearchTranslations = translations.browsePage.search.global;
     final activeServer = ref.watch(activeServerProvider);
 
+    final isPitchBlack = ref
+        .watch(configProvider)
+        .when(
+          data: (config) => config.appearance.pitchBlack,
+          error: (_, _) => false,
+          loading: () => false,
+        );
+
+    final gradientColor = isPitchBlack
+        ? Colors.black
+        : ColorScheme.of(context).surface;
+
     return activeServer.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       data: (server) => Scaffold(
-        appBar: AppBar(title: const ServerSelectorOrTitle()),
+        appBar: AppBar(
+          title: const ServerSelectorOrTitle(),
+          scrolledUnderElevation: 0,
+          backgroundColor: gradientColor,
+        ),
         body: Padding(
           padding: calculateDefaultPadding(context),
-          child: Column(
+          child: Stack(
             children: [
-              Padding(
-                padding: const .symmetric(vertical: 10),
-                child: SearchBarTheme(
-                  data: SearchBarThemeData(
-                    elevation: .all(0),
-                    overlayColor: .all(Colors.transparent),
-                  ),
-                  child: Padding(
-                    padding: const .symmetric(horizontal: 16),
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxHeight: 48),
-                      child: SearchBar(
-                        autoFocus: true,
-                        hintText: globalSearchTranslations.allTheSources,
-                        controller: _textEditingController,
-                        leading: const Icon(Icons.search),
-                        onChanged: (query) {
-                          setState(() {
-                            currentQuery = query;
-                            if (query.isEmpty) {
-                              sentQuery = "";
-                            }
-                          });
-                        },
-                        onSubmitted: (query) => setState(() {
-                          sentQuery = query;
-                        }),
-                        trailing: [
-                          if (currentQuery.isNotEmpty) ...[
-                            if (sentQuery.isNotEmpty)
-                              IconButton(
-                                onPressed: () => refreshAll(ref),
-                                icon: const Icon(Icons.refresh),
-                              ),
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  sentQuery = "";
-                                  currentQuery = "";
-                                });
-                                _textEditingController.clear();
-                                _scrollController.jumpTo(0);
-                              },
-                              icon: const Icon(Icons.clear),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
               if (sentQuery.isNotEmpty)
-                Expanded(
+                Positioned.fill(
                   child: RefreshIndicator(
                     onRefresh: () => refreshAll(ref),
                     child: SingleChildScrollView(
                       controller: _scrollController,
                       child: Padding(
-                        padding: const .symmetric(horizontal: 16),
+                        padding: const .only(top: 70),
                         child: Column(
                           children: [
                             for (final source
@@ -135,6 +101,78 @@ class _GlobalSearchPageViewState extends ConsumerState<GlobalSearchPageView> {
                     ),
                   ),
                 ),
+              Positioned(
+                right: 0,
+                left: 0,
+                top: 0,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: .topCenter,
+                      end: .bottomCenter,
+                      colors: [gradientColor, gradientColor.withAlpha(0)],
+                    ),
+                  ),
+                  height: 70,
+                ),
+              ),
+              Positioned(
+                top: 0,
+                right: 0,
+                left: 0,
+                child: Padding(
+                  padding: const .symmetric(vertical: 10),
+                  child: SearchBarTheme(
+                    data: SearchBarThemeData(
+                      elevation: .all(0),
+                      overlayColor: .all(Colors.transparent),
+                    ),
+                    child: Padding(
+                      padding: const .symmetric(horizontal: 16),
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxHeight: 48),
+                        child: SearchBar(
+                          autoFocus: true,
+                          hintText: globalSearchTranslations.allTheSources,
+                          controller: _textEditingController,
+                          leading: const Icon(Icons.search),
+                          onChanged: (query) {
+                            setState(() {
+                              currentQuery = query;
+                              if (query.isEmpty) {
+                                sentQuery = "";
+                              }
+                            });
+                          },
+                          onSubmitted: (query) => setState(() {
+                            sentQuery = query;
+                          }),
+                          trailing: [
+                            if (currentQuery.isNotEmpty) ...[
+                              if (sentQuery.isNotEmpty)
+                                IconButton(
+                                  onPressed: () => refreshAll(ref),
+                                  icon: const Icon(Icons.refresh),
+                                ),
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    sentQuery = "";
+                                    currentQuery = "";
+                                  });
+                                  _textEditingController.clear();
+                                  _scrollController.jumpTo(0);
+                                },
+                                icon: const Icon(Icons.clear),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

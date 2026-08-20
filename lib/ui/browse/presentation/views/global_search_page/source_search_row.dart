@@ -28,9 +28,12 @@ class SourceSearchRow extends ConsumerWidget {
       spacing: 5,
       crossAxisAlignment: .start,
       children: [
-        Text(
-          source.prettyName,
-          style: const TextStyle(fontWeight: .w700, fontSize: 16),
+        Padding(
+          padding: const .symmetric(horizontal: 16),
+          child: Text(
+            source.prettyName,
+            style: const TextStyle(fontWeight: .w700, fontSize: 16),
+          ),
         ),
         search.when(
           loading: () => paddingLoadingError(
@@ -51,6 +54,7 @@ class SourceSearchRow extends ConsumerWidget {
                   mainAxisSize: .max,
                   crossAxisAlignment: .start,
                   children: [
+                    const SizedBox(width: 1),
                     for (final result in search.results)
                       if (result.url != null || result.name != null)
                         AnimeCard(

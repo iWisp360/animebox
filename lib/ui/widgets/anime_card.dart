@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class AnimeCard extends StatelessWidget {
   final String name;
@@ -37,11 +38,17 @@ class AnimeCard extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: .circular(_radius),
                       child: (image != null)
-                          ? Image.network(
-                              fit: .cover,
-                              image!,
-                              errorBuilder: (context, error, st) =>
-                                  const Center(child: Icon(Icons.cloud_off)),
+                          ? Transform.scale(
+                              scale: 1.01,
+                              child: FadeInImage.memoryNetwork(
+                                fadeInDuration: const Duration(
+                                  milliseconds: 200,
+                                ),
+                                fadeInCurve: Curves.easeInOutExpo,
+                                fit: .cover,
+                                placeholder: kTransparentImage,
+                                image: image!,
+                              ),
                             )
                           : const Center(child: Icon(Icons.cloud_off)),
                     ),
