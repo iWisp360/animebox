@@ -90,7 +90,13 @@ class _ServerAddDialogState extends ConsumerState<ServerAddDialog> {
                   }
                 }
               : null,
-          child: Text(translations.commonActions.add),
+          child: loadingServer
+              ? const SizedBox(
+                  width: 15,
+                  height: 15,
+                  child: CircularProgressIndicator(),
+                )
+              : Text(translations.commonActions.add),
         ),
         OutlinedButton(
           onPressed: () => Navigator.of(context).pop(),
@@ -101,6 +107,7 @@ class _ServerAddDialogState extends ConsumerState<ServerAddDialog> {
   }
 
   Future<Server> doSubmit(String url) async {
+    errorText = null;
     try {
       final server = await ref
           .read(serverListProvider.notifier)

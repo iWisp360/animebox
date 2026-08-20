@@ -118,30 +118,39 @@ class ServersSettingsPage extends ConsumerWidget {
                     CustomSettingsTile(
                       child: Padding(
                         padding: const .symmetric(vertical: 10),
-                        child: Row(
-                          mainAxisAlignment: .center,
-                          spacing: 16,
+                        child: Column(
+                          crossAxisAlignment: .center,
                           children: [
-                            FilledButton(
-                              onPressed: () async {
-                                await showDialog(
-                                  context: context,
-                                  builder: (context) => const ServerAddDialog(),
-                                );
-                              },
-                              child: Text(
-                                serverSettingsTranslations
-                                    .addServerDialog
-                                    .action,
+                            SingleChildScrollView(
+                              scrollDirection: .horizontal,
+                              child: Row(
+                                mainAxisSize: .min,
+                                spacing: 16,
+                                children: [
+                                  FilledButton(
+                                    onPressed: () async {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (context) =>
+                                            const ServerAddDialog(),
+                                      );
+                                    },
+                                    child: Text(
+                                      serverSettingsTranslations
+                                          .addServerDialog
+                                          .action,
+                                    ),
+                                  ),
+                                  if (serverList.isNotEmpty)
+                                    FilledButton.tonal(
+                                      onPressed: () async => await ref
+                                          .read(serverListProvider.notifier)
+                                          .updateServers(),
+                                      child: const Text("Update Servers"),
+                                    ),
+                                ],
                               ),
                             ),
-                            if (serverList.isNotEmpty)
-                              FilledButton.tonal(
-                                onPressed: () async => await ref
-                                    .read(serverListProvider.notifier)
-                                    .updateServers(),
-                                child: const Text("Update Servers"),
-                              ),
                           ],
                         ),
                       ),
