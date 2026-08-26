@@ -1,6 +1,7 @@
 import 'package:animebox/core/configs/data/providers/config_provider.dart';
 import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/core/servers/data/providers.dart';
+import 'package:animebox/ui/routes.dart';
 import 'package:animebox/ui/settings/presentation/views/page_builder.dart';
 import 'package:animebox/ui/settings/presentation/views/server_settings/reset_servers_button.dart';
 import 'package:animebox/ui/settings/presentation/views/server_settings/server_add_dialog.dart';
@@ -21,15 +22,16 @@ class ServersSettingsPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(serverSettingsTranslations.title)),
-      body: SettingsPageBuilder(
-        builder: (context, config) => SettingsList(
-          lightTheme: getSettingsThemeData(context),
-          darkTheme: getSettingsThemeData(context),
-          sections: [
-            SettingsSection(
-              title: Text(serverSettingsTranslations.listSection.title),
-              tiles: [
-                ...serverList.when(
+      body: PopScope(
+        canPop: !ref.watch(dialogOpenProvider),
+        child: SettingsPageBuilder(
+          builder: (context, config) => SettingsList(
+            lightTheme: getSettingsThemeData(context),
+            darkTheme: getSettingsThemeData(context),
+            sections: [
+              SettingsSection(
+                title: Text(serverSettingsTranslations.listSection.title),
+                tiles: serverList.when(
                   error: (exception, st) => const [
                     CustomSettingsTile(
                       child: Center(
@@ -157,37 +159,37 @@ class ServersSettingsPage extends ConsumerWidget {
                     ),
                   ],
                 ),
-              ],
-            ),
-            SettingsSection(
-              tiles: [
-                SettingsTile.switchTile(
-                  initialValue: config.servers.disableAddedHentaiSources,
-                  onToggle: (value) => ref
-                      .read(configProvider.notifier)
-                      .change(
-                        config.copyWith(
-                          servers: config.servers.copyWith(
-                            disableAddedHentaiSources: value,
+              ),
+              SettingsSection(
+                tiles: [
+                  SettingsTile.switchTile(
+                    initialValue: config.servers.disableAddedHentaiSources,
+                    onToggle: (value) => ref
+                        .read(configProvider.notifier)
+                        .change(
+                          config.copyWith(
+                            servers: config.servers.copyWith(
+                              disableAddedHentaiSources: value,
+                            ),
                           ),
                         ),
-                      ),
-                  title: Text(
-                    serverSettingsTranslations
-                        .customizationSection
-                        .disableAddedHentaiSources
-                        .title,
+                    title: Text(
+                      serverSettingsTranslations
+                          .customizationSection
+                          .disableAddedHentaiSources
+                          .title,
+                    ),
+                    description: Text(
+                      serverSettingsTranslations
+                          .customizationSection
+                          .disableAddedHentaiSources
+                          .description,
+                    ),
                   ),
-                  description: Text(
-                    serverSettingsTranslations
-                        .customizationSection
-                        .disableAddedHentaiSources
-                        .description,
-                  ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

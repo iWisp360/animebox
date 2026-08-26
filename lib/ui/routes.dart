@@ -99,3 +99,47 @@ final waitingRouter = GoRouter(
     ),
   ],
 );
+
+final dialogOpenProvider = NotifierProvider(() => DialogOpenProvider());
+
+class DialogOpenProvider extends Notifier<bool> {
+  bool _isOpen = false;
+
+  @override
+  bool build() => _isOpen;
+
+  void set(bool isOpen) => state = _isOpen = isOpen;
+}
+
+class DialogWithNotify extends ConsumerStatefulWidget {
+  final Widget child;
+  const DialogWithNotify({super.key, required this.child});
+
+  @override
+  ConsumerState<DialogWithNotify> createState() => _DialogWithNotifyState();
+}
+
+class _DialogWithNotifyState extends ConsumerState<DialogWithNotify> {
+  late final DialogOpenProvider notifier;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifier = ref.read(dialogOpenProvider.notifier);
+      notifier.set(true);
+    });
+  }
+
+  @override
+  void deactivate() {
+    Future(() => notifier.set(false));
+    super.deactivate();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
+  }
+}

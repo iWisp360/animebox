@@ -6,6 +6,7 @@ import 'package:animebox/ui/library/presentation/views/library_page_view.dart';
 import 'package:animebox/ui/mainPage/presentation/controllers/main_page_controller.dart';
 import 'package:animebox/ui/mainPage/presentation/views/main_page_scaffold.dart';
 import 'package:animebox/ui/mainPage/presentation/views/navigation.dart';
+import 'package:animebox/ui/routes.dart';
 import 'package:animebox/ui/settings/presentation/views/navigate_to_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -50,7 +51,7 @@ class _MainPageViewState extends ConsumerState<MainPageView> {
       onPopInvokedWithResult: (didPop, result) =>
           setState(() => filtering = false),
 
-      canPop: !filtering,
+      canPop: !filtering && !ref.watch(dialogOpenProvider),
       child: NavigationBuilder(
         onDestinationChangeAction: () => setState(() => filtering = false),
         builder: (navigationWidget, activeTab) {
