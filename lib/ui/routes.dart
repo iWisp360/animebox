@@ -103,12 +103,22 @@ final waitingRouter = GoRouter(
 final dialogOpenProvider = NotifierProvider(() => DialogOpenProvider());
 
 class DialogOpenProvider extends Notifier<bool> {
-  bool _isOpen = false;
+  int _openDialogsCounter = 0;
 
   @override
-  bool build() => _isOpen;
+  bool build() => dialogOpened();
 
-  void set(bool isOpen) => state = _isOpen = isOpen;
+  void openDialog() {
+    _openDialogsCounter++;
+    state = dialogOpened();
+  }
+
+  void closeDialog() {
+    _openDialogsCounter--;
+    state = dialogOpened();
+  }
+
+  bool dialogOpened() => _openDialogsCounter > 0;
 }
 
 class DialogWithNotify extends ConsumerStatefulWidget {
@@ -128,13 +138,13 @@ class _DialogWithNotifyState extends ConsumerState<DialogWithNotify> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       notifier = ref.read(dialogOpenProvider.notifier);
-      notifier.set(true);
+      notifier.openDialog();
     });
   }
 
   @override
   void deactivate() {
-    Future(() => notifier.set(false));
+    Future(() => notifier.closeDialog());
     super.deactivate();
   }
 
