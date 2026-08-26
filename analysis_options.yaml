@@ -5,6 +5,13 @@ analyzer:
     - "**.g.dart"
     - "**.freezed.dart"
     - "app_localizations**.dart"
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
 
 linter:
   rules:
