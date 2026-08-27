@@ -9,6 +9,7 @@ import 'package:animebox/ui/settings/presentation/views/library_settings/library
 import 'package:animebox/ui/settings/presentation/views/local_storage_settings/local_storage_settings_page.dart';
 import 'package:animebox/ui/settings/presentation/views/metadata_settings/metadata_settings_page.dart';
 import 'package:animebox/ui/settings/presentation/views/playback_settings/playback_settings_page.dart';
+import 'package:animebox/ui/settings/presentation/views/server_settings/server_details/server_details_page.dart';
 import 'package:animebox/ui/settings/presentation/views/server_settings/servers_settings_page.dart';
 import 'package:animebox/ui/settings/presentation/views/settings_page.dart';
 import 'package:animebox/ui/widgets/global_info_feedback/global_info_feedback.dart';
@@ -78,6 +79,14 @@ final mainRouterProvider = Provider(
                   GoRoute(
                     path: "servers",
                     builder: (context, state) => const ServersSettingsPage(),
+                    routes: [
+                      GoRoute(
+                        path: "details",
+                        builder: (context, state) => ServerDetailsPage(
+                          params: state.extra as ServerDetailsPageParams,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
