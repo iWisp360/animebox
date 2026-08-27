@@ -12,10 +12,13 @@ abstract class ServerRepository {
   Future<void> updateServer(Server updatedServer);
 
   /// Connects to the url, adds the server to the map and returns the server
-  Future<Server> addServerFromEndpoint(String url);
+  Future<Server> addServerFromEndpoint(String url, {bool enableHentai = false});
 
   /// Returns true if the the server information changed
-  Future<bool> updateServerFromEndpoint(String url);
+  Future<bool> updateServerFromEndpoint(
+    String url, {
+    bool enableHentai = false,
+  });
 
   /// Resets the server list. Use only in emergencies!!!
   Future<void> resetServerList();

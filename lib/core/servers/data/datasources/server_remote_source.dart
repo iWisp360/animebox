@@ -9,7 +9,7 @@ import 'package:collection/collection.dart';
 import 'package:http/http.dart';
 
 abstract class ServerRemoteSource {
-  Future<Server> getFromEndpoint(String url);
+  Future<Server> getFromEndpoint(String url, bool enableHentai);
 }
 
 class ServerRemoteSourceImpl implements ServerRemoteSource {
@@ -19,7 +19,7 @@ class ServerRemoteSourceImpl implements ServerRemoteSource {
     : serverInfoMapper = serverInfoMapper ?? const ServerInfoMapperImpl();
 
   @override
-  Future<Server> getFromEndpoint(String url) async {
+  Future<Server> getFromEndpoint(String url, bool enableHentai) async {
     try {
       final parsedUrl = Uri.parse(url);
       final responseBodyUnparsed = (await get(parsedUrl)).bodyBytes;
@@ -34,7 +34,18 @@ class ServerRemoteSourceImpl implements ServerRemoteSource {
         "${parsedUrl.scheme.isEmpty ? "" : "${parsedUrl.scheme}://"}${parsedUrl.authority}",
       );
 
-      final parsedServer = serverInfoMapper.mapFromSchema(server);
+      Server parsedServer = serverInfoMapper.mapFromSchema(server);
+
+      if (!enableHentai) {
+        final sources = parsedServer.supportedAnimeSources.map((s) {
+          final source = s.isHentaiSource && !s.toggledManually
+              ? s.copyWith(enabled: false)
+              : s;
+          return source;
+        }).toList();
+
+        parsedServer = parsedServer.copyWith(supportedAnimeSources: sources);
+      }
 
       return parsedServer.copyWith(
         url: storedUrl,

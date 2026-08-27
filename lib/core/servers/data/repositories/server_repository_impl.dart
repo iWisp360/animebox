@@ -68,20 +68,30 @@ class ServerRepositoryImpl implements ServerRepository {
   }
 
   @override
-  Future<Server> addServerFromEndpoint(String url) async {
-    final server = await serverRemoteSource.getFromEndpoint(url);
+  Future<Server> addServerFromEndpoint(
+    String url, {
+    bool enableHentai = false,
+  }) async {
+    final server = await serverRemoteSource.getFromEndpoint(url, enableHentai);
     await addServer(server);
     return server;
   }
 
   @override
-  Future<bool> updateServerFromEndpoint(String url) async {
+  Future<bool> updateServerFromEndpoint(
+    String url, {
+    bool enableHentai = false,
+  }) async {
     final currentServers = await getCurrent();
 
-    final server = await serverRemoteSource.getFromEndpoint(url);
-    final oldServer = currentServers[server.uuid];
+    final newServer = await serverRemoteSource.getFromEndpoint(
+      url,
+      enableHentai,
+    );
+    final oldServer = currentServers[newServer.uuid];
 
-    if (oldServer != null && server != oldServer) {
+    if (oldServer != null && newServer != oldServer) {
+      final server = mergeSourcesStates(oldServer, newServer);
       currentServers[server.uuid] = server;
       await serverFileSource.writeToFile(currentServers);
       return true;
@@ -94,5 +104,33 @@ class ServerRepositoryImpl implements ServerRepository {
   Future<void> resetServerList() async {
     final newServerMap = _serverMap = {};
     await serverFileSource.writeToFile(newServerMap);
+  }
+
+  /// Sources's `enabled` and `toggledManually` states from `a` are passed to `b`
+  /// if `toggledManually` is set on the iterated sources.
+  ///
+  /// Fresh sources from `b` are copied, then we iterate all sources in `a` to copy the states from
+  /// the sources in `a` to the sources in `b`.
+  Server mergeSourcesStates(Server a, Server b) {
+    final newSourcesList = [...b.supportedAnimeSources];
+
+    for (final source in a.supportedAnimeSources) {
+      if (source.toggledManually) {
+        final targetSourceIdx = b.supportedAnimeSources.indexWhere(
+          (s) => s.id == source.id,
+        );
+
+        if (targetSourceIdx == -1) continue;
+
+        final targetSource = b.supportedAnimeSources[targetSourceIdx].copyWith(
+          enabled: source.enabled,
+          toggledManually: source.toggledManually,
+        );
+
+        newSourcesList[targetSourceIdx] = targetSource;
+      }
+    }
+
+    return b.copyWith(supportedAnimeSources: newSourcesList);
   }
 }

@@ -13,7 +13,22 @@ class ServersListProvider extends AsyncNotifier<List<Server>> {
   final ServerRepository _serverRepository;
 
   @override
-  FutureOr<List<Server>> build() async => await _serverRepository.getServers();
+  FutureOr<List<Server>> build() async {
+    return await _serverRepository.getServers();
+  }
+
+  Future<void> modifyServer({required Server server}) async {
+    final serverList = [...state.requireValue];
+
+    for (final (idx, s) in serverList.indexed) {
+      if (s.uuid == server.uuid) {
+        serverList[idx] = server;
+      }
+    }
+
+    await _serverRepository.updateServer(server);
+    state = AsyncValue.data(serverList);
+  }
 
   Future<Server> addServer({required String url}) async {
     final serverList = state.requireValue;

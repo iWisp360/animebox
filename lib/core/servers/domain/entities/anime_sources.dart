@@ -9,6 +9,8 @@ abstract class AnimeSource with _$AnimeSource {
   const factory AnimeSource({
     required String prettyName,
     required String id,
+    @Default(true) bool enabled,
+    @Default(false) bool toggledManually,
 
     /// The server requested clients to not use metadata providers such as MyAnimeList
     required bool noMetaProvider,
