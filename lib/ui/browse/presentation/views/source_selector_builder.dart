@@ -48,6 +48,7 @@ class _SourceSelectorBuilderState extends State<SourceSelectorBuilder>
                 for (final server in widget.servers)
                   SourceSelector(
                     sources: server.supportedAnimeSources,
+                    serverUuid: server.uuid,
                     schemaVersion: server.schemaVersion,
                   ),
               ],

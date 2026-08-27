@@ -1,37 +1,60 @@
 import 'package:animebox/core/helpers/convergence.dart';
 import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
 import 'package:animebox/ui/browse/presentation/views/clickable_source.dart';
-import 'package:animebox/ui/browse/presentation/views/source_navigation_page/source_navigation_page.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class SourceSelector extends StatelessWidget {
   final List<AnimeSource> sources;
+  final String serverUuid;
   final int schemaVersion;
   const SourceSelector({
     super.key,
     required this.sources,
     required this.schemaVersion,
+    required this.serverUuid,
   });
 
   @override
   Widget build(BuildContext context) {
+    final enabledSources = [];
+    final disabledSources = [];
+
+    for (final source in sources) {
+      final clickableSource = ClickableSource(
+        source: source,
+        serverUuid: serverUuid,
+        schemaVersion: schemaVersion,
+      );
+
+      if (source.enabled) {
+        enabledSources.add(clickableSource);
+      } else {
+        disabledSources.add(clickableSource);
+      }
+    }
+
     return Padding(
       padding: calculateDefaultPadding(context),
       child: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: .start,
           children: [
-            for (final source in sources)
-              ClickableSource(
-                source: source,
-                onTap: () => context.go(
-                  "/navigateSource",
-                  extra: SourceNavigationPageParams(
-                    schemaVersion: schemaVersion,
-                    source: source,
-                  ),
+            if (enabledSources.isNotEmpty)
+              const Padding(
+                padding: .symmetric(horizontal: 15, vertical: 10),
+                child: Text(
+                  "Sources",
+                  style: TextStyle(fontSize: 16, fontWeight: .w600),
                 ),
               ),
+            ...enabledSources,
+            ExpansionTile(
+              title: const Text(
+                "Disabled",
+                style: TextStyle(fontSize: 16, fontWeight: .w600),
+              ),
+              children: [...disabledSources],
+            ),
           ],
         ),
       ),
