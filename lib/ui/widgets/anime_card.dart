@@ -47,6 +47,10 @@ class AnimeCard extends StatelessWidget {
                                 fadeInCurve: Curves.easeInOutExpo,
                                 fit: .cover,
                                 placeholder: kTransparentImage,
+                                imageErrorBuilder: (context, e, st) =>
+                                    const Center(
+                                      child: Icon(Icons.broken_image),
+                                    ),
                                 image: image!,
                               ),
                             )
