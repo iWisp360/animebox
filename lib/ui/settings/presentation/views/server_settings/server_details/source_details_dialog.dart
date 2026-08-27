@@ -42,6 +42,9 @@ class SourceDetailsDialog extends ConsumerWidget {
                   context: source.isHentaiSource ? .yes : .no,
                 ),
               ),
+              SelectableText(
+                "Enabled: ${source.enabled ? translations.commonActions.yes : translations.commonActions.no}",
+              ),
             ],
           ),
           actionsAlignment: .center,

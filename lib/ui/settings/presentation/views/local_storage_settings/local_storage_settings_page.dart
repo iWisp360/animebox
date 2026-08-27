@@ -2,7 +2,6 @@ import 'package:animebox/core/configs/domain/entities/config.dart';
 import 'package:animebox/core/files/data/providers/external_data_directory_provider.dart';
 import 'package:animebox/ui/settings/presentation/views/page_builder.dart';
 import 'package:animebox/ui/settings/presentation/views/settings_ui_theming.dart';
-import 'package:dir_picker/dir_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -22,19 +21,12 @@ class LocalStorageSettingsPage extends ConsumerWidget {
         title: const Text("Data Location"),
         description: Text(path.path),
         onPressed: (context) async {
-          final changedPath = await DirPicker.pick();
-          if (changedPath != null && context.mounted) {
-            final path = changedPath.uri!.path;
+          throw UnimplementedError();
 
-            ScaffoldMessenger.of(context).showMaterialBanner(
-              MaterialBanner(
-                content: Text(path),
-                actions: [
-                  TextButton(onPressed: () => (), child: const Text("Action")),
-                ],
-              ),
-            );
-          }
+          // final changedPath = await DirPicker.pick();
+          // if (changedPath != null && context.mounted) {
+          //   final path = changedPath.uri!.path;
+          // }
         },
       ),
 

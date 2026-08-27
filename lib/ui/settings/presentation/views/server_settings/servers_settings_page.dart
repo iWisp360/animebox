@@ -1,5 +1,6 @@
 import 'package:animebox/core/configs/data/providers/config_provider.dart';
 import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
+import 'package:animebox/core/servers/data/extensions/server.dart';
 import 'package:animebox/core/servers/data/providers.dart';
 import 'package:animebox/ui/routes.dart';
 import 'package:animebox/ui/settings/presentation/views/page_builder.dart';
@@ -9,6 +10,7 @@ import 'package:animebox/ui/settings/presentation/views/server_settings/server_d
 import 'package:animebox/ui/settings/presentation/views/settings_ui_theming.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class ServersSettingsPage extends ConsumerWidget {
@@ -54,18 +56,22 @@ class ServersSettingsPage extends ConsumerWidget {
                     if (serverList.isNotEmpty)
                       for (final server in serverList)
                         SettingsTile.navigation(
+                          trailing: Text(
+                            "Sources: ${server.enabledSources()}/${server.supportedAnimeSources.length}",
+                          ),
+
                           leading: (server.logoUrl != null)
                               ? Image.network(server.logoUrl!)
                               : null,
 
                           onPressed: (context) async {
-                            final deleteOrder = await Navigator.of(context)
-                                .push<bool>(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ServerDetailsPage(server: server),
-                                  ),
-                                );
+                            final deleteOrder = await context.push<bool>(
+                              "/settings/servers/details",
+                              extra: ServerDetailsPageParams(
+                                serverUuid: server.uuid,
+                                canDelete: true,
+                              ),
+                            );
 
                             if (deleteOrder == true && context.mounted) {
                               try {
@@ -167,10 +173,8 @@ class ServersSettingsPage extends ConsumerWidget {
                     onToggle: (value) => ref
                         .read(configProvider.notifier)
                         .change(
-                          config.copyWith(
-                            servers: config.servers.copyWith(
-                              disableAddedHentaiSources: value,
-                            ),
+                          config.copyWith.servers(
+                            disableAddedHentaiSources: value,
                           ),
                         ),
                     title: Text(
@@ -184,6 +188,24 @@ class ServersSettingsPage extends ConsumerWidget {
                           .customizationSection
                           .disableAddedHentaiSources
                           .description,
+                    ),
+                  ),
+                ],
+              ),
+
+              SettingsSection(
+                title: const Text("Sources"),
+                tiles: [
+                  SettingsTile.switchTile(
+                    initialValue: config.servers.exploreEnabledSource,
+                    onToggle: (value) => ref
+                        .read(configProvider.notifier)
+                        .change(
+                          config.copyWith.servers(exploreEnabledSource: value),
+                        ),
+                    title: const Text("Explore Enabled Source"),
+                    description: const Text(
+                      "Explore a source right after enabling it in the Browse Page",
                     ),
                   ),
                 ],

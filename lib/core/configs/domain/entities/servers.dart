@@ -7,6 +7,7 @@ part 'servers.freezed.dart';
 abstract class ServersConfig with _$ServersConfig {
   const factory ServersConfig({
     @Default(false) bool disableAddedHentaiSources,
+    @Default(true) bool exploreEnabledSource,
   }) = _ServersConfig;
 
   factory ServersConfig.fromJson(Map<String, dynamic> json) =>

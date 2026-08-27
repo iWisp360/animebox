@@ -18,6 +18,10 @@ class ServerDeleteDialog extends ConsumerWidget {
         title: Text(dialogTranslations.title),
         content: Text(dialogTranslations.description.trim()),
         actions: [
+          OutlinedButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(translations.commonActions.cancel),
+          ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.error,
@@ -25,10 +29,6 @@ class ServerDeleteDialog extends ConsumerWidget {
             ),
             onPressed: () => Navigator.of(context).pop(true),
             child: Text(translations.commonActions.delete),
-          ),
-          OutlinedButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(translations.commonActions.cancel),
           ),
         ],
       ),
