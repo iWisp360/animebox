@@ -164,8 +164,10 @@ class _GlobalSearchPageViewState extends ConsumerState<GlobalSearchPageView> {
                                 ),
                                 child: SearchBar(
                                   autoFocus: true,
-                                  hintText:
-                                      globalSearchTranslations.allTheSources,
+                                  hintText: globalSearchTranslations
+                                      .sourcesSearchHint(
+                                        n: server.enabledSources(),
+                                      ),
                                   controller: _textEditingController,
                                   leading: const Icon(Icons.search),
                                   onChanged: (query) {

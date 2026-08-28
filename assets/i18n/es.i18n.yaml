@@ -186,7 +186,9 @@ browsePage:
 
   search: 
     global:
-      allTheSources: Buscar en todas las fuentes...
+      sourcesSearchHint: 
+        one: Buscar en $n fuente...
+        other: Buscar en $n fuentes...
     results:
       missingUrlDialog:
         header: Url Inexistente
