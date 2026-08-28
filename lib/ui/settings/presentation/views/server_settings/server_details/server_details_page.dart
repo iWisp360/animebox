@@ -2,6 +2,7 @@ import 'package:animebox/core/helpers/convergence.dart';
 import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/core/servers/data/datasources/server_urls.dart';
 import 'package:animebox/core/servers/data/providers.dart';
+import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/ui/routes.dart';
 import 'package:animebox/ui/settings/presentation/views/server_settings/server_details/server_delete_dialog.dart';
 import 'package:animebox/ui/settings/presentation/views/server_settings/server_details/source_details_dialog.dart';
@@ -19,12 +20,25 @@ class ServerDetailsPageParams {
   });
 }
 
-class ServerDetailsPage extends ConsumerWidget {
+class ServerDetailsPage extends ConsumerStatefulWidget {
   final ServerDetailsPageParams params;
   const ServerDetailsPage({super.key, required this.params});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ServerDetailsPage> createState() => _ServerDetailsPageState();
+}
+
+class _ServerDetailsPageState extends ConsumerState<ServerDetailsPage> {
+  Server? _cachedServer;
+
+  @override
+  void dispose() {
+    _cachedServer = null;
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final serverList = ref.watch(serverListProvider);
 
     final translations = ref.watch(i18nProvider);
@@ -34,11 +48,15 @@ class ServerDetailsPage extends ConsumerWidget {
       child: serverList.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         data: (list) {
-          final server = list.firstWhereOrNull(
-            (s) => s.uuid == params.serverUuid,
+          final choosedServer = list.firstWhereOrNull(
+            (s) => s.uuid == widget.params.serverUuid,
           );
 
-          if (server == null) {
+          if (_cachedServer != choosedServer && choosedServer != null) {
+            _cachedServer = choosedServer;
+          }
+
+          if (_cachedServer == null) {
             return const Center(
               child: Text(
                 "Somehow, This server is missing from the list",
@@ -46,6 +64,8 @@ class ServerDetailsPage extends ConsumerWidget {
               ),
             );
           }
+
+          final server = _cachedServer!;
 
           return Scaffold(
             appBar: AppBar(title: Text(detailsTranslations.title)),
@@ -197,7 +217,7 @@ class ServerDetailsPage extends ConsumerWidget {
                 ),
               ),
             ),
-            bottomNavigationBar: (params.canDelete)
+            bottomNavigationBar: (widget.params.canDelete)
                 ? ColoredBox(
                     color: Theme.of(context).scaffoldBackgroundColor,
                     child: Padding(
