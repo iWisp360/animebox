@@ -1,5 +1,6 @@
 import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
+import 'package:animebox/ui/widgets/filter_chip_color.dart';
 import 'package:animebox/ui/widgets/tab_view/tab_bar_container.dart';
 import 'package:animebox/ui/browse/presentation/views/source_navigation_page/latest_anime_tab.dart';
 import 'package:animebox/ui/browse/presentation/views/source_navigation_page/popular_anime_tab.dart';
@@ -33,6 +34,8 @@ class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final chipBackgroundColor = filterChipColor(ref, context);
+
     final translations = ref.watch(i18nProvider);
     final sourcesNavigationPageTranslations =
         translations.browsePage.sources.navigation;
@@ -50,6 +53,7 @@ class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage> {
                   spacing: 10,
                   children: [
                     FilterChip(
+                      backgroundColor: chipBackgroundColor,
                       showCheckmark: false,
                       avatar: const Icon(Icons.favorite),
                       label: Text(
@@ -61,6 +65,7 @@ class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage> {
                       }),
                     ),
                     FilterChip(
+                      backgroundColor: chipBackgroundColor,
                       showCheckmark: false,
                       avatar: const Icon(Icons.update),
                       label: Text(
