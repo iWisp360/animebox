@@ -2,6 +2,7 @@ import 'package:animebox/core/graphql/data/repositories/graphql_client_repositor
 import 'package:animebox/core/graphql/domain/repositories/graphql_client_repository.dart';
 import 'package:animebox/core/schema/domain/entities/schema_v1/serie.dart';
 import 'package:animebox/core/schema/exceptions.dart';
+import 'package:animebox/core/servers/data/datasources/server_urls.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/features/episodes/domain/entities/episode.dart';
 import 'package:animebox/features/series/domain/entities/serie.dart';
@@ -36,7 +37,7 @@ class SerieSourceRemote implements SerieSource {
     required String sourceId,
   }) async {
     final response = await clientRepository.query(
-      serverUrl: server.url,
+      serverUrl: Uri.parse(server.apiUrl()),
       query: chooseSchemaQuery(server.schemaVersion),
       variables: createVariables(server.schemaVersion, url, sourceId),
     );

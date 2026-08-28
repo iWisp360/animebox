@@ -2,6 +2,7 @@ import 'package:animebox/core/graphql/data/repositories/graphql_client_repositor
 import 'package:animebox/core/graphql/domain/repositories/graphql_client_repository.dart';
 import 'package:animebox/core/schema/domain/entities/schema_v1/search.dart';
 import 'package:animebox/core/schema/exceptions.dart';
+import 'package:animebox/core/servers/data/datasources/server_urls.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/features/search/domain/entities/search.dart';
 
@@ -34,7 +35,7 @@ class SearchSourceRemote implements SearchSource {
     required String sourceId,
   }) async {
     final response = await clientRepository.query(
-      serverUrl: server.url,
+      serverUrl: Uri.parse(server.apiUrl()),
       query: chooseSchemaQuery(server.schemaVersion),
       variables: createVariables(server.schemaVersion, query, sourceId),
     );
