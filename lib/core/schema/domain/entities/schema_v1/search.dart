@@ -32,14 +32,14 @@ abstract class SearchVariablesV1 with _$SearchVariablesV1 {
 }
 
 const searchQueryV1 = """
-    query Search(\$pattern: String!, \$sourceId: ID!) { 
-      Search(pattern: \$pattern, sourceId: \$sourceId) { 
-        data { 
-          url 
-          name 
-          image
-        } 
-        fetchDate 
-      }
+  query Search(\$pattern: String!, \$sourceId: ID!) { 
+    Search(pattern: \$pattern, sourceId: \$sourceId) { 
+      data { 
+        url 
+        name 
+        image
+      } 
+      fetchDate 
     }
-  """;
+  }
+""";

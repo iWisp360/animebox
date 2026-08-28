@@ -218,6 +218,6 @@ class _GlobalSearchPageViewState extends ConsumerState<GlobalSearchPageView> {
   }
 
   Future<void> refreshAll(WidgetRef ref) async {
-    ref.invalidate(asReload: true, searchRepositoryProvider);
+    ref.invalidate(asReload: true, searchProvider);
   }
 }

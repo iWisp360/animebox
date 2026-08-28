@@ -6,10 +6,10 @@ part 'episode.g.dart';
 @freezed
 abstract class Episode with _$Episode {
   const factory Episode({
-    required String serverUuid,
-    required String url,
-    required String sourceId,
-    required int num,
+    String? serverUuid,
+    String? url,
+    String? sourceId,
+    int? num,
     String? name,
   }) = _Episode;
 
@@ -23,4 +23,12 @@ abstract class Episode with _$Episode {
     name: "Big Buck Bunny",
     num: 1,
   );
+}
+
+@freezed
+abstract class EpisodeVideos with _$EpisodeVideos {
+  const factory EpisodeVideos({required List<String> videos}) = _EpisodeVideos;
+
+  factory EpisodeVideos.fromJson(Map<String, dynamic> json) =>
+      _$EpisodeVideosFromJson(json);
 }

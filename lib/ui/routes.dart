@@ -1,6 +1,7 @@
 import 'package:animebox/ui/browse/presentation/views/global_search_page/global_search_page_view.dart';
 import 'package:animebox/ui/browse/presentation/views/source_navigation_page/source_navigation_page.dart';
 import 'package:animebox/ui/main_page/presentation/views/main_page_view.dart';
+import 'package:animebox/ui/serie/presentation/serie_page.dart';
 import 'package:animebox/ui/settings/presentation/views/about_page/about_page.dart';
 import 'package:animebox/ui/settings/presentation/views/advanced_settings/advanced_settings_page.dart';
 import 'package:animebox/ui/settings/presentation/views/appearance_settings/appearance_settings_page.dart';
@@ -29,6 +30,11 @@ final mainRouterProvider = Provider(
             path: "/",
             builder: (context, state) => const MainPageView(),
             routes: [
+              GoRoute(
+                path: "serie",
+                builder: (context, state) =>
+                    SeriePage(params: state.extra as SeriePageParams),
+              ),
               GoRoute(
                 path: "globalSearch",
                 builder: (context, state) => const GlobalSearchPageView(),

@@ -2,9 +2,11 @@ import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/features/search/data/providers/search_provider.dart';
 import 'package:animebox/ui/browse/presentation/views/missing_url_dialog.dart';
+import 'package:animebox/ui/serie/presentation/serie_page.dart';
 import 'package:animebox/ui/widgets/anime_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class SourceSearchRow extends ConsumerWidget {
   final Server server;
@@ -20,9 +22,7 @@ class SourceSearchRow extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final search = ref.watch(
-      searchRepositoryProvider((query, server, source.id)),
-    );
+    final search = ref.watch(searchProvider((query, server, source.id)));
 
     return Column(
       spacing: 5,
@@ -66,6 +66,15 @@ class SourceSearchRow extends ConsumerWidget {
                               await showDialog(
                                 context: context,
                                 builder: (context) => const MissingUrlDialog(),
+                              );
+                            } else {
+                              context.push(
+                                "/serie",
+                                extra: SeriePageParams(
+                                  serieUrl: result.url!,
+                                  server: server,
+                                  sourceId: source.id,
+                                ),
                               );
                             }
                           },
