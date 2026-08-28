@@ -61,8 +61,9 @@ class _GlobalInfoFeedbackState extends ConsumerState<GlobalInfoFeedback> {
               curve: Curves.easeOutExpo,
               child: OverflowBox(
                 maxHeight: height,
-                child: Scaffold(
-                  body: AnimatedContainer(
+                child: Material(
+                  color: Colors.transparent,
+                  child: AnimatedContainer(
                     width: .infinity,
                     height: .infinity,
                     duration: Duration(milliseconds: _instantColor ? 0 : 200),
