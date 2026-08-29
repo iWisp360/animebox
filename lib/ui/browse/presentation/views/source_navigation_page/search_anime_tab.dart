@@ -40,45 +40,53 @@ class SearchAnimeTab extends ConsumerWidget {
                     context,
                     maxWidth: 1100,
                   ).add(const .symmetric(horizontal: 10)),
-                  child: GridView.count(
-                    shrinkWrap: true,
-                    crossAxisSpacing: 5,
-                    crossAxisCount: switch (MediaQuery.of(context).size.width) {
-                      <= 500 => 2,
-                      <= 800 => 3,
-                      <= 1000 => 4,
-                      _ => 5,
-                    },
-                    childAspectRatio: 9 / 16,
-
-                    children: [
-                      for (final result in results.results)
-                        AnimeCard(
-                          name: result.name ?? "No Name",
-                          image: result.image,
-                          url: result.url,
-
-                          onClick: () async {
-                            if (result.url == null) {
-                              await showDialog(
-                                context: context,
-                                builder: (context) => const MissingUrlDialog(),
-                              );
-                            } else {
-                              context.push(
-                                "/serie",
-                                extra: SeriePageParams(
-                                  serieUrl: result.url!,
-                                  server: server,
-                                  source: source,
-                                  placeholderImage: result.image,
-                                ),
-                              );
-                            }
+                  child: results.results.isEmpty
+                      ? const PageInformation(
+                          message: "No results found",
+                          spritesKind: .errorSprite,
+                        )
+                      : GridView.count(
+                          shrinkWrap: true,
+                          crossAxisSpacing: 5,
+                          crossAxisCount: switch (MediaQuery.of(
+                            context,
+                          ).size.width) {
+                            <= 500 => 2,
+                            <= 800 => 3,
+                            <= 1000 => 4,
+                            _ => 5,
                           },
+                          childAspectRatio: 9 / 16,
+
+                          children: [
+                            for (final result in results.results)
+                              AnimeCard(
+                                name: result.name ?? "No Name",
+                                image: result.image,
+                                url: result.url,
+
+                                onClick: () async {
+                                  if (result.url == null) {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (context) =>
+                                          const MissingUrlDialog(),
+                                    );
+                                  } else {
+                                    context.push(
+                                      "/serie",
+                                      extra: SeriePageParams(
+                                        serieUrl: result.url!,
+                                        server: server,
+                                        source: source,
+                                        placeholderImage: result.image,
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                          ],
                         ),
-                    ],
-                  ),
                 ),
               ),
             ),
