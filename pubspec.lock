@@ -757,6 +757,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.2"
+  saf:
+    dependency: "direct main"
+    description:
+      name: saf
+      sha256: "804fae1138fa13ec7beb5f26c14a179913c87d052cfa919cf68ce5e611b76fca"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.2"
   safe_local_storage:
     dependency: transitive
     description:
@@ -1018,6 +1026,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.17"
+  text_scroll:
+    dependency: "direct main"
+    description:
+      name: text_scroll
+      sha256: "164b49e6134fca874989213d4e7ba225e2c3f9e30d9e32f14d543b2fc55716a0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1"
   transparent_image:
     dependency: "direct main"
     description:

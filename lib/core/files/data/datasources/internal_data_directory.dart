@@ -25,6 +25,5 @@ Future<Directory> _animeboxInternalLinuxData() async {
   return Directory(joinedPath);
 }
 
-Future<Directory> _animeboxInternalAndroidData() async {
-  return await getApplicationSupportDirectory();
-}
+Future<Directory> _animeboxInternalAndroidData() =>
+    getApplicationSupportDirectory();

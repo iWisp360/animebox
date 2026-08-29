@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:animebox/ui/widgets/global_info_feedback/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:text_scroll/text_scroll.dart';
 
 class GlobalInfoFeedback extends ConsumerStatefulWidget {
   final Function(BuildContext context) builder;
@@ -96,9 +99,23 @@ class _GlobalInfoFeedbackState extends ConsumerState<GlobalInfoFeedback> {
                                 ),
                               ),
 
-                            Expanded(
-                              child: Text(
-                                state.message ?? "",
+                            Flexible(
+                              child: TextScroll(
+                                velocity: Velocity(
+                                  pixelsPerSecond: Offset(
+                                    min(
+                                      100,
+                                      (state.message ?? "").length.toDouble() /
+                                          1.5,
+                                    ),
+                                    0,
+                                  ),
+                                ),
+                                pauseOnBounce: const Duration(seconds: 1),
+                                pauseBetween: const Duration(seconds: 1),
+                                delayBefore: const Duration(seconds: 1),
+                                mode: .bouncing,
+                                "${state.message ?? ""} ",
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: switch (state.priority) {
@@ -115,7 +132,6 @@ class _GlobalInfoFeedbackState extends ConsumerState<GlobalInfoFeedback> {
                                   fontWeight: .w700,
                                 ),
                                 textAlign: .center,
-                                overflow: .visible,
                               ),
                             ),
                           ],

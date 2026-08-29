@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/gen/strings.g.dart';
@@ -52,18 +53,20 @@ class GlobalNotificationController extends Notifier<NotificationState> {
     _currentState = state = state.copyWith(enabled: enabled);
 
     if (state.enabled && !persistent) {
-      _hideTimer = Timer(
-        const Duration(seconds: 5),
-        () => state = state.copyWith(enabled: false),
-      );
+      disablePersistence();
     }
   }
 
   void disablePersistence() => _hideTimer = timeoutTimer();
-  Timer timeoutTimer() => Timer(
-    const Duration(seconds: 5),
-    () => _currentState = state = state.copyWith(enabled: false),
-  );
+
+  Timer timeoutTimer() {
+    final timeout = max(5, ((state.message ?? "").length / 8).ceil());
+
+    return Timer(
+      Duration(seconds: timeout),
+      () => _currentState = state = state.copyWith(enabled: false),
+    );
+  }
 }
 
 typedef MessageBuilderFn = String Function(Translations translations, Ref ref);
