@@ -32,67 +32,65 @@ class SearchAnimeTab extends ConsumerWidget {
         child: searchResults.when(
           data: (results) => Align(
             alignment: .topCenter,
-            child: SingleChildScrollView(
-              child: RefreshIndicator(
-                onRefresh: () async => ref.invalidate(provider, asReload: true),
-                child: Padding(
-                  padding: calculateDefaultPadding(
-                    context,
-                    maxWidth: 1100,
-                  ).add(const .symmetric(horizontal: 10)),
-                  child: results.results.isEmpty
-                      ? const PageInformation(
-                          message: "No results found",
-                          spritesKind: .errorSprite,
-                        )
-                      : GridView.count(
-                          shrinkWrap: true,
-                          crossAxisSpacing: 5,
-                          crossAxisCount: switch (MediaQuery.of(
-                            context,
-                          ).size.width) {
-                            <= 500 => 2,
-                            <= 800 => 3,
-                            <= 1000 => 4,
-                            _ => 5,
-                          },
-                          childAspectRatio: 9 / 16,
+            child: RefreshIndicator(
+              onRefresh: () async => ref.invalidate(provider, asReload: true),
+              child: Padding(
+                padding: calculateDefaultPadding(
+                  context,
+                  maxWidth: 1100,
+                ).add(const .symmetric(horizontal: 10)),
+                child: results.results.isEmpty
+                    ? const PageInformation(
+                        message: "No results found",
+                        spritesKind: .errorSprite,
+                      )
+                    : GridView.count(
+                        crossAxisSpacing: 5,
+                        crossAxisCount: switch (MediaQuery.of(
+                          context,
+                        ).size.width) {
+                          <= 500 => 2,
+                          <= 800 => 3,
+                          <= 1000 => 4,
+                          _ => 5,
+                        },
+                        childAspectRatio: 9 / 16,
 
-                          children: [
-                            for (final result in results.results)
-                              AnimeCard(
-                                name: result.name ?? "No Name",
-                                image: result.image,
-                                url: result.url,
+                        children: [
+                          for (final result in results.results)
+                            AnimeCard(
+                              name: result.name ?? "No Name",
+                              image: result.image,
+                              url: result.url,
 
-                                onClick: () async {
-                                  if (result.url == null) {
-                                    await showDialog(
-                                      context: context,
-                                      builder: (context) =>
-                                          const MissingUrlDialog(),
-                                    );
-                                  } else {
-                                    context.push(
-                                      "/serie",
-                                      extra: SeriePageParams(
-                                        serieUrl: result.url!,
-                                        server: server,
-                                        source: source,
-                                        placeholderImage: result.image,
-                                      ),
-                                    );
-                                  }
-                                },
-                              ),
-                          ],
-                        ),
-                ),
+                              onClick: () async {
+                                if (result.url == null) {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (context) =>
+                                        const MissingUrlDialog(),
+                                  );
+                                } else {
+                                  context.push(
+                                    "/serie",
+                                    extra: SeriePageParams(
+                                      serieUrl: result.url!,
+                                      server: server,
+                                      source: source,
+                                      placeholderImage: result.image,
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                        ],
+                      ),
               ),
             ),
           ),
           error: (_, _) => PageInformation(
             message: "The Search failed",
+            spritesKind: .errorSprite,
             customAction: FilledButton(
               onPressed: () => ref.invalidate(provider, asReload: true),
               child: const Text("Try Again"),
