@@ -23,64 +23,53 @@ class AnimeCard extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onClick,
-          child: SizedBox(
-            height: 330,
-            child: Column(
-              crossAxisAlignment: .start,
-              children: [
-                SizedBox(
-                  height: 280,
-                  width: 200,
-                  child: Card.filled(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: .circular(_radius),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: .circular(_radius),
-                      child: (image != null)
-                          ? Transform.scale(
-                              scale: 1.01,
-                              child: FadeInImage.memoryNetwork(
-                                fadeInDuration: const Duration(
-                                  milliseconds: 200,
-                                ),
-                                fadeInCurve: Curves.easeInOutExpo,
-                                fit: .cover,
-                                placeholder: kTransparentImage,
-                                imageErrorBuilder: (context, e, st) =>
-                                    const Center(
-                                      child: Icon(Icons.broken_image),
-                                    ),
-                                image: image!,
-                              ),
-                            )
-                          : const Center(child: Icon(Icons.cloud_off)),
-                    ),
+          child: Column(
+            crossAxisAlignment: .start,
+            children: [
+              AspectRatio(
+                aspectRatio: 9 / 13,
+                child: Card.filled(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: .circular(_radius),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: .circular(_radius),
+                    child: (image != null)
+                        ? Transform.scale(
+                            scale: 1.01,
+                            child: FadeInImage.memoryNetwork(
+                              fadeInDuration: const Duration(milliseconds: 200),
+                              fadeInCurve: Curves.easeInOutExpo,
+                              fit: .cover,
+                              placeholder: kTransparentImage,
+                              imageErrorBuilder: (context, e, st) =>
+                                  const Center(child: Icon(Icons.broken_image)),
+                              image: image!,
+                            ),
+                          )
+                        : const Center(child: Icon(Icons.cloud_off)),
                   ),
                 ),
-                SizedBox(
-                  width: 200,
-                  child: Padding(
-                    padding: const .symmetric(horizontal: 8, vertical: 4),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const .only(right: 4),
-                            child: Text(name, maxLines: 2, overflow: .ellipsis),
-                          ),
-                        ),
-                        if (url == null)
-                          Icon(
-                            Icons.link_off,
-                            color: Theme.of(context).colorScheme.error,
-                          ),
-                      ],
+              ),
+              Padding(
+                padding: const .symmetric(horizontal: 8, vertical: 4),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const .only(right: 4),
+                        child: Text(name, maxLines: 2, overflow: .ellipsis),
+                      ),
                     ),
-                  ),
+                    if (url == null)
+                      Icon(
+                        Icons.link_off,
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

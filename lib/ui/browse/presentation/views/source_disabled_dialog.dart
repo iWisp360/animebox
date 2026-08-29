@@ -23,9 +23,16 @@ class SourceDisabledDialog extends ConsumerWidget {
       child: AlertDialog(
         title: Text(source.prettyName),
         content: Text(
-          "The source ${source.prettyName} is disabled.\nDo you want to enable it?",
+          "The source ${source.prettyName} is disabled. Do you want to enable it?\n\nYou can also browse this source without enabling it.",
         ),
+        actionsOverflowButtonSpacing: 10,
         actions: [
+          FilledButton.tonal(
+            onPressed: () => Navigator.of(
+              context,
+            ).pop<SourceDisabledDialogResponse>(.browse),
+            child: const Text("Browse"),
+          ),
           OutlinedButton(
             onPressed: () => Navigator.of(context).pop(),
             child: Text(translations.commonActions.no),
@@ -37,7 +44,9 @@ class SourceDisabledDialog extends ConsumerWidget {
                   .enableSource(source, serverUuid);
 
               if (context.mounted) {
-                Navigator.of(context).pop(true);
+                Navigator.of(
+                  context,
+                ).pop<SourceDisabledDialogResponse>(.saidYes);
               }
             },
             child: Text(translations.commonActions.yes),
@@ -47,3 +56,5 @@ class SourceDisabledDialog extends ConsumerWidget {
     );
   }
 }
+
+enum SourceDisabledDialogResponse { saidYes, browse }

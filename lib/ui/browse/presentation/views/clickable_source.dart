@@ -1,5 +1,6 @@
 import 'package:animebox/core/configs/domain/entities/servers.dart';
 import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
+import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/ui/browse/presentation/views/source_disabled_dialog.dart';
 import 'package:animebox/ui/browse/presentation/views/source_navigation_page/source_navigation_page.dart';
 import 'package:flutter/material.dart';
@@ -7,14 +8,12 @@ import 'package:go_router/go_router.dart';
 
 class ClickableSource extends StatelessWidget {
   final AnimeSource source;
-  final String serverUuid;
-  final int schemaVersion;
+  final Server server;
   final ServersConfig serversConfig;
   const ClickableSource({
     super.key,
     required this.source,
-    required this.schemaVersion,
-    required this.serverUuid,
+    required this.server,
     required this.serversConfig,
   });
 
@@ -29,26 +28,30 @@ class ClickableSource extends StatelessWidget {
               ? () => context.go(
                   "/navigateSource",
                   extra: SourceNavigationPageParams(
-                    schemaVersion: schemaVersion,
+                    server: server,
                     source: source,
                   ),
                 )
               : () async {
-                  final enabled = await showDialog<bool>(
-                    context: context,
-                    builder: (context) => SourceDisabledDialog(
-                      serverUuid: serverUuid,
-                      source: source,
-                    ),
-                  );
+                  final dialogResponse =
+                      await showDialog<SourceDisabledDialogResponse>(
+                        context: context,
+                        builder: (context) => SourceDisabledDialog(
+                          serverUuid: server.uuid,
+                          source: source,
+                        ),
+                      );
 
-                  if (enabled == true &&
-                      serversConfig.exploreEnabledSource &&
-                      context.mounted) {
+                  final goToSource =
+                      ((dialogResponse == .saidYes &&
+                          serversConfig.exploreEnabledSource) ||
+                      dialogResponse == .browse);
+
+                  if (goToSource && context.mounted) {
                     context.go(
                       "/navigateSource",
                       extra: SourceNavigationPageParams(
-                        schemaVersion: schemaVersion,
+                        server: server,
                         source: source,
                       ),
                     );

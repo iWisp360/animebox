@@ -14,9 +14,10 @@ class SelectedIndexNotifier extends Notifier<int> {
 final selectedIndexProvider = NotifierProvider(() => SelectedIndexNotifier());
 
 class NavigationBuilder extends ConsumerWidget {
-  final Widget Function(Widget navigationWidget, Widget activeTab) builder;
+  final Widget Function(Widget? navigationWidget, Widget activeTab) builder;
   final List<Widget> tabs;
-  final List<NavigationDestination> navBarDestinations;
+  final bool useNavBar;
+  final List<NavigationDestination>? navBarDestinations;
   final List<NavigationRailDestination> navRailDestinations;
   final Widget? leadingRailAction;
   final Widget? trailingRailAction;
@@ -26,12 +27,15 @@ class NavigationBuilder extends ConsumerWidget {
     super.key,
     required this.builder,
     required this.tabs,
-    required this.navBarDestinations,
+    this.useNavBar = true,
+    this.navBarDestinations,
     required this.navRailDestinations,
     this.leadingRailAction,
     this.trailingRailAction,
     this.onDestinationChangeAction,
-  }) : assert(tabs.length == navBarDestinations.length),
+  }) : assert(
+         navBarDestinations == null || tabs.length == navBarDestinations.length,
+       ),
        assert(tabs.length == navRailDestinations.length);
 
   @override
@@ -54,14 +58,17 @@ class NavigationBuilder extends ConsumerWidget {
               ),
               trailingAtBottom: true,
             )
-          : NavigationBar(
-              destinations: navBarDestinations,
-              selectedIndex: selectedIndex,
-              onDestinationSelected: (dest) => onDestinationSelected(dest, ref),
+          : (useNavBar
+                ? NavigationBar(
+                    destinations: navBarDestinations!,
+                    selectedIndex: selectedIndex,
+                    onDestinationSelected: (dest) =>
+                        onDestinationSelected(dest, ref),
 
-              labelBehavior: .onlyShowSelected,
-              animationDuration: const Duration(seconds: 1),
-            ),
+                    labelBehavior: .onlyShowSelected,
+                    animationDuration: const Duration(seconds: 1),
+                  )
+                : null),
       tabs[selectedIndex],
     );
   }

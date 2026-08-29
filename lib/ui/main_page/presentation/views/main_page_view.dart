@@ -68,7 +68,7 @@ class _MainPageViewState extends ConsumerState<MainPageView> {
           if (isDesktop) {
             return Row(
               children: [
-                navigationWidget,
+                ?navigationWidget,
                 Expanded(child: scaffold),
               ],
             );

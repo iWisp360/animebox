@@ -54,10 +54,8 @@ class _SourceSelectorBuilderState extends ConsumerState<SourceSelectorBuilder>
                 children: [
                   for (final server in widget.servers)
                     SourceSelector(
-                      sources: server.supportedAnimeSources,
                       serversConfig: config.servers,
-                      serverUuid: server.uuid,
-                      schemaVersion: server.schemaVersion,
+                      server: server,
                     ),
                 ],
               ),

@@ -1,19 +1,15 @@
 import 'package:animebox/core/configs/domain/entities/servers.dart';
 import 'package:animebox/core/helpers/convergence.dart';
-import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
+import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/ui/browse/presentation/views/clickable_source.dart';
 import 'package:flutter/material.dart';
 
 class SourceSelector extends StatelessWidget {
-  final List<AnimeSource> sources;
-  final String serverUuid;
-  final int schemaVersion;
+  final Server server;
   final ServersConfig serversConfig;
   const SourceSelector({
     super.key,
-    required this.sources,
-    required this.schemaVersion,
-    required this.serverUuid,
+    required this.server,
     required this.serversConfig,
   });
 
@@ -22,12 +18,11 @@ class SourceSelector extends StatelessWidget {
     final enabledSources = [];
     final disabledSources = [];
 
-    for (final source in sources) {
+    for (final source in server.supportedAnimeSources) {
       final clickableSource = ClickableSource(
         source: source,
         serversConfig: serversConfig,
-        serverUuid: serverUuid,
-        schemaVersion: schemaVersion,
+        server: server,
       );
 
       if (source.enabled) {

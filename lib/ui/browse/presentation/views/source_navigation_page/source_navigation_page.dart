@@ -1,5 +1,7 @@
 import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
+import 'package:animebox/core/servers/domain/entities/server.dart';
+import 'package:animebox/ui/browse/presentation/views/source_navigation_page/search_anime_tab.dart';
 import 'package:animebox/ui/widgets/filter_chip_color.dart';
 import 'package:animebox/ui/widgets/tab_view/tab_bar_container.dart';
 import 'package:animebox/ui/browse/presentation/views/source_navigation_page/latest_anime_tab.dart';
@@ -8,12 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SourceNavigationPageParams {
-  final int schemaVersion;
+  final Server server;
   final AnimeSource source;
+  final String? query;
 
   const SourceNavigationPageParams({
-    required this.schemaVersion,
+    required this.server,
     required this.source,
+    this.query,
   });
 }
 
@@ -29,7 +33,24 @@ class SourceNavigationPage extends ConsumerStatefulWidget {
 }
 
 class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage> {
-  SourceNavigationPages _actualPage = .popular;
+  SourceNavigationPages? _actualPage = .popular;
+  bool _searching = false;
+  late final TextEditingController _textEditingController;
+  late String _sentQuery;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _textEditingController = TextEditingController();
+    _sentQuery = widget.params.query ?? "";
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +62,37 @@ class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage> {
 
     var source = widget.params.source;
     return Scaffold(
-      appBar: AppBar(title: Text(source.prettyName)),
+      appBar: AppBar(
+        title: _searching
+            ? TextField(
+                decoration: InputDecoration(
+                  border: .none,
+                  hintText: "Search on ${source.prettyName}...",
+                ),
+                onChanged: (query) {
+                  setState(() {
+                    if (query.isEmpty) {
+                      _sentQuery = "";
+                    }
+                  });
+                },
+                onSubmitted: (query) => setState(() {
+                  _sentQuery = query;
+                  FocusManager.instance.primaryFocus?.unfocus();
+                }),
+              )
+            : Text(source.prettyName),
+        actions: [
+          if (!_searching)
+            IconButton(
+              onPressed: () => setState(() {
+                _searching = true;
+                _actualPage = null;
+              }),
+              icon: const Icon(Icons.search_outlined),
+            ),
+        ],
+      ),
       body: Center(
         child: Column(
           children: [
@@ -62,6 +113,7 @@ class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage> {
                       selected: _actualPage == .popular,
                       onSelected: (selected) => setState(() {
                         _actualPage = .popular;
+                        _searching = false;
                       }),
                     ),
                     FilterChip(
@@ -74,30 +126,47 @@ class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage> {
                       selected: _actualPage == .latest,
                       onSelected: (selected) => setState(() {
                         _actualPage = .latest;
+                        _searching = false;
                       }),
                     ),
                   ],
                 ),
               ),
             ),
+
             Expanded(
-              child: switch (_actualPage) {
-                .popular => PopularAnimeTab(
-                  source: widget.params.source,
-                  schemaVersion: widget.params.schemaVersion,
-                ),
-                .latest => LatestAnimeTab(
-                  source: widget.params.source,
-                  schemaVersion: widget.params.schemaVersion,
-                ),
-                .search => throw UnimplementedError(),
-              },
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 150),
+                switchInCurve: _tabChangeCurve,
+                switchOutCurve: _tabChangeCurve,
+                transitionBuilder: (child, animation) =>
+                    FadeTransition(opacity: animation, child: child),
+
+                child: _searching
+                    ? SearchAnimeTab(
+                        query: _sentQuery,
+                        source: widget.params.source,
+                        server: widget.params.server,
+                      )
+                    : switch (_actualPage) {
+                        .latest => LatestAnimeTab(
+                          source: widget.params.source,
+                          server: widget.params.server,
+                        ),
+                        _ => PopularAnimeTab(
+                          source: widget.params.source,
+                          server: widget.params.server,
+                        ),
+                      },
+              ),
             ),
           ],
         ),
       ),
     );
   }
+
+  Curve get _tabChangeCurve => Curves.easeInOut;
 }
 
-enum SourceNavigationPages { popular, latest, search }
+enum SourceNavigationPages { popular, latest }

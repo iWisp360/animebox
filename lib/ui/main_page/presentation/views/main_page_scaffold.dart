@@ -6,7 +6,7 @@ class MainPageScaffold extends StatelessWidget {
   final bool isOnBrowsePage;
   final bool filtering;
   final Function(bool) filteringSetter;
-  final Widget navigationWidget;
+  final Widget? navigationWidget;
   final Widget activeTab;
   final bool isDesktop;
 
@@ -16,7 +16,7 @@ class MainPageScaffold extends StatelessWidget {
     required this.isOnBrowsePage,
     required this.isDesktop,
     required this.filteringSetter,
-    required this.navigationWidget,
+    this.navigationWidget,
     required this.activeTab,
   });
 
