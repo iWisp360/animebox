@@ -1,19 +1,7 @@
 import 'package:animebox/core/helpers/convergence.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SelectedIndexNotifier extends Notifier<int> {
-  @override
-  int build() {
-    return 0;
-  }
-
-  void change(int destination) => state = destination;
-}
-
-final selectedIndexProvider = NotifierProvider(() => SelectedIndexNotifier());
-
-class NavigationBuilder extends ConsumerWidget {
+class NavigationBuilder extends StatefulWidget {
   final Widget Function(Widget? navigationWidget, Widget activeTab) builder;
   final List<Widget> tabs;
   final bool useNavBar;
@@ -21,13 +9,19 @@ class NavigationBuilder extends ConsumerWidget {
   final List<NavigationRailDestination> navRailDestinations;
   final Widget? leadingRailAction;
   final Widget? trailingRailAction;
+
+  final Widget? noIndexTab;
+  final bool useNoIndexTab;
+
   final Function()? onDestinationChangeAction;
 
   const NavigationBuilder({
     super.key,
     required this.builder,
     required this.tabs,
+    this.noIndexTab,
     this.useNavBar = true,
+    this.useNoIndexTab = false,
     this.navBarDestinations,
     required this.navRailDestinations,
     this.leadingRailAction,
@@ -39,40 +33,56 @@ class NavigationBuilder extends ConsumerWidget {
        assert(tabs.length == navRailDestinations.length);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final selectedIndex = ref.watch(selectedIndexProvider);
+  State<NavigationBuilder> createState() => _NavigationBuilderState();
+}
 
-    return builder(
+class _NavigationBuilderState extends State<NavigationBuilder> {
+  int _selectedIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final selectedIndex = widget.useNoIndexTab ? null : _selectedIndex;
+
+    return widget.builder(
       (isDesktopWidth(context))
           ? NavigationRail(
-              destinations: navRailDestinations,
+              destinations: widget.navRailDestinations,
               selectedIndex: selectedIndex,
               labelType: .all,
-              onDestinationSelected: (dest) => onDestinationSelected(dest, ref),
+              onDestinationSelected: (dest) => onDestinationSelected(dest),
               scrollable: true,
-              leading: leadingRailAction,
+              leading: widget.leadingRailAction,
               elevation: 2,
               trailing: Padding(
                 padding: const .symmetric(vertical: 12),
-                child: trailingRailAction,
+                child: widget.trailingRailAction,
               ),
               trailingAtBottom: true,
             )
-          : (useNavBar
+          : (widget.useNavBar
                 ? NavigationBar(
-                    destinations: navBarDestinations!,
-                    selectedIndex: selectedIndex,
+                    destinations: widget.navBarDestinations!,
+                    selectedIndex: selectedIndex ?? 0,
                     onDestinationSelected: (dest) =>
-                        onDestinationSelected(dest, ref),
+                        onDestinationSelected(dest),
 
                     labelBehavior: .onlyShowSelected,
                     animationDuration: const Duration(seconds: 1),
                   )
                 : null),
-      tabs[selectedIndex],
+      selectedIndex != null
+          ? widget.tabs[selectedIndex]
+          : widget.noIndexTab ?? const Center(child: Text("No Tab to use")),
     );
   }
 
-  void onDestinationSelected(int destination, WidgetRef ref) =>
-      ref.read(selectedIndexProvider.notifier).change(destination);
+  void onDestinationSelected(int destination) {
+    setState(() {
+      _selectedIndex = destination;
+    });
+
+    if (widget.onDestinationChangeAction != null) {
+      widget.onDestinationChangeAction!();
+    }
+  }
 }

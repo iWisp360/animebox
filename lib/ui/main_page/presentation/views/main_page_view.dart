@@ -5,7 +5,7 @@ import 'package:animebox/ui/home/presentation/views/home_page_view.dart';
 import 'package:animebox/ui/library/presentation/views/library_page_view.dart';
 import 'package:animebox/ui/main_page/presentation/controllers/main_page_controller.dart';
 import 'package:animebox/ui/main_page/presentation/views/main_page_scaffold.dart';
-import 'package:animebox/ui/main_page/presentation/views/navigation.dart';
+import 'package:animebox/ui/widgets/navigation_builder.dart';
 import 'package:animebox/ui/routes.dart';
 import 'package:animebox/ui/settings/presentation/views/navigate_to_settings.dart';
 import 'package:flutter/material.dart';
