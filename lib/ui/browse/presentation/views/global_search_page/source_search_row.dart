@@ -73,7 +73,8 @@ class SourceSearchRow extends ConsumerWidget {
                                 extra: SeriePageParams(
                                   serieUrl: result.url!,
                                   server: server,
-                                  sourceId: source.id,
+                                  source: source,
+                                  placeholderImage: result.image,
                                 ),
                               );
                             }

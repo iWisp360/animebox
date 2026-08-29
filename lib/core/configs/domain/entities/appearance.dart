@@ -11,6 +11,7 @@ abstract class AppearanceConfig with _$AppearanceConfig {
     @Default(Language.system) Language lang,
     @Default(ThemeMode.system) ThemeMode themeMode,
     @Default(true) bool relativeDates,
+    @Default(false) bool reverseEpisodesOrder,
     @Default(false) bool pitchBlack,
   }) = _AppearanceConfig;
 

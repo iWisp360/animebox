@@ -4,7 +4,6 @@ import 'package:animebox/ui/widgets/filter_chip_color.dart';
 import 'package:animebox/ui/widgets/tab_view/tab_bar_container.dart';
 import 'package:animebox/ui/browse/presentation/views/source_navigation_page/latest_anime_tab.dart';
 import 'package:animebox/ui/browse/presentation/views/source_navigation_page/popular_anime_tab.dart';
-import 'package:animebox/ui/browse/presentation/views/source_navigation_page/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -40,8 +39,9 @@ class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage> {
     final sourcesNavigationPageTranslations =
         translations.browsePage.sources.navigation;
 
+    var source = widget.params.source;
     return Scaffold(
-      appBar: sourceNavigationPageAppBar(context, widget.params.source),
+      appBar: AppBar(title: Text(source.prettyName)),
       body: Center(
         child: Column(
           children: [
@@ -90,6 +90,7 @@ class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage> {
                   source: widget.params.source,
                   schemaVersion: widget.params.schemaVersion,
                 ),
+                .search => throw UnimplementedError(),
               },
             ),
           ],
@@ -99,4 +100,4 @@ class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage> {
   }
 }
 
-enum SourceNavigationPages { popular, latest }
+enum SourceNavigationPages { popular, latest, search }

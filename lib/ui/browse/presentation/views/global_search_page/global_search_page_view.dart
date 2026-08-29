@@ -5,7 +5,7 @@ import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/core/servers/data/extensions/server.dart';
 import 'package:animebox/core/servers/data/providers.dart';
 import 'package:animebox/features/search/data/providers/search_provider.dart';
-import 'package:animebox/ui/browse/presentation/views/app_bar.dart';
+import 'package:animebox/ui/browse/presentation/views/global_search_page/app_bar.dart';
 import 'package:animebox/ui/browse/presentation/views/global_search_page/source_search_row.dart';
 import 'package:animebox/ui/routes.dart';
 import 'package:animebox/ui/settings/presentation/views/server_settings/server_details/server_details_page.dart';

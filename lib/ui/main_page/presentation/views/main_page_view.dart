@@ -96,7 +96,7 @@ class _MainPageViewState extends ConsumerState<MainPageView> {
           elevation: 0,
           tooltip: translations.settings.pageHeader,
           onPressed: () => navigateToSettings(context),
-          child: const Icon(Icons.settings),
+          child: const Icon(Icons.settings_outlined),
         ),
 
         navBarDestinations: [

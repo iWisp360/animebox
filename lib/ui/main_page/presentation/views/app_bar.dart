@@ -11,12 +11,12 @@ List<Widget> homeAppBarActions(
   if (!isOnSearchTab && !isFiltering)
     IconButton(
       onPressed: () => filterSetter(true),
-      icon: const Icon(Icons.search),
+      icon: const Icon(Icons.search_outlined),
     ),
 
   if (!isFiltering && showSettingsAction)
     IconButton(
       onPressed: () => navigateToSettings(context),
-      icon: const Icon(Icons.settings),
+      icon: const Icon(Icons.settings_outlined),
     ),
 ];

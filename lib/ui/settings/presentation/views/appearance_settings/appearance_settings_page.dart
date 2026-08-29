@@ -95,6 +95,11 @@ class AppearanceSettingsPage extends ConsumerWidget {
                         .trim(),
                   ),
                 ),
+              ],
+            ),
+            SettingsSection(
+              title: const Text("Application"),
+              tiles: [
                 SettingsTile.navigation(
                   title: Text(translations.language.title),
                   value: Text(switch (config.appearance.lang) {
@@ -128,6 +133,25 @@ class AppearanceSettingsPage extends ConsumerWidget {
                   ),
                   description: Text(
                     _getFormat(config.appearance.relativeDates).format(.now()),
+                  ),
+                ),
+              ],
+            ),
+            SettingsSection(
+              title: const Text("Series"),
+              tiles: [
+                SettingsTile.switchTile(
+                  initialValue: config.appearance.reverseEpisodesOrder,
+                  onToggle: (value) => ref
+                      .read(configProvider.notifier)
+                      .change(
+                        config.copyWith.appearance(reverseEpisodesOrder: value),
+                      ),
+                  title: const Text("Reverse Episodes Order"),
+                  description: Text(
+                    config.appearance.reverseEpisodesOrder
+                        ? "The last episode is at the top of the list"
+                        : "The first episode is at the top of the list",
                   ),
                 ),
               ],
