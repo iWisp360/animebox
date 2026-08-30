@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 
 class NavigationBuilder extends StatefulWidget {
   final Widget Function(Widget? navigationWidget, Widget activeTab) builder;
+
   final List<Widget> tabs;
+
   final bool useNavBar;
   final List<NavigationDestination>? navBarDestinations;
+
   final List<NavigationRailDestination> navRailDestinations;
   final Widget? leadingRailAction;
   final Widget? trailingRailAction;
@@ -13,7 +16,8 @@ class NavigationBuilder extends StatefulWidget {
   final Widget? noIndexTab;
   final bool useNoIndexTab;
 
-  final Function()? onDestinationChangeAction;
+  final int? selectedDestination;
+  final Function(int dest)? onDestinationChangeAction;
 
   const NavigationBuilder({
     super.key,
@@ -23,6 +27,7 @@ class NavigationBuilder extends StatefulWidget {
     this.useNavBar = true,
     this.useNoIndexTab = false,
     this.navBarDestinations,
+    this.selectedDestination,
     required this.navRailDestinations,
     this.leadingRailAction,
     this.trailingRailAction,
@@ -30,6 +35,7 @@ class NavigationBuilder extends StatefulWidget {
   }) : assert(
          navBarDestinations == null || tabs.length == navBarDestinations.length,
        ),
+       assert(!useNoIndexTab || noIndexTab != null),
        assert(tabs.length == navRailDestinations.length);
 
   @override
@@ -41,7 +47,9 @@ class _NavigationBuilderState extends State<NavigationBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedIndex = widget.useNoIndexTab ? null : _selectedIndex;
+    final selectedIndex = widget.useNoIndexTab
+        ? null
+        : widget.selectedDestination ?? _selectedIndex;
 
     return widget.builder(
       (isDesktopWidth(context))
@@ -82,7 +90,7 @@ class _NavigationBuilderState extends State<NavigationBuilder> {
     });
 
     if (widget.onDestinationChangeAction != null) {
-      widget.onDestinationChangeAction!();
+      widget.onDestinationChangeAction!(destination);
     }
   }
 }

@@ -40,7 +40,7 @@ class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage>
   void initState() {
     super.initState();
 
-    _sentQuery = widget.params.query ?? "";
+    _initializeState();
   }
 
   @override
@@ -52,7 +52,7 @@ class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage>
         translations.browsePage.sources.navigation;
 
     return NavigationBuilder(
-      onDestinationChangeAction: _disableSearch,
+      onDestinationChangeAction: (page) => _navigateToPage(.fromInt(page)),
       builder: (navigationWidget, child) => Row(
         children: [
           ?navigationWidget,
@@ -61,6 +61,8 @@ class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage>
               appBar: AppBar(
                 title: _searching
                     ? TextField(
+                        autofocus: !_calledWithQuery,
+                        controller: _textEditingController,
                         decoration: InputDecoration(
                           border: .none,
                           hintText: "Search on ${source.prettyName}...",
@@ -97,6 +99,7 @@ class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage>
           server: widget.params.server,
         ),
       ],
+      selectedDestination: _actualPage?.toInt(),
       useNoIndexTab: _searching,
       noIndexTab: SearchAnimeTab(
         query: _sentQuery,
@@ -172,13 +175,31 @@ class _SourceNavigationPageViewState extends State<SourceNavigationPageView> {
 Curve get _tabChangeCurve => Curves.easeInOut;
 
 mixin _SourceNavigationPageController on ConsumerState<SourceNavigationPage> {
+  late final TextEditingController _textEditingController;
   SourceNavigationPages? _actualPage = .popular;
+
+  late bool _calledWithQuery;
+
   bool _searching = false;
   late String _sentQuery;
+
+  void _initializeState() {
+    _textEditingController = TextEditingController();
+
+    _sentQuery = widget.params.query ?? "";
+    _calledWithQuery = _sentQuery.isNotEmpty;
+
+    if (_calledWithQuery) {
+      _searching = true;
+      _actualPage = null;
+      _textEditingController.value = TextEditingValue(text: _sentQuery);
+    }
+  }
 
   void _disableSearch() => setState(() {
     _searching = false;
     _sentQuery = "";
+    _textEditingController.clear();
   });
 
   void _enableSearch() => setState(() {
@@ -205,4 +226,18 @@ mixin _SourceNavigationPageController on ConsumerState<SourceNavigationPage> {
   });
 }
 
-enum SourceNavigationPages { popular, latest }
+enum SourceNavigationPages {
+  popular,
+  latest;
+
+  factory SourceNavigationPages.fromInt(int dest) => switch (dest) {
+    0 => .popular,
+    1 => .latest,
+    _ => throw Exception("Selected index out of bounds"),
+  };
+
+  int toInt() => switch (this) {
+    .popular => 0,
+    .latest => 1,
+  };
+}

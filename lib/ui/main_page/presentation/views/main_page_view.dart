@@ -53,7 +53,7 @@ class _MainPageViewState extends ConsumerState<MainPageView> {
 
       canPop: !filtering && !ref.watch(dialogOpenProvider),
       child: NavigationBuilder(
-        onDestinationChangeAction: () => setState(() => filtering = false),
+        onDestinationChangeAction: (_) => setState(() => filtering = false),
         builder: (navigationWidget, activeTab) {
           final isOnBrowsePage = activeTab is BrowsePageView;
           final scaffold = MainPageScaffold(

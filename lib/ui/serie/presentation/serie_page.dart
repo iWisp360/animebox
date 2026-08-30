@@ -262,38 +262,41 @@ class SerieImage extends ConsumerWidget {
     final serieImageWidget = serieImage.maybeWhen(
       orElse: () => const Center(child: Icon(Icons.broken_image)),
       loading: () => const Center(child: CircularProgressIndicator()),
-      data: (image) => imgFromMemory(image),
+      data: (sImage) => imgFromMemory(sImage),
     );
 
     return SizedBox(
-      height: 280,
-      width: 200,
-      child: Card.filled(
-        shape: RoundedRectangleBorder(borderRadius: .circular(imageRadius)),
-        child: Transform.scale(
-          scale: 1.01,
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            transitionBuilder: (child, animation) => FadeTransition(
-              opacity: Tween<double>(begin: 0, end: 1).animate(animation),
-              child: child,
-            ),
-            child: placeholderImage.when(
-              data: (image) => ClipRRect(
-                borderRadius: .circular(imageRadius),
-                child: serieImage.maybeWhen(
-                  orElse: () => imgFromMemory(image),
-                  data: (image) => imgFromMemory(image),
-                ),
+      width: isDesktopWidth(context) ? 200 : 120,
+      child: AspectRatio(
+        aspectRatio: 9 / 13,
+        child: Card.filled(
+          shape: RoundedRectangleBorder(borderRadius: .circular(imageRadius)),
+          child: Transform.scale(
+            scale: 1.01,
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) => FadeTransition(
+                opacity: Tween<double>(begin: 0, end: 1).animate(animation),
+                child: child,
               ),
+              child: placeholderImage.when(
+                data: (pImage) => ClipRRect(
+                  borderRadius: .circular(imageRadius),
+                  child: serieImage.maybeWhen(
+                    orElse: () => imgFromMemory(pImage),
+                    data: (sImage) => imgFromMemory(sImage),
+                  ),
+                ),
 
-              error: (_, _) {
-                return serieImageWidget;
-              },
+                error: (_, _) {
+                  return serieImageWidget;
+                },
 
-              loading: () => serieImage.maybeWhen(
-                orElse: () => const Center(child: CircularProgressIndicator()),
-                data: (image) => imgFromMemory(image),
+                loading: () => serieImage.maybeWhen(
+                  orElse: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  data: (sImage) => imgFromMemory(sImage),
+                ),
               ),
             ),
           ),

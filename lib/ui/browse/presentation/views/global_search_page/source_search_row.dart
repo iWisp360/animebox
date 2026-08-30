@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/features/search/data/providers/search_provider.dart';
+import 'package:animebox/ui/browse/presentation/views/global_search_page/source_specific_search.dart';
 import 'package:animebox/ui/browse/presentation/views/missing_url_dialog.dart';
 import 'package:animebox/ui/serie/presentation/serie_page.dart';
 import 'package:animebox/ui/widgets/anime_card.dart';
@@ -31,12 +32,10 @@ class SourceSearchRow extends ConsumerWidget {
       crossAxisAlignment: .start,
       mainAxisSize: .min,
       children: [
-        Padding(
-          padding: const .symmetric(horizontal: 16),
-          child: Text(
-            source.prettyName,
-            style: const TextStyle(fontWeight: .w700, fontSize: 16),
-          ),
+        SourceSpecificSearchButton(
+          query: query,
+          source: source,
+          server: server,
         ),
         search.when(
           loading: () => paddingLoadingError(
