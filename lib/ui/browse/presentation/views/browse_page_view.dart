@@ -8,16 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class BrowsePageView extends ConsumerStatefulWidget {
+class BrowsePageView extends ConsumerWidget {
   const BrowsePageView({super.key});
 
   @override
-  ConsumerState<BrowsePageView> createState() => _BrowsePageViewState();
-}
-
-class _BrowsePageViewState extends ConsumerState<BrowsePageView> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final translations = ref.watch(i18nProvider);
     final browsePageTranslations = translations.browsePage;
     final watchedServers = ref.watch(serverListProvider);

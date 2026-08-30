@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/features/search/data/providers/search_provider.dart';
@@ -27,6 +29,7 @@ class SourceSearchRow extends ConsumerWidget {
     return Column(
       spacing: 5,
       crossAxisAlignment: .start,
+      mainAxisSize: .min,
       children: [
         Padding(
           padding: const .symmetric(horizontal: 16),
@@ -50,35 +53,38 @@ class SourceSearchRow extends ConsumerWidget {
               return SingleChildScrollView(
                 scrollDirection: .horizontal,
                 child: Row(
-                  spacing: 8,
-                  mainAxisSize: .max,
+                  spacing: 5,
+                  mainAxisSize: .min,
                   crossAxisAlignment: .start,
                   children: [
-                    const SizedBox(width: 1),
                     for (final result in search.results)
                       if (result.url != null || result.name != null)
-                        AnimeCard(
-                          url: result.url,
-                          name: result.name ?? result.url!,
-                          image: result.image,
-                          onClick: () async {
-                            if (result.url == null) {
-                              await showDialog(
-                                context: context,
-                                builder: (context) => const MissingUrlDialog(),
-                              );
-                            } else {
-                              context.push(
-                                "/serie",
-                                extra: SeriePageParams(
-                                  serieUrl: result.url!,
-                                  server: server,
-                                  source: source,
-                                  placeholderImage: result.image,
-                                ),
-                              );
-                            }
-                          },
+                        SizedBox(
+                          width: 200,
+                          child: AnimeCard(
+                            url: result.url,
+                            name: result.name ?? result.url!,
+                            image: result.image,
+                            onClick: () async {
+                              if (result.url == null) {
+                                await showDialog(
+                                  context: context,
+                                  builder: (context) =>
+                                      const MissingUrlDialog(),
+                                );
+                              } else {
+                                context.push(
+                                  "/serie",
+                                  extra: SeriePageParams(
+                                    serieUrl: result.url!,
+                                    server: server,
+                                    source: source,
+                                    placeholderImage: result.image,
+                                  ),
+                                );
+                              }
+                            },
+                          ),
                         ),
                   ],
                 ),

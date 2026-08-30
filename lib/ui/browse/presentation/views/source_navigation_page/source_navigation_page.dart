@@ -3,10 +3,9 @@ import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/gen/strings.g.dart';
+import 'package:animebox/ui/browse/presentation/views/source_navigation_page/mobile_tab_bar.dart';
 import 'package:animebox/ui/browse/presentation/views/source_navigation_page/search_anime_tab.dart';
-import 'package:animebox/ui/widgets/filter_chip_color.dart';
 import 'package:animebox/ui/widgets/navigation_builder.dart';
-import 'package:animebox/ui/widgets/tab_view/tab_bar_container.dart';
 import 'package:animebox/ui/browse/presentation/views/source_navigation_page/latest_anime_tab.dart';
 import 'package:animebox/ui/browse/presentation/views/source_navigation_page/popular_anime_tab.dart';
 import 'package:flutter/material.dart';
@@ -35,30 +34,17 @@ class SourceNavigationPage extends ConsumerStatefulWidget {
       _SourceNavigationPageState();
 }
 
-class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage> {
-  SourceNavigationPages? _actualPage = .popular;
-  bool _searching = false;
-  late final TextEditingController _textEditingController;
-  late String _sentQuery;
-
+class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage>
+    with _SourceNavigationPageController {
   @override
   void initState() {
     super.initState();
 
-    _textEditingController = TextEditingController();
     _sentQuery = widget.params.query ?? "";
   }
 
   @override
-  void dispose() {
-    _textEditingController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final chipBackgroundColor = filterChipColor(ref, context);
-
     final translations = ref.watch(i18nProvider);
     final source = widget.params.source;
 
@@ -66,7 +52,7 @@ class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage> {
         translations.browsePage.sources.navigation;
 
     return NavigationBuilder(
-      onDestinationChangeAction: () => setState(_disableSearch),
+      onDestinationChangeAction: _disableSearch,
       builder: (navigationWidget, child) => Row(
         children: [
           ?navigationWidget,
@@ -79,34 +65,23 @@ class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage> {
                           border: .none,
                           hintText: "Search on ${source.prettyName}...",
                         ),
-                        onChanged: (query) {
-                          setState(() {
-                            if (query.isEmpty) {
-                              _sentQuery = "";
-                            }
-                          });
-                        },
-                        onSubmitted: (query) => setState(() {
-                          _sentQuery = query;
-                          FocusManager.instance.primaryFocus?.unfocus();
-                        }),
+                        onChanged: _trackEmptyQuery,
+                        onSubmitted: _submitQuery,
                       )
                     : Text(source.prettyName),
                 actions: [
                   if (!_searching)
                     IconButton(
-                      onPressed: () => setState(() {
-                        _searching = true;
-                        _actualPage = null;
-                      }),
+                      onPressed: _enableSearch,
                       icon: const Icon(Icons.search_outlined),
                     ),
                 ],
               ),
-              body: _page(
-                activeTab: child,
-                chipBackgroundColor: chipBackgroundColor,
+              body: SourceNavigationPageView(
+                currentPage: _actualPage,
+                onNavigate: _navigateToPage,
                 translations: translations,
+                activeTab: child,
               ),
             ),
           ),
@@ -142,55 +117,39 @@ class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage> {
       ],
     );
   }
+}
 
-  Widget _page({
-    required Translations translations,
-    required Color chipBackgroundColor,
-    required Widget activeTab,
-  }) {
-    final sourcesNavigationPageTranslations =
-        translations.browsePage.sources.navigation;
+class SourceNavigationPageView extends StatefulWidget {
+  final Translations translations;
+  final Widget activeTab;
 
+  final Function(SourceNavigationPages page) onNavigate;
+  final SourceNavigationPages? currentPage;
+
+  const SourceNavigationPageView({
+    super.key,
+    required this.onNavigate,
+    required this.translations,
+    required this.activeTab,
+    this.currentPage,
+  });
+
+  @override
+  State<SourceNavigationPageView> createState() =>
+      _SourceNavigationPageViewState();
+}
+
+class _SourceNavigationPageViewState extends State<SourceNavigationPageView> {
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: Column(
         children: [
           if (!isDesktopWidth(context))
-            TabBarContainer(
-              child: Padding(
-                padding: const .symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: .center,
-                  spacing: 10,
-                  children: [
-                    FilterChip(
-                      backgroundColor: chipBackgroundColor,
-                      showCheckmark: false,
-                      avatar: const Icon(Icons.favorite_outlined),
-                      label: Text(
-                        sourcesNavigationPageTranslations.popularAnimes,
-                      ),
-                      selected: _actualPage == .popular,
-                      onSelected: (selected) => setState(() {
-                        _actualPage = .popular;
-                        _disableSearch();
-                      }),
-                    ),
-                    FilterChip(
-                      backgroundColor: chipBackgroundColor,
-                      showCheckmark: false,
-                      avatar: const Icon(Icons.update_outlined),
-                      label: Text(
-                        sourcesNavigationPageTranslations.latestAnimes,
-                      ),
-                      selected: _actualPage == .latest,
-                      onSelected: (selected) => setState(() {
-                        _actualPage = .latest;
-                        _disableSearch();
-                      }),
-                    ),
-                  ],
-                ),
-              ),
+            SourceNavigationPageMobileTabBar(
+              translations: widget.translations,
+              currentPage: widget.currentPage,
+              onNavigate: widget.onNavigate,
             ),
 
           Expanded(
@@ -201,20 +160,49 @@ class _SourceNavigationPageState extends ConsumerState<SourceNavigationPage> {
               transitionBuilder: (child, animation) =>
                   FadeTransition(opacity: animation, child: child),
 
-              child: activeTab,
+              child: widget.activeTab,
             ),
           ),
         ],
       ),
     );
   }
+}
+
+Curve get _tabChangeCurve => Curves.easeInOut;
+
+mixin _SourceNavigationPageController on ConsumerState<SourceNavigationPage> {
+  SourceNavigationPages? _actualPage = .popular;
+  bool _searching = false;
+  late String _sentQuery;
 
   void _disableSearch() => setState(() {
     _searching = false;
     _sentQuery = "";
   });
 
-  Curve get _tabChangeCurve => Curves.easeInOut;
+  void _enableSearch() => setState(() {
+    _searching = true;
+    _actualPage = null;
+  });
+
+  void _submitQuery(String query) => setState(() {
+    _sentQuery = query;
+    FocusManager.instance.primaryFocus?.unfocus();
+  });
+
+  void _trackEmptyQuery(String query) {
+    if (query.isEmpty) {
+      setState(() {
+        _sentQuery = "";
+      });
+    }
+  }
+
+  void _navigateToPage(SourceNavigationPages page) => setState(() {
+    _actualPage = page;
+    _disableSearch();
+  });
 }
 
 enum SourceNavigationPages { popular, latest }

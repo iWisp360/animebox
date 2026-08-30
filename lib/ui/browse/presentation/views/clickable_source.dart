@@ -24,41 +24,11 @@ class ClickableSource extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: source.enabled
-              ? () => context.go(
-                  "/navigateSource",
-                  extra: SourceNavigationPageParams(
-                    server: server,
-                    source: source,
-                  ),
-                )
-              : () async {
-                  final dialogResponse =
-                      await showDialog<SourceDisabledDialogResponse>(
-                        context: context,
-                        builder: (context) => SourceDisabledDialog(
-                          serverUuid: server.uuid,
-                          source: source,
-                        ),
-                      );
-
-                  final goToSource =
-                      ((dialogResponse == .saidYes &&
-                          serversConfig.exploreEnabledSource) ||
-                      dialogResponse == .browse);
-
-                  if (goToSource && context.mounted) {
-                    context.go(
-                      "/navigateSource",
-                      extra: SourceNavigationPageParams(
-                        server: server,
-                        source: source,
-                      ),
-                    );
-                  }
-                },
+          onTap: () => source.enabled
+              ? navigateToSource(context)
+              : showDialogDisabledSource(context),
           child: Padding(
-            padding: const .symmetric(vertical: 15, horizontal: 15),
+            padding: outerPadding,
             child: Text(
               source.prettyName,
               style: TextStyle(
@@ -73,5 +43,29 @@ class ClickableSource extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  EdgeInsetsGeometry get outerPadding =>
+      const .symmetric(vertical: 15, horizontal: 15);
+
+  void navigateToSource(BuildContext context) => context.go(
+    "/navigateSource",
+    extra: SourceNavigationPageParams(server: server, source: source),
+  );
+
+  Future<void> showDialogDisabledSource(BuildContext context) async {
+    final dialogResponse = await showDialog<SourceDisabledDialogResponse>(
+      context: context,
+      builder: (context) =>
+          SourceDisabledDialog(serverUuid: server.uuid, source: source),
+    );
+
+    final goToSource =
+        ((dialogResponse == .saidYes && serversConfig.exploreEnabledSource) ||
+        dialogResponse == .browse);
+
+    if (goToSource && context.mounted) {
+      navigateToSource(context);
+    }
   }
 }

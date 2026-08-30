@@ -14,7 +14,7 @@ PreferredSizeWidget globalSearchPageAppBar({
   final activeServer = ref.watch(activeServerProvider);
 
   return AppBar(
-    title: ServerSelectorOrTitle(activeServer: activeServer),
+    title: const ServerSelectorOrTitle(),
     actions: [
       activeServer.when(
         data: (server) => Row(

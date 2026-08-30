@@ -4,61 +4,51 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ServerSelectorOrTitle extends ConsumerWidget {
-  final AsyncValue<Server> activeServer;
-  const ServerSelectorOrTitle({super.key, required this.activeServer});
+  const ServerSelectorOrTitle({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final activeServer = ref.watch(activeServerProvider);
     final serverList = ref.watch(serverListProvider);
 
-    if (serverList.isLoading || serverList.value == null) {
-      return const CircularProgressIndicator();
+    Future<void> changeActiveServer(Server? server) async {
+      if (server != null) {
+        await ref
+            .read(activeServerProvider.notifier)
+            .setActiveServer(server.uuid);
+      }
     }
 
-    if (serverList.hasError || activeServer.hasError) {
-      return title();
-    }
+    return serverList.maybeWhen(
+      data: (servers) {
+        final selectedServer = activeServer.maybeWhen(
+          data: (server) => server,
+          orElse: () => servers.first,
+        );
 
-    final list = serverList.value ?? [];
-
-    if (list.isEmpty) {
-      return title();
-    }
-
-    final currentActiveServer = activeServer.value;
-
-    final selectedServer =
-        (currentActiveServer != null && list.contains(currentActiveServer))
-        ? currentActiveServer
-        : list.first;
-
-    return SingleChildScrollView(
-      scrollDirection: .horizontal,
-      child: Row(
-        mainAxisSize: .min,
-        children: [
-          DropdownButton(
-            underline: const SizedBox(),
-            focusColor: Colors.transparent,
-            value: selectedServer,
-            items: [
-              for (final server in list)
-                DropdownMenuItem(
-                  value: server,
-                  child: Text(server.name ?? server.uuid),
-                ),
+        return SingleChildScrollView(
+          scrollDirection: .horizontal,
+          child: Row(
+            mainAxisSize: .min,
+            children: [
+              DropdownButton(
+                underline: const SizedBox(),
+                focusColor: Colors.transparent,
+                value: selectedServer,
+                items: [
+                  for (final server in servers)
+                    DropdownMenuItem(
+                      value: server,
+                      child: Text(server.name ?? server.uuid),
+                    ),
+                ],
+                onChanged: changeActiveServer,
+              ),
             ],
-            onChanged: (server) async {
-              if (server != null) {
-                final provider = ref.read(activeServerProvider.notifier);
-                await provider.setActiveServer(server.uuid);
-              }
-            },
           ),
-        ],
-      ),
+        );
+      },
+      orElse: () => const Text("Anime Box"),
     );
   }
-
-  Widget title() => const Text("Anime Box");
 }
