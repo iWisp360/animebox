@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:animebox/core/configs/data/providers/config_provider.dart';
 import 'package:animebox/core/files/data/datasources/internal_data_directory.dart';
-import 'package:animebox/ui/widgets/global_info_feedback/providers.dart';
+import 'package:animebox/core/global_info_feedback/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart';
 import 'package:saf/saf.dart';

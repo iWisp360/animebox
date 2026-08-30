@@ -5,7 +5,7 @@ import 'package:animebox/core/servers/data/repositories/server_repository_impl.d
 import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/core/servers/domain/repositories/server_repository.dart';
 import 'package:animebox/core/servers/exceptions.dart';
-import 'package:animebox/ui/widgets/global_info_feedback/providers.dart';
+import 'package:animebox/core/global_info_feedback/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
