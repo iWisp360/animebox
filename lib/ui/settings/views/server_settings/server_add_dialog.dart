@@ -1,6 +1,6 @@
 import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
-import 'package:animebox/core/servers/data/providers.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
+import 'package:animebox/core/servers/presentation/providers/servers_list_provider.dart';
 import 'package:animebox/ui/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -113,7 +113,7 @@ class _ServerAddDialogState extends ConsumerState<ServerAddDialog> {
     errorText = null;
     try {
       final server = await ref
-          .read(serverListProvider.notifier)
+          .read(serversListProvider.notifier)
           .addServer(url: url);
 
       return server;

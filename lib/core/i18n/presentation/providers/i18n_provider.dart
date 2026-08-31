@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:animebox/core/configs/data/providers/config_provider.dart';
+import 'package:animebox/core/configs/domain/providers/config_provider.dart';
 import 'package:animebox/gen/strings.g.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,8 +8,8 @@ final deviceTranslationsProvider = Provider<AppLocale>(
   (ref) => throw UnimplementedError("Provided externally"),
 );
 
-final i18nProvider = NotifierProvider(() => I18nProvider());
-final i18nNotifier = AsyncNotifierProvider(() => I18nNotifier());
+final i18nProvider = NotifierProvider(I18nProvider.new);
+final i18nNotifier = AsyncNotifierProvider(I18nNotifier.new);
 
 class I18nProvider extends Notifier<Translations> {
   @override

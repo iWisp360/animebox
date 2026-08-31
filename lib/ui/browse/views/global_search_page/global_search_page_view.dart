@@ -1,9 +1,9 @@
-import 'package:animebox/core/configs/data/providers/config_provider.dart';
+import 'package:animebox/core/configs/domain/providers/config_provider.dart';
 import 'package:animebox/core/error/presentation/views/error_page.dart';
 import 'package:animebox/core/helpers/convergence.dart';
 import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/core/servers/data/extensions/server.dart';
-import 'package:animebox/core/servers/data/providers.dart';
+import 'package:animebox/core/servers/presentation/providers/active_server_provider.dart';
 import 'package:animebox/features/search/data/providers/search_provider.dart';
 import 'package:animebox/ui/browse/views/global_search_page/app_bar.dart';
 import 'package:animebox/ui/browse/views/global_search_page/source_search_row.dart';
@@ -54,10 +54,9 @@ class _GlobalSearchPageViewState extends ConsumerState<GlobalSearchPageView> {
 
     final isPitchBlack = ref
         .watch(configProvider)
-        .when(
+        .maybeWhen(
           data: (config) => config.appearance.pitchBlack,
-          error: (_, _) => false,
-          loading: () => false,
+          orElse: () => false,
         );
 
     final gradientColor = isPitchBlack

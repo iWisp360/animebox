@@ -18,10 +18,10 @@ class _GlobalInfoFeedbackState extends ConsumerState<GlobalInfoFeedback> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(globalNotificationController);
+    final state = ref.watch(globalNotificationProvider);
 
     ref.listen(
-      globalNotificationController,
+      globalNotificationProvider,
       (prev, next) => setState(() {
         _instantColor = (prev == null || !prev.enabled);
       }),

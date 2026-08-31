@@ -1,5 +1,5 @@
-import 'package:animebox/core/configs/data/providers/config_provider.dart';
 import 'package:animebox/core/configs/domain/entities/appearance.dart';
+import 'package:animebox/core/configs/domain/providers/config_provider.dart';
 import 'package:animebox/core/dates/data/repositories/dates_repository_impl.dart';
 import 'package:animebox/core/dates/domain/repositories/dates_repository.dart';
 import 'package:animebox/core/i18n/domain/entities/language.dart';

@@ -1,8 +1,8 @@
 import 'package:animebox/core/helpers/convergence.dart';
 import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
-import 'package:animebox/features/series/data/providers/episodes_sort_provider.dart';
-import 'package:animebox/features/series/data/providers/serie_provider.dart';
+import 'package:animebox/features/series/data/providers/anime_serie.dart';
+import 'package:animebox/features/series/data/providers/episodes_sort.dart';
 import 'package:animebox/ui/serie/views/serie_view.dart';
 import 'package:animebox/ui/utils/page_information.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +56,12 @@ class _SeriePageState extends ConsumerState<SeriePage> {
     });
 
     final SeriePageParams(:serieUrl, :server, :source) = widget.params;
-    final provider = serieProvider((serieUrl, server, source.id));
+    final provider = animeSerieProvider(
+      serieUrl: serieUrl,
+      server: server,
+      sourceId: source.id,
+    );
+
     final serieQuery = ref.watch(provider);
 
     return Scaffold(

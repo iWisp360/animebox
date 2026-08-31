@@ -1,5 +1,5 @@
 import 'package:animebox/core/servers/data/extensions/server.dart';
-import 'package:animebox/core/servers/data/providers.dart';
+import 'package:animebox/core/servers/presentation/providers/active_server_provider.dart';
 import 'package:animebox/ui/browse/views/server_selector_app_bar.dart';
 import 'package:animebox/ui/settings/views/server_settings/server_details/server_details_page.dart';
 import 'package:flutter/material.dart';

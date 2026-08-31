@@ -1,4 +1,4 @@
-import 'package:animebox/core/configs/data/providers/config_provider.dart';
+import 'package:animebox/core/configs/domain/providers/config_provider.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/ui/browse/views/source_selector.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ class SourceSelectorBuilder extends ConsumerStatefulWidget {
 }
 
 class _SourceSelectorBuilderState extends ConsumerState<SourceSelectorBuilder>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late final TabController _tabController;
 
   @override

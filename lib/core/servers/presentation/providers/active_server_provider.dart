@@ -1,17 +1,20 @@
 import 'dart:async';
 
 import 'package:animebox/core/injector.dart';
-import 'package:animebox/core/servers/data/providers.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
+import 'package:animebox/core/servers/presentation/providers/servers_list_provider.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class ActiveServerProvider extends AsyncNotifier<Server> {
+part 'active_server_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+class ActiveServer extends _$ActiveServer {
   String? _activeServer;
 
   @override
   FutureOr<Server> build() async {
-    final serverList = await ref.watch(serverListProvider.future);
+    final serverList = await ref.watch(serversListProvider.future);
     try {
       _activeServer ??= ref
           .read(sharedPreferencesProvider)
@@ -27,7 +30,7 @@ class ActiveServerProvider extends AsyncNotifier<Server> {
   }
 
   Future<void> setActiveServer(String uuid) async {
-    final serverList = ref.read(serverListProvider.notifier);
+    final serverList = ref.read(serversListProvider.notifier);
 
     final server = await serverList.getServer(uuid);
     if (server != null) {

@@ -17,91 +17,92 @@ import 'package:animebox/core/global_info_feedback/global_info_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final mainRouterProvider = Provider(
-  (ref) => GoRouter(
-    initialLocation: "/",
-    routes: [
-      ShellRoute(
-        builder: (context, state, child) =>
-            GlobalInfoFeedback(builder: (context) => child),
-        routes: [
-          GoRoute(
-            path: "/",
-            builder: (context, state) => const MainPageView(),
-            routes: [
-              GoRoute(
-                path: "serie",
-                builder: (context, state) =>
-                    SeriePage(params: state.extra as SeriePageParams),
+part 'routes.g.dart';
+
+@Riverpod(keepAlive: true)
+GoRouter mainRouter(Ref ref) => GoRouter(
+  initialLocation: "/",
+  routes: [
+    ShellRoute(
+      builder: (context, state, child) =>
+          GlobalInfoFeedback(builder: (context) => child),
+      routes: [
+        GoRoute(
+          path: "/",
+          builder: (context, state) => const MainPageView(),
+          routes: [
+            GoRoute(
+              path: "serie",
+              builder: (context, state) =>
+                  SeriePage(params: state.extra as SeriePageParams),
+            ),
+            GoRoute(
+              path: "globalSearch",
+              builder: (context, state) => const GlobalSearchPageView(),
+            ),
+            GoRoute(
+              path: "navigateSource",
+              builder: (context, state) => SourceNavigationPage(
+                params: state.extra as SourceNavigationPageParams,
               ),
-              GoRoute(
-                path: "globalSearch",
-                builder: (context, state) => const GlobalSearchPageView(),
-              ),
-              GoRoute(
-                path: "navigateSource",
-                builder: (context, state) => SourceNavigationPage(
-                  params: state.extra as SourceNavigationPageParams,
+            ),
+            GoRoute(
+              path: "settings",
+              builder: (context, state) => const SettingsPage(),
+              routes: [
+                GoRoute(
+                  path: "about",
+                  builder: (context, state) => const AnimeBoxAboutPage(),
                 ),
-              ),
-              GoRoute(
-                path: "settings",
-                builder: (context, state) => const SettingsPage(),
-                routes: [
-                  GoRoute(
-                    path: "about",
-                    builder: (context, state) => const AnimeBoxAboutPage(),
-                  ),
-                  GoRoute(
-                    path: "advanced",
-                    builder: (context, state) => const AdvancedSettingsPage(),
-                  ),
-                  GoRoute(
-                    path: "appearance",
-                    builder: (context, state) => const AppearanceSettingsPage(),
-                  ),
-                  GoRoute(
-                    path: "downloads",
-                    builder: (context, state) => const DownloadsSettingsPage(),
-                  ),
-                  GoRoute(
-                    path: "library",
-                    builder: (context, state) => const LibrarySettingsPage(),
-                  ),
-                  GoRoute(
-                    path: "localStorage",
-                    builder: (context, state) =>
-                        const LocalStorageSettingsPage(),
-                  ),
-                  GoRoute(
-                    path: "metadata",
-                    builder: (context, state) => const MetadataSettingsPage(),
-                  ),
-                  GoRoute(
-                    path: "playback",
-                    builder: (context, state) => const PlaybackSettingsPage(),
-                  ),
-                  GoRoute(
-                    path: "servers",
-                    builder: (context, state) => const ServersSettingsPage(),
-                    routes: [
-                      GoRoute(
-                        path: "details",
-                        builder: (context, state) => ServerDetailsPage(
-                          params: state.extra as ServerDetailsPageParams,
-                        ),
+                GoRoute(
+                  path: "advanced",
+                  builder: (context, state) => const AdvancedSettingsPage(),
+                ),
+                GoRoute(
+                  path: "appearance",
+                  builder: (context, state) => const AppearanceSettingsPage(),
+                ),
+                GoRoute(
+                  path: "downloads",
+                  builder: (context, state) => const DownloadsSettingsPage(),
+                ),
+                GoRoute(
+                  path: "library",
+                  builder: (context, state) => const LibrarySettingsPage(),
+                ),
+                GoRoute(
+                  path: "localStorage",
+                  builder: (context, state) => const LocalStorageSettingsPage(),
+                ),
+                GoRoute(
+                  path: "metadata",
+                  builder: (context, state) => const MetadataSettingsPage(),
+                ),
+                GoRoute(
+                  path: "playback",
+                  builder: (context, state) => const PlaybackSettingsPage(),
+                ),
+                GoRoute(
+                  path: "servers",
+                  builder: (context, state) => const ServersSettingsPage(),
+                  routes: [
+                    GoRoute(
+                      path: "details",
+                      builder: (context, state) => ServerDetailsPage(
+                        params: state.extra as ServerDetailsPageParams,
                       ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    ],
-  ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    ),
+  ],
 );
 
 final waitingRouter = GoRouter(
@@ -115,9 +116,8 @@ final waitingRouter = GoRouter(
   ],
 );
 
-final dialogOpenProvider = NotifierProvider(() => DialogOpenProvider());
-
-class DialogOpenProvider extends Notifier<bool> {
+@Riverpod(keepAlive: true)
+class DialogOpen extends Notifier<bool> {
   int _openDialogsCounter = 0;
 
   @override
@@ -145,7 +145,7 @@ class DialogWithNotify extends ConsumerStatefulWidget {
 }
 
 class _DialogWithNotifyState extends ConsumerState<DialogWithNotify> {
-  late final DialogOpenProvider notifier;
+  late final DialogOpen notifier;
 
   @override
   void initState() {

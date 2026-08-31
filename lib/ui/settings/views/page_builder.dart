@@ -1,5 +1,5 @@
-import 'package:animebox/core/configs/data/providers/config_provider.dart';
 import 'package:animebox/core/configs/domain/entities/config.dart';
+import 'package:animebox/core/configs/domain/providers/config_provider.dart';
 import 'package:animebox/ui/utils/page_information.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -1,4 +1,4 @@
-import 'package:animebox/core/configs/data/providers/config_provider.dart';
+import 'package:animebox/core/configs/domain/providers/config_provider.dart';
 import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/ui/settings/views/page_builder.dart';
 import 'package:animebox/ui/settings/views/settings_ui_theming.dart';

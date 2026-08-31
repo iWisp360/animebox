@@ -1,7 +1,7 @@
 import 'package:animebox/core/configs/domain/entities/downloads.dart';
 import 'package:animebox/core/dates/data/repositories/dates_repository_impl.dart';
 import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
-import 'package:animebox/features/episodes/data/providers/episodes_format_provider.dart';
+import 'package:animebox/features/episodes/data/providers/episodes_format.dart';
 import 'package:animebox/features/episodes/domain/entities/episode.dart';
 import 'package:animebox/features/episodes/domain/exceptions.dart';
 import 'package:animebox/ui/routes.dart';
@@ -32,10 +32,10 @@ class _EpisodesFormatDialogState extends ConsumerState<EpisodesFormatDialog> {
       setState(() {
         _renderedFormat = ref
             .read(
-              episodesFormatProvider((
-                ref.read(i18nProvider).downloads.episode,
-                const DatesRepositoryImpl(),
-              )),
+              episodesFormatProvider(
+                episodesName: ref.read(i18nProvider).downloads.episode,
+                datesRepository: const DatesRepositoryImpl(),
+              ),
             )
             .renderFormat(
               episode: Episode.test(),
@@ -76,10 +76,10 @@ class _EpisodesFormatDialogState extends ConsumerState<EpisodesFormatDialog> {
                   try {
                     final rendered = ref
                         .read(
-                          episodesFormatProvider((
-                            translations.downloads.episode,
-                            const DatesRepositoryImpl(),
-                          )),
+                          episodesFormatProvider(
+                            episodesName: translations.downloads.episode,
+                            datesRepository: const DatesRepositoryImpl(),
+                          ),
                         )
                         .renderFormat(
                           episode: Episode.test(),

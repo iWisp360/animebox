@@ -1,14 +1,17 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:animebox/core/configs/data/providers/config_provider.dart';
+import 'package:animebox/core/configs/domain/providers/config_provider.dart';
 import 'package:animebox/core/files/data/datasources/internal_data_directory.dart';
 import 'package:animebox/core/global_info_feedback/providers.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:saf/saf.dart';
 
-class ExternalDataDirectoryProvider extends AsyncNotifier<Uri> {
+part 'external_data_directory.g.dart';
+
+@riverpod
+class ExternalDataDirectory extends _$ExternalDataDirectory {
   Saf get saf => Saf();
   Future<Uri> get _defaultUriPath async =>
       Uri.parse((await _defaultPath()).path);
@@ -49,7 +52,7 @@ class ExternalDataDirectoryProvider extends AsyncNotifier<Uri> {
           await saf.mkdirp(directoryUri.toString(), []);
         }
       } on SafNotFoundException {
-        final notifier = ref.read(globalNotificationController.notifier);
+        final notifier = ref.read(globalNotificationProvider.notifier);
 
         notifier.setState(
           messageBuilder: (i18n, ref) =>

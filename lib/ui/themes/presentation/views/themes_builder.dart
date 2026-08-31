@@ -1,5 +1,5 @@
-import 'package:animebox/ui/themes/data/providers/theme_provider.dart';
 import 'package:animebox/ui/themes/data/repositories/theme_fallback.dart';
+import 'package:animebox/ui/themes/domain/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,10 +11,12 @@ class ThemesBuilder extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final systemBrightness = MediaQuery.platformBrightnessOf(context);
-    final animeBoxTheme = ref.watch(themeDataProvider(systemBrightness));
+    final animeBoxTheme = ref.watch(
+      themeDataProvider(.fromBrightness(systemBrightness)),
+    );
 
-    return animeBoxTheme.when(
-      loading: () {
+    return animeBoxTheme.maybeWhen(
+      orElse: () {
         final systemBrightness = MediaQuery.platformBrightnessOf(context);
         final themeData = ThemeFallback().buildTheme(
           systemBrightness: systemBrightness,
@@ -29,16 +31,6 @@ class ThemesBuilder extends ConsumerWidget {
 
         return AnimatedTheme(
           data: themeData.copyWith(textTheme: textTheme),
-          child: builder(context, themeData),
-        );
-      },
-      error: (e, st) {
-        final systemBrightness = MediaQuery.platformBrightnessOf(context);
-        final themeData = ThemeFallback().buildTheme(
-          systemBrightness: systemBrightness,
-        );
-        return AnimatedTheme(
-          data: themeData,
           child: builder(context, themeData),
         );
       },

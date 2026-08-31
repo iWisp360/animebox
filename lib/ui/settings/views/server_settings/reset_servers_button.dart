@@ -1,4 +1,4 @@
-import 'package:animebox/core/servers/data/providers.dart';
+import 'package:animebox/core/servers/presentation/providers/servers_list_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,7 +12,7 @@ class ResetServersButton extends ConsumerWidget {
         backgroundColor: .all(Theme.of(context).colorScheme.error),
       ),
       onPressed: () async =>
-          await ref.read(serverListProvider.notifier).resetServerList(),
+          await ref.read(serversListProvider.notifier).resetServerList(),
       child: Text(
         "Reset Server List",
         style: TextStyle(color: Theme.of(context).colorScheme.onError),

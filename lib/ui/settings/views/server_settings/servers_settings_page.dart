@@ -1,7 +1,7 @@
-import 'package:animebox/core/configs/data/providers/config_provider.dart';
+import 'package:animebox/core/configs/domain/providers/config_provider.dart';
 import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/core/servers/data/extensions/server.dart';
-import 'package:animebox/core/servers/data/providers.dart';
+import 'package:animebox/core/servers/presentation/providers/servers_list_provider.dart';
 import 'package:animebox/ui/routes.dart';
 import 'package:animebox/ui/settings/views/page_builder.dart';
 import 'package:animebox/ui/settings/views/server_settings/reset_servers_button.dart';
@@ -20,7 +20,7 @@ class ServersSettingsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final translations = ref.watch(i18nProvider);
     final serverSettingsTranslations = translations.settings.servers;
-    final serverList = ref.watch(serverListProvider);
+    final serverList = ref.watch(serversListProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(serverSettingsTranslations.title)),
@@ -76,7 +76,7 @@ class ServersSettingsPage extends ConsumerWidget {
                             if (deleteOrder == true && context.mounted) {
                               try {
                                 final deleted = await ref
-                                    .read(serverListProvider.notifier)
+                                    .read(serversListProvider.notifier)
                                     .removeServer(uuid: server.uuid);
 
                                 if (context.mounted) {
@@ -152,7 +152,7 @@ class ServersSettingsPage extends ConsumerWidget {
                                   if (serverList.isNotEmpty)
                                     FilledButton.tonal(
                                       onPressed: () async => await ref
-                                          .read(serverListProvider.notifier)
+                                          .read(serversListProvider.notifier)
                                           .updateServers(),
                                       child: const Text("Update Servers"),
                                     ),

@@ -1,8 +1,9 @@
 import 'package:animebox/core/helpers/convergence.dart';
 import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/core/servers/data/datasources/server_urls.dart';
-import 'package:animebox/core/servers/data/providers.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
+import 'package:animebox/core/servers/presentation/providers/servers_list_provider.dart';
+import 'package:animebox/core/servers/presentation/providers/source_manager_provider.dart';
 import 'package:animebox/ui/routes.dart';
 import 'package:animebox/ui/settings/views/server_settings/server_details/server_delete_dialog.dart';
 import 'package:animebox/ui/settings/views/server_settings/server_details/source_details_dialog.dart';
@@ -39,7 +40,7 @@ class _ServerDetailsPageState extends ConsumerState<ServerDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final serverList = ref.watch(serverListProvider);
+    final serverList = ref.watch(serversListProvider);
 
     final translations = ref.watch(i18nProvider);
     final detailsTranslations = translations.settings.servers.details;

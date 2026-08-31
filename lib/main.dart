@@ -19,7 +19,6 @@ Future<void> main() async {
 
     final sharedPreferences = await SharedPreferences.getInstance();
     final packageInfo = await PackageInfo.fromPlatform();
-
     final deviceTranslations = await LocaleSettings.useDeviceLocale();
 
     runApp(
@@ -50,11 +49,10 @@ class AnimeBoxApp extends ConsumerWidget {
     final locale = ref.watch(i18nNotifier);
 
     ref.listen(i18nNotifier, (prev, next) {
-      next.when(
+      next.maybeWhen(
         data: (locale) =>
             ref.read(i18nProvider.notifier).setLang(locale.translations),
-        error: (_, _) => (),
-        loading: () => (),
+        orElse: () => (),
       );
     });
 
@@ -63,10 +61,9 @@ class AnimeBoxApp extends ConsumerWidget {
         title: 'Anime Box',
         localizationsDelegates: GlobalMaterialLocalizations.delegates,
         supportedLocales: AppLocaleUtils.supportedLocales,
-        locale: locale.when(
+        locale: locale.maybeWhen(
           data: (locale) => locale.flutterLocale,
-          error: (_, _) => PlatformDispatcher.instance.locale,
-          loading: () => PlatformDispatcher.instance.locale,
+          orElse: () => PlatformDispatcher.instance.locale,
         ),
         theme: themeData,
         debugShowCheckedModeBanner: false,

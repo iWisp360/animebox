@@ -1,12 +1,19 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:animebox/core/configs/data/providers/repository_provider.dart';
+import 'package:animebox/core/configs/data/repositories/config_repository_impl.dart';
 import 'package:animebox/core/configs/domain/entities/config.dart';
+import 'package:animebox/core/configs/domain/repositories/config_repository.dart';
 import 'package:animebox/core/files/data/datasources/internal_data_directory.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class ConfigProvider extends AsyncNotifier<AnimeBoxConfig> {
+part 'config_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+ConfigRepository configRepository(Ref ref) => ConfigRepositoryImpl();
+
+@Riverpod(keepAlive: true)
+class Config extends _$Config {
   AnimeBoxConfig? _animeBoxConfig;
 
   @override

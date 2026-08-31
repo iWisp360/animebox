@@ -1,12 +1,15 @@
 import 'dart:async';
 
-import 'package:animebox/core/servers/data/providers.dart';
 import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/core/servers/domain/exceptions.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:animebox/core/servers/presentation/providers/servers_list_provider.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class SourceManagerProvider extends AsyncNotifier<void> {
+part 'source_manager_provider.g.dart';
+
+@riverpod
+class SourceManager extends _$SourceManager {
   @override
   FutureOr<void> build() => ();
 
@@ -24,7 +27,7 @@ class SourceManagerProvider extends AsyncNotifier<void> {
     bool toggled = false;
 
     Server? server = await ref
-        .read(serverListProvider.notifier)
+        .read(serversListProvider.notifier)
         .getServer(serverUuid);
 
     if (server == null) {
@@ -42,7 +45,7 @@ class SourceManagerProvider extends AsyncNotifier<void> {
       }).toList(),
     );
 
-    await ref.read(serverListProvider.notifier).modifyServer(server: server);
+    await ref.read(serversListProvider.notifier).modifyServer(server: server);
 
     return toggled;
   }

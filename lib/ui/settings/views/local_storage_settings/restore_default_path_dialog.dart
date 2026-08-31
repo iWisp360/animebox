@@ -1,4 +1,4 @@
-import 'package:animebox/core/files/data/providers/external_data_directory_provider.dart';
+import 'package:animebox/core/files/domain/providers/external_data_directory.dart';
 import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/ui/routes.dart';
 import 'package:flutter/material.dart';

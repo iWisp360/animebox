@@ -1,6 +1,6 @@
-import 'package:animebox/core/configs/data/providers/config_provider.dart';
 import 'package:animebox/core/configs/domain/entities/config.dart';
-import 'package:animebox/core/files/data/providers/external_data_directory_provider.dart';
+import 'package:animebox/core/configs/domain/providers/config_provider.dart';
+import 'package:animebox/core/files/domain/providers/external_data_directory.dart';
 import 'package:animebox/ui/settings/views/local_storage_settings/restore_default_path_dialog.dart';
 import 'package:animebox/ui/settings/views/page_builder.dart';
 import 'package:animebox/ui/settings/views/settings_ui_theming.dart';

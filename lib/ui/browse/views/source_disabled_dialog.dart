@@ -1,6 +1,6 @@
 import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
-import 'package:animebox/core/servers/data/providers.dart';
 import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
+import 'package:animebox/core/servers/presentation/providers/source_manager_provider.dart';
 import 'package:animebox/ui/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

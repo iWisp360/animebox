@@ -1,4 +1,4 @@
-import 'package:animebox/core/configs/data/providers/config_provider.dart';
+import 'package:animebox/core/configs/domain/providers/config_provider.dart';
 import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/ui/routes.dart';
 import 'package:animebox/ui/settings/views/downloads_settings/episodes_format/episodes_format_dialog.dart';

@@ -1,5 +1,6 @@
-import 'package:animebox/core/servers/data/providers.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
+import 'package:animebox/core/servers/presentation/providers/active_server_provider.dart';
+import 'package:animebox/core/servers/presentation/providers/servers_list_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,7 +10,7 @@ class ServerSelectorOrTitle extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final activeServer = ref.watch(activeServerProvider);
-    final serverList = ref.watch(serverListProvider);
+    final serverList = ref.watch(serversListProvider);
 
     Future<void> changeActiveServer(Server? server) async {
       if (server != null) {

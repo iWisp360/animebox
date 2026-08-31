@@ -9,7 +9,9 @@ import 'package:animebox/core/global_info_feedback/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ServersListProvider extends AsyncNotifier<List<Server>> {
+final serversListProvider = AsyncNotifierProvider(() => ServersList());
+
+class ServersList extends AsyncNotifier<List<Server>> {
   final ServerRepository _serverRepository;
 
   @override
@@ -43,7 +45,7 @@ class ServersListProvider extends AsyncNotifier<List<Server>> {
         throw ExistingServerException(server.uuid);
       }
 
-      final notifier = ref.read(globalNotificationController.notifier);
+      final notifier = ref.read(globalNotificationProvider.notifier);
       notifier.setState(
         messageBuilder: (i18n, ref) =>
             "Added server ${server.name ?? server.uuid}",
@@ -72,7 +74,7 @@ class ServersListProvider extends AsyncNotifier<List<Server>> {
         state = AsyncValue.data(newList);
       }
 
-      final notifier = ref.read(globalNotificationController.notifier);
+      final notifier = ref.read(globalNotificationProvider.notifier);
       notifier.setState(
         messageBuilder: (i18n, ref) => "Deleted server successfully",
         priority: .info,
@@ -87,12 +89,12 @@ class ServersListProvider extends AsyncNotifier<List<Server>> {
   }
 
   Future<Server?> getServer(String uuid) => _serverRepository.getServer(uuid);
-  ServersListProvider({ServerRepository? serverRepository})
+  ServersList({ServerRepository? serverRepository})
     : _serverRepository = serverRepository ?? ServerRepositoryImpl();
 
   Future<void> updateServers() async {
     final notificationController = ref.read(
-      globalNotificationController.notifier,
+      globalNotificationProvider.notifier,
     );
 
     final currentServers = state.requireValue;

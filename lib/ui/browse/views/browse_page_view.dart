@@ -1,5 +1,5 @@
 import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
-import 'package:animebox/core/servers/data/providers.dart';
+import 'package:animebox/core/servers/presentation/providers/servers_list_provider.dart';
 import 'package:animebox/ui/browse/views/app_bar.dart';
 import 'package:animebox/ui/browse/views/source_selector_builder.dart';
 import 'package:animebox/ui/settings/views/server_settings/reset_servers_button.dart';
@@ -15,7 +15,7 @@ class BrowsePageView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final translations = ref.watch(i18nProvider);
     final browsePageTranslations = translations.browsePage;
-    final watchedServers = ref.watch(serverListProvider);
+    final watchedServers = ref.watch(serversListProvider);
 
     return watchedServers.when(
       data: (servers) {

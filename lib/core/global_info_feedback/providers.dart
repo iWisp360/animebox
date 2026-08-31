@@ -5,13 +5,12 @@ import 'package:animebox/core/global_info_feedback/entities.dart';
 import 'package:animebox/core/i18n/presentation/providers/i18n_provider.dart';
 import 'package:animebox/gen/strings.g.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final globalNotificationController = NotifierProvider(
-  () => GlobalNotificationController(),
-);
+part 'providers.g.dart';
 
-class GlobalNotificationController extends Notifier<NotificationState> {
+@riverpod
+class GlobalNotification extends _$GlobalNotification {
   Timer? _hideTimer;
   NotificationState? _currentState;
   MessageBuilderFn? _messageBuilder;
