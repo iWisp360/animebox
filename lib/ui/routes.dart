@@ -15,7 +15,6 @@ import 'package:animebox/ui/settings/views/server_settings/servers_settings_page
 import 'package:animebox/ui/settings/views/settings_page.dart';
 import 'package:animebox/core/global_info_feedback/global_info_feedback.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

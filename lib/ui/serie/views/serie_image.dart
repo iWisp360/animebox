@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:animebox/core/cache/providers/image_cache.dart';
 import 'package:animebox/core/helpers/convergence.dart';
 import 'package:animebox/core/network/image_provider.dart';
 import 'package:animebox/features/series/domain/entities/serie.dart';
@@ -14,16 +15,9 @@ class SerieImage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final placeholderImage = ref.watch(
-      imageProvider(params.placeholderImage ?? ""),
-    );
-
-    final serieImage = ref.watch(imageProvider(serie.image ?? ""));
-    final serieImageWidget = serieImage.maybeWhen(
-      orElse: () => const Center(child: Icon(Icons.broken_image)),
-      loading: () => const Center(child: CircularProgressIndicator()),
-      data: (sImage) => imgFromMemory(sImage),
-    );
+    final cachedImage = ref
+        .watch(imageCachePathProvider(serie.cacheImage))
+        .whenOrNull(data: (image) => image);
 
     return SizedBox(
       width: isDesktopWidth(context) ? 200 : 120,
@@ -33,34 +27,54 @@ class SerieImage extends ConsumerWidget {
           shape: RoundedRectangleBorder(borderRadius: .circular(imageRadius)),
           child: Transform.scale(
             scale: 1.01,
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              transitionBuilder: (child, animation) => FadeTransition(
-                opacity: Tween<double>(begin: 0, end: 1).animate(animation),
-                child: child,
-              ),
-              child: placeholderImage.when(
-                data: (pImage) => ClipRRect(
-                  borderRadius: .circular(imageRadius),
-                  child: serieImage.maybeWhen(
-                    orElse: () => imgFromMemory(pImage),
-                    data: (sImage) => imgFromMemory(sImage),
-                  ),
-                ),
-
-                error: (_, _) {
-                  return serieImageWidget;
-                },
-
-                loading: () => serieImage.maybeWhen(
-                  orElse: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  data: (sImage) => imgFromMemory(sImage),
-                ),
+            child: ClipRRect(
+              borderRadius: .circular(imageRadius),
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (child, animation) =>
+                    FadeTransition(opacity: animation, child: child),
+                child: (cachedImage != null)
+                    ? Image.file(
+                        cachedImage,
+                        fit: .cover,
+                        width: .infinity,
+                        height: .infinity,
+                      )
+                    : fetchSerieImage(ref),
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget fetchSerieImage(WidgetRef ref) {
+    final placeholderImage = ref.watch(
+      imageProvider(params.placeholderImage ?? ""),
+    );
+
+    final serieImage = ref.watch(imageProvider(serie.image ?? ""));
+
+    final serieImageWidget = serieImage.maybeWhen(
+      orElse: () => const Center(child: Icon(Icons.broken_image)),
+      loading: () => const Center(child: CircularProgressIndicator()),
+      data: (sImage) => imgFromMemory(sImage),
+    );
+
+    return placeholderImage.when(
+      data: (pImage) => serieImage.maybeWhen(
+        orElse: () => imgFromMemory(pImage),
+        data: (sImage) => imgFromMemory(sImage),
+      ),
+
+      error: (_, _) {
+        return serieImageWidget;
+      },
+
+      loading: () => serieImage.maybeWhen(
+        orElse: () => const Center(child: CircularProgressIndicator()),
+        data: (sImage) => imgFromMemory(sImage),
       ),
     );
   }

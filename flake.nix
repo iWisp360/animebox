@@ -81,6 +81,8 @@
             gtk3
             rustup
           ];
+
+          LD_LIBRARY_PATH = "build/linux/x64/debug/bundle/lib/:$LD_LIBRARY_PATH";
         }
       );
     };

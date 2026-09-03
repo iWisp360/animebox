@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -7,13 +9,17 @@ class AnimeCard extends StatelessWidget {
   final String name;
   final String? url;
   final String? image;
+  final File? cacheImage;
+  final bool displayMissingUrlIcon;
   final Function()? onClick;
 
   const AnimeCard({
     super.key,
     required this.name,
     this.image,
+    this.cacheImage,
     this.url,
+    this.displayMissingUrlIcon = false,
     this.onClick,
   });
 
@@ -28,8 +34,12 @@ class AnimeCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: .start,
             children: [
-              _Portrait(image: image),
-              _SerieTitle(name: name, url: url),
+              _Portrait(image: image, cacheImage: cacheImage),
+              _SerieTitle(
+                name: name,
+                url: url,
+                displayMissingUrlIcon: displayMissingUrlIcon,
+              ),
             ],
           ),
         ),
@@ -40,7 +50,8 @@ class AnimeCard extends StatelessWidget {
 
 class _Portrait extends StatelessWidget {
   final String? image;
-  const _Portrait({this.image});
+  final File? cacheImage;
+  const _Portrait({this.image, this.cacheImage});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +61,9 @@ class _Portrait extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: .circular(_radius)),
         child: ClipRRect(
           borderRadius: .circular(_radius),
-          child: (image != null)
+          child: (cacheImage != null)
+              ? Image.file(cacheImage!, fit: .cover)
+              : (image != null)
               ? Transform.scale(
                   scale: 1.01,
                   child: FadeInImage.memoryNetwork(
@@ -73,7 +86,12 @@ class _Portrait extends StatelessWidget {
 class _SerieTitle extends StatelessWidget {
   final String name;
   final String? url;
-  const _SerieTitle({required this.name, this.url});
+  final bool displayMissingUrlIcon;
+  const _SerieTitle({
+    required this.name,
+    this.url,
+    required this.displayMissingUrlIcon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +105,7 @@ class _SerieTitle extends StatelessWidget {
               child: Text(name, maxLines: 2, overflow: .ellipsis),
             ),
           ),
-          if (url == null)
+          if (url == null && displayMissingUrlIcon)
             Icon(Icons.link_off, color: Theme.of(context).colorScheme.error),
         ],
       ),

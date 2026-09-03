@@ -9,8 +9,11 @@ abstract class Serie with _$Serie {
   const factory Serie({
     String? name,
     String? image,
+    String? cacheImage,
     String? description,
     List<Episode>? episodes,
+    required String sourceId,
+    required String serverUuid,
   }) = _Serie;
 
   factory Serie.fromJson(Map<String, dynamic> json) => _$SerieFromJson(json);

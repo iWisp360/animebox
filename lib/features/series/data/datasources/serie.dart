@@ -21,7 +21,12 @@ abstract class SerieSource {
     String sourceId,
   );
 
-  Serie parseSerieObject(Map<String, dynamic> json, int schemaVersion);
+  Serie parseSerieObject(
+    Map<String, dynamic> json, {
+    required int schemaVersion,
+    required String serverUuid,
+    required String sourceId,
+  });
 }
 
 class SerieSourceRemote implements SerieSource {
@@ -42,7 +47,12 @@ class SerieSourceRemote implements SerieSource {
       variables: createVariables(server.schemaVersion, url, sourceId),
     );
 
-    return parseSerieObject(response, server.schemaVersion);
+    return parseSerieObject(
+      response,
+      schemaVersion: server.schemaVersion,
+      serverUuid: server.uuid,
+      sourceId: sourceId,
+    );
   }
 
   @override
@@ -62,18 +72,33 @@ class SerieSourceRemote implements SerieSource {
   };
 
   @override
-  Serie parseSerieObject(Map<String, dynamic> json, int schemaVersion) {
+  Serie parseSerieObject(
+    Map<String, dynamic> json, {
+    required int schemaVersion,
+    required String serverUuid,
+    required String sourceId,
+  }) {
     switch (schemaVersion) {
       case 1:
         final deserializedSerie = SerieV1.fromJson(json);
         return Serie(
+          serverUuid: serverUuid,
+          sourceId: sourceId,
           name: deserializedSerie.name,
           image: deserializedSerie.image,
           description: deserializedSerie.description,
           episodes: deserializedSerie.episodes == null
               ? null
               : (deserializedSerie.episodes!)
-                    .map((e) => Episode(url: e.url, num: e.num, name: e.name))
+                    .map(
+                      (e) => Episode(
+                        url: e.url,
+                        num: e.num,
+                        name: e.name,
+                        sourceId: sourceId,
+                        serverUuid: serverUuid,
+                      ),
+                    )
                     .toList(),
         );
 

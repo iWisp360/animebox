@@ -5,10 +5,12 @@ part 'episode.g.dart';
 
 @freezed
 abstract class Episode with _$Episode {
+  const Episode._();
+
   const factory Episode({
-    String? serverUuid,
+    required String serverUuid,
+    required String sourceId,
     String? url,
-    String? sourceId,
     int? num,
     String? name,
   }) = _Episode;

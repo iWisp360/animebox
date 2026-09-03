@@ -27,3 +27,13 @@ Future<Directory> _animeboxInternalLinuxData() async {
 
 Future<Directory> _animeboxInternalAndroidData() =>
     getApplicationSupportDirectory();
+
+Future<String> databasePath() async {
+  final internalPath = await animeBoxInternalData();
+  return join(internalPath.path, "animebox.redb");
+}
+
+Future<Directory> cachePath() async {
+  final cachePath = await getApplicationCacheDirectory();
+  return Directory(join(cachePath.path, "animebox"))..create();
+}

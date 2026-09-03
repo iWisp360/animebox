@@ -1,22 +1,20 @@
-import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
 import 'package:animebox/features/episodes/domain/entities/episode.dart';
 import 'package:animebox/features/series/domain/entities/serie.dart';
+import 'package:animebox/ui/serie/views/serie_actions.dart';
 import 'package:animebox/ui/serie/views/serie_information.dart';
 import 'package:animebox/ui/serie/views/serie_page.dart';
 import 'package:animebox/ui/utils/end_scrolled_view_padding.dart';
 import 'package:flutter/material.dart';
 
 class SerieView extends StatelessWidget {
-  final SeriePageParams params;
   final Serie serie;
-  final AnimeSource source;
+  final SeriePageParams params;
   final List<Episode>? episodes;
 
   const SerieView({
     super.key,
-    required this.params,
-    required this.source,
     required this.serie,
+    required this.params,
     this.episodes,
   });
 
@@ -27,7 +25,8 @@ class SerieView extends StatelessWidget {
       crossAxisAlignment: .start,
       mainAxisAlignment: .start,
       children: [
-        SerieInformation(params: params, serie: serie, source: source),
+        SerieInformation(params: params, serie: serie),
+        SerieActions(serie: serie, params: params),
 
         (serie.description != null)
             ? _SerieDescription(description: serie.description!)

@@ -1,22 +1,23 @@
-import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
+import 'package:animebox/core/servers/presentation/providers/source_provider.dart';
 import 'package:animebox/features/series/domain/entities/serie.dart';
 import 'package:animebox/ui/serie/views/serie_image.dart';
 import 'package:animebox/ui/serie/views/serie_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SerieInformation extends StatelessWidget {
+class SerieInformation extends ConsumerWidget {
   final SeriePageParams params;
   final Serie serie;
-  final AnimeSource source;
   const SerieInformation({
     super.key,
     required this.params,
     required this.serie,
-    required this.source,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final source = ref.watch(animeSourceProvider(serie.sourceId));
+
     return Row(
       mainAxisSize: .min,
       children: [
@@ -55,8 +56,12 @@ class SerieInformation extends StatelessWidget {
                         Icons.public_outlined,
                         color: ColorScheme.of(context).onSurfaceVariant,
                       ),
+
                       Text(
-                        source.prettyName,
+                        source.whenOrNull(
+                              data: (source) => source?.prettyName,
+                            ) ??
+                            "No Source",
                         style: TextStyle(
                           color: ColorScheme.of(context).onSurfaceVariant,
                         ),

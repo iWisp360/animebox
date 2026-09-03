@@ -6,6 +6,7 @@ import 'package:animebox/features/search/domain/entities/search.dart';
 import 'package:animebox/ui/browse/views/missing_url_dialog.dart';
 import 'package:animebox/ui/serie/views/serie_page.dart';
 import 'package:animebox/ui/utils/anime_card.dart';
+import 'package:animebox/ui/utils/anime_card_grid_view.dart';
 import 'package:animebox/ui/utils/page_information.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -45,16 +46,13 @@ class SearchAnimeTab extends ConsumerWidget with _SearchAnimeTabHelpers {
                         message: "No results found",
                         spritesKind: .errorSprite,
                       )
-                    : GridView.count(
-                        crossAxisSpacing: gridCrossAxisSpacing,
-                        crossAxisCount: calculateGridCrossAxisCount(context),
-                        childAspectRatio: gridElementAspectRatio,
-
-                        children: [
+                    : AnimeCardGridView(
+                        builder: (context) => [
                           for (final result in results.results)
                             AnimeCard(
                               name: result.name ?? "No Name",
                               image: result.image,
+                              displayMissingUrlIcon: true,
                               url: result.url,
 
                               onClick: () => onClickAnimeCard(
@@ -93,17 +91,6 @@ mixin _SearchAnimeTabHelpers {
         maxWidth: 1100,
       ).add(const .symmetric(horizontal: 10));
 
-  int calculateGridCrossAxisCount(BuildContext context) =>
-      switch (MediaQuery.of(context).size.width) {
-        <= 500 => 2,
-        <= 800 => 3,
-        <= 1000 => 4,
-        _ => 5,
-      };
-
-  double get gridElementAspectRatio => 9 / 16;
-  double get gridCrossAxisSpacing => 5;
-
   Future<void> onClickAnimeCard({
     required BuildContext context,
     required SearchResults result,
@@ -118,8 +105,8 @@ mixin _SearchAnimeTabHelpers {
           "/serie",
           extra: SeriePageParams(
             serieUrl: result.url!,
-            server: server,
-            source: source,
+            serverUuid: server.uuid,
+            sourceId: source.id,
             placeholderImage: result.image,
           ),
         );

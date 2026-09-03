@@ -1,25 +1,26 @@
 import 'package:animebox/core/helpers/convergence.dart';
-import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
-import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/features/series/data/providers/anime_serie.dart';
 import 'package:animebox/features/series/data/providers/episodes_sort.dart';
+import 'package:animebox/features/series/domain/entities/serie.dart';
 import 'package:animebox/ui/serie/views/serie_view.dart';
 import 'package:animebox/ui/utils/page_information.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SeriePageParams {
-  final String serieUrl;
-  final Server server;
+  final String? serieUrl;
+  final String serverUuid;
+  final String sourceId;
   final String? placeholderImage;
-  final AnimeSource source;
+  final Serie? serie;
 
   const SeriePageParams({
-    required this.serieUrl,
-    required this.server,
-    required this.source,
+    this.serie,
+    this.serieUrl,
+    required this.serverUuid,
+    required this.sourceId,
     this.placeholderImage,
-  });
+  }) : assert(serieUrl != null || serie != null);
 }
 
 class SeriePage extends ConsumerStatefulWidget {
@@ -55,14 +56,20 @@ class _SeriePageState extends ConsumerState<SeriePage> {
       });
     });
 
-    final SeriePageParams(:serieUrl, :server, :source) = widget.params;
-    final provider = animeSerieProvider(
-      serieUrl: serieUrl,
-      server: server,
-      sourceId: source.id,
-    );
+    final SeriePageParams(:serie, :serieUrl, :serverUuid, :sourceId) =
+        widget.params;
 
-    final serieQuery = ref.watch(provider);
+    final provider = (serieUrl == null)
+        ? null
+        : animeSerieProvider(
+            serieUrl: serieUrl,
+            serverUuid: serverUuid,
+            sourceId: sourceId,
+          );
+
+    final serieQuery = (serie != null)
+        ? AsyncValue.data(serie)
+        : ref.watch(provider!);
 
     return Scaffold(
       appBar: AppBar(
@@ -95,24 +102,20 @@ class _SeriePageState extends ConsumerState<SeriePage> {
                   padding: calculateDefaultPadding(
                     context,
                   ).add(const .symmetric(horizontal: 20)),
-                  child: RefreshIndicator(
-                    onRefresh: () async => ref.invalidate(provider),
-                    child: SerieView(
-                      params: widget.params,
-                      source: source,
-                      serie: serie,
-                      episodes: serieEpisodes,
-                    ),
+                  child: SerieView(
+                    params: widget.params,
+                    serie: serie,
+                    episodes: serieEpisodes,
                   ),
                 ),
               ),
             );
           },
-          error: (_, _) => PageInformation(
-            message: "This serie failed to load",
+          error: (e, _) => PageInformation(
+            message: "$e",
             spritesKind: .errorSprite,
             customAction: FilledButton(
-              onPressed: () => ref.invalidate(provider, asReload: true),
+              onPressed: () => ref.invalidate(provider!, asReload: true),
               child: const Text("Try Again"),
             ),
           ),

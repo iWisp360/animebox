@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
 import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/features/search/data/providers/search_provider.dart';
-import 'package:animebox/ui/browse/views/global_search_page/source_specific_search.dart';
+import 'package:animebox/ui/browse/views/global_search_page/source_specific_search_button.dart';
 import 'package:animebox/ui/browse/views/missing_url_dialog.dart';
 import 'package:animebox/ui/serie/views/serie_page.dart';
 import 'package:animebox/ui/utils/anime_card.dart';
@@ -64,6 +64,7 @@ class SourceSearchRow extends ConsumerWidget {
                             url: result.url,
                             name: result.name ?? result.url!,
                             image: result.image,
+                            displayMissingUrlIcon: true,
                             onClick: () async {
                               if (result.url == null) {
                                 await showDialog(
@@ -76,8 +77,8 @@ class SourceSearchRow extends ConsumerWidget {
                                   "/serie",
                                   extra: SeriePageParams(
                                     serieUrl: result.url!,
-                                    server: server,
-                                    source: source,
+                                    serverUuid: server.uuid,
+                                    sourceId: source.id,
                                     placeholderImage: result.image,
                                   ),
                                 );
