@@ -8,10 +8,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class SerieInformation extends ConsumerWidget {
   final SeriePageParams params;
   final Serie serie;
+  final String? altImage;
   const SerieInformation({
     super.key,
     required this.params,
     required this.serie,
+    this.altImage,
   });
 
   @override
@@ -21,7 +23,7 @@ class SerieInformation extends ConsumerWidget {
     return Row(
       mainAxisSize: .min,
       children: [
-        SerieImage(params: params, serie: serie),
+        SerieImage(params: params, serie: serie, altImage: altImage),
         Flexible(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 400, minWidth: 0),

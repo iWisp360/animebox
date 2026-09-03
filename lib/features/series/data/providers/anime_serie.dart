@@ -1,4 +1,3 @@
-import 'package:animebox/core/servers/domain/entities/server.dart';
 import 'package:animebox/core/servers/exceptions.dart';
 import 'package:animebox/core/servers/presentation/providers/server_provider.dart';
 import 'package:animebox/features/series/data/datasources/serie.dart';

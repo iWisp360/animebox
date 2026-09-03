@@ -1,23 +1,20 @@
-import 'dart:io';
-
+import 'package:animebox/core/images/data/datasources/image_source.dart';
+import 'package:animebox/ui/utils/images.dart';
 import 'package:flutter/material.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 const double _radius = 8;
 
 class AnimeCard extends StatelessWidget {
   final String name;
   final String? url;
-  final String? image;
-  final File? cacheImage;
+  final List<ImageSource>? imageSources;
   final bool displayMissingUrlIcon;
   final Function()? onClick;
 
   const AnimeCard({
     super.key,
     required this.name,
-    this.image,
-    this.cacheImage,
+    this.imageSources,
     this.url,
     this.displayMissingUrlIcon = false,
     this.onClick,
@@ -34,7 +31,7 @@ class AnimeCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: .start,
             children: [
-              _Portrait(image: image, cacheImage: cacheImage),
+              _Portrait(imageSources: imageSources),
               _SerieTitle(
                 name: name,
                 url: url,
@@ -49,9 +46,8 @@ class AnimeCard extends StatelessWidget {
 }
 
 class _Portrait extends StatelessWidget {
-  final String? image;
-  final File? cacheImage;
-  const _Portrait({this.image, this.cacheImage});
+  final List<ImageSource>? imageSources;
+  const _Portrait({this.imageSources});
 
   @override
   Widget build(BuildContext context) {
@@ -61,22 +57,7 @@ class _Portrait extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: .circular(_radius)),
         child: ClipRRect(
           borderRadius: .circular(_radius),
-          child: (cacheImage != null)
-              ? Image.file(cacheImage!, fit: .cover)
-              : (image != null)
-              ? Transform.scale(
-                  scale: 1.01,
-                  child: FadeInImage.memoryNetwork(
-                    fadeInDuration: const Duration(milliseconds: 200),
-                    fadeInCurve: Curves.easeInOutExpo,
-                    fit: .cover,
-                    placeholder: kTransparentImage,
-                    imageErrorBuilder: (_, _, _) =>
-                        const Center(child: Icon(Icons.broken_image)),
-                    image: image!,
-                  ),
-                )
-              : const Center(child: Icon(Icons.cloud_off)),
+          child: ImageBuilder(sources: .nullable(imageSources)),
         ),
       ),
     );

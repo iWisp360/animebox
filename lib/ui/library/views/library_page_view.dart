@@ -1,4 +1,3 @@
-import 'package:animebox/core/cache/providers/image_cache.dart';
 import 'package:animebox/features/series/data/providers/saved_series.dart';
 import 'package:animebox/ui/serie/views/serie_page.dart';
 import 'package:animebox/ui/utils/anime_card.dart';
@@ -23,10 +22,12 @@ class LibraryPageView extends ConsumerWidget {
                 for (final entry in series.entries)
                   AnimeCard(
                     name: entry.value.name ?? entry.key,
-                    image: entry.value.image,
-                    cacheImage: ref
-                        .watch(imageCachePathProvider(entry.value.cacheImage))
-                        .whenOrNull(data: (image) => image),
+                    imageSources: [
+                      if (entry.value.cacheImage != null)
+                        .cache(entry.value.cacheImage!),
+                      if (entry.value.image != null)
+                        .network(entry.value.image!),
+                    ],
                     onClick: () => context.push(
                       "/serie",
                       extra: SeriePageParams(

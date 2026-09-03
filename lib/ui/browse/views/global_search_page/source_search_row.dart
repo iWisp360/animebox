@@ -63,7 +63,9 @@ class SourceSearchRow extends ConsumerWidget {
                           child: AnimeCard(
                             url: result.url,
                             name: result.name ?? result.url!,
-                            image: result.image,
+                            imageSources: [
+                              if (result.image != null) .network(result.image!),
+                            ],
                             displayMissingUrlIcon: true,
                             onClick: () async {
                               if (result.url == null) {
@@ -79,7 +81,7 @@ class SourceSearchRow extends ConsumerWidget {
                                     serieUrl: result.url!,
                                     serverUuid: server.uuid,
                                     sourceId: source.id,
-                                    placeholderImage: result.image,
+                                    altImage: result.image,
                                   ),
                                 );
                               }

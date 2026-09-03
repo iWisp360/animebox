@@ -11,7 +11,7 @@ class SeriePageParams {
   final String? serieUrl;
   final String serverUuid;
   final String sourceId;
-  final String? placeholderImage;
+  final String? altImage;
   final Serie? serie;
 
   const SeriePageParams({
@@ -19,7 +19,7 @@ class SeriePageParams {
     this.serieUrl,
     required this.serverUuid,
     required this.sourceId,
-    this.placeholderImage,
+    this.altImage,
   }) : assert(serieUrl != null || serie != null);
 }
 
@@ -56,8 +56,13 @@ class _SeriePageState extends ConsumerState<SeriePage> {
       });
     });
 
-    final SeriePageParams(:serie, :serieUrl, :serverUuid, :sourceId) =
-        widget.params;
+    final SeriePageParams(
+      :serie,
+      :serieUrl,
+      :serverUuid,
+      :sourceId,
+      :altImage,
+    ) = widget.params;
 
     final provider = (serieUrl == null)
         ? null
@@ -106,6 +111,7 @@ class _SeriePageState extends ConsumerState<SeriePage> {
                     params: widget.params,
                     serie: serie,
                     episodes: serieEpisodes,
+                    altImage: altImage,
                   ),
                 ),
               ),

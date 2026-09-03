@@ -51,7 +51,10 @@ class SearchAnimeTab extends ConsumerWidget with _SearchAnimeTabHelpers {
                           for (final result in results.results)
                             AnimeCard(
                               name: result.name ?? "No Name",
-                              image: result.image,
+                              imageSources: [
+                                if (result.image != null)
+                                  .network(result.image!),
+                              ],
                               displayMissingUrlIcon: true,
                               url: result.url,
 
@@ -107,7 +110,7 @@ mixin _SearchAnimeTabHelpers {
             serieUrl: result.url!,
             serverUuid: server.uuid,
             sourceId: source.id,
-            placeholderImage: result.image,
+            altImage: result.image,
           ),
         );
 }

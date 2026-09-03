@@ -3,7 +3,6 @@ import 'package:animebox/core/servers/presentation/providers/source_provider.dar
 import 'package:animebox/features/series/data/providers/saved_series.dart';
 import 'package:animebox/features/series/data/providers/serie_watch.dart';
 import 'package:animebox/features/series/domain/entities/serie.dart';
-import 'package:animebox/ui/serie/controllers/serie_controller.dart';
 import 'package:animebox/ui/serie/views/serie_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,14 +10,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class SerieActions extends ConsumerWidget {
   final Serie serie;
   final AnimeSource? source;
-  final SerieController controller;
   final SeriePageParams params;
   const SerieActions({
     super.key,
     required this.serie,
     required this.params,
     this.source,
-    this.controller = const SerieController(),
   });
 
   @override
@@ -44,12 +41,7 @@ class SerieActions extends ConsumerWidget {
               ? null
               : (context) async {
                   (serieState == null)
-                      ? await controller.saveSerie(
-                          ref: ref,
-                          serie: serie,
-                          source: source,
-                          placeholderImage: params.placeholderImage,
-                        )
+                      ? throw UnimplementedError()
                       : await ref
                             .read(savedSeriesProvider.notifier)
                             .removeSerie(serieState.key);
