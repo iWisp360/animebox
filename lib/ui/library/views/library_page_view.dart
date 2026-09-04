@@ -27,6 +27,8 @@ class LibraryPageView extends ConsumerWidget {
                         .cache(entry.value.cacheImage!),
                       if (entry.value.image != null)
                         .network(entry.value.image!),
+                      if (entry.value.altImage != null)
+                        .network(entry.value.altImage!),
                     ],
                     onClick: () => context.push(
                       "/serie",

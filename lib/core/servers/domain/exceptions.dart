@@ -1,4 +1,6 @@
 class MissingServerException implements Exception {
+  const MissingServerException([this.serverUuid]);
+
   final String? serverUuid;
   String get message => (serverUuid != null)
       ? "The server with uuid $serverUuid is missing"
@@ -8,6 +10,13 @@ class MissingServerException implements Exception {
   String toString() {
     return "MissingServerException: $message";
   }
+}
 
-  MissingServerException([this.serverUuid]);
+class MissingSourceException implements Exception {
+  const MissingSourceException([this.sourceId]);
+
+  final String? sourceId;
+  String get message => (sourceId != null)
+      ? "The anime source with id $sourceId is missing"
+      : "The specified anime source is missing";
 }

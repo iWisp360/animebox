@@ -9,9 +9,11 @@ abstract class Serie with _$Serie {
   const factory Serie({
     String? name,
     String? image,
+    String? altImage,
     String? cacheImage,
     String? description,
     List<Episode>? episodes,
+    required String serieUrl,
     required String sourceId,
     required String serverUuid,
   }) = _Serie;

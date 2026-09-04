@@ -1,3 +1,4 @@
+import 'package:animebox/core/global_info_feedback/providers.dart';
 import 'package:animebox/core/servers/domain/entities/anime_sources.dart';
 import 'package:animebox/core/servers/presentation/providers/source_provider.dart';
 import 'package:animebox/features/series/data/providers/saved_series.dart';
@@ -31,6 +32,7 @@ class SerieActions extends ConsumerWidget {
     return Row(
       children: [
         _ActionButton(
+          enabled: serieState != null,
           icon: const Icon(Icons.favorite_outlined),
           title: (source == null)
               ? "Local Serie Only"
@@ -40,11 +42,28 @@ class SerieActions extends ConsumerWidget {
           action: (source == null)
               ? null
               : (context) async {
-                  (serieState == null)
-                      ? throw UnimplementedError()
-                      : await ref
-                            .read(savedSeriesProvider.notifier)
-                            .removeSerie(serieState.key);
+                  try {
+                    (serieState == null)
+                        ? await ref
+                              .read(savedSeriesProvider.notifier)
+                              .addSerie(serie)
+                        : await ref
+                              .read(savedSeriesProvider.notifier)
+                              .removeSerie(serieState.key);
+                  } catch (e, st) {
+                    final notifier = ref.read(
+                      globalNotificationProvider.notifier,
+                    );
+
+                    debugPrint("$e\n$st");
+
+                    notifier.setState(
+                      messageBuilder: (i18n, ref) => "Could not add this serie",
+                      priority: .error,
+                    );
+
+                    notifier.toggle();
+                  }
                 },
         ),
       ],
@@ -55,8 +74,14 @@ class SerieActions extends ConsumerWidget {
 class _ActionButton extends StatelessWidget {
   final Widget icon;
   final String title;
+  final bool enabled;
   final Function(BuildContext context)? action;
-  const _ActionButton({required this.icon, required this.title, this.action});
+  const _ActionButton({
+    required this.icon,
+    required this.title,
+    required this.enabled,
+    this.action,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -75,14 +100,18 @@ class _ActionButton extends StatelessWidget {
               children: [
                 IconTheme(
                   data: IconThemeData(
-                    color: ColorScheme.of(context).onSurfaceVariant,
+                    color: enabled
+                        ? ColorScheme.of(context).primary
+                        : ColorScheme.of(context).onSurfaceVariant,
                   ),
                   child: icon,
                 ),
                 Text(
                   title,
                   style: TextStyle(
-                    color: ColorScheme.of(context).onSurfaceVariant,
+                    color: enabled
+                        ? ColorScheme.of(context).primary
+                        : ColorScheme.of(context).onSurfaceVariant,
                   ),
                   textAlign: .center,
                 ),

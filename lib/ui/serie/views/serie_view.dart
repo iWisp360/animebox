@@ -9,14 +9,12 @@ import 'package:flutter/material.dart';
 class SerieView extends StatelessWidget {
   final Serie serie;
   final SeriePageParams params;
-  final String? altImage;
   final List<Episode>? episodes;
 
   const SerieView({
     super.key,
     required this.serie,
     required this.params,
-    this.altImage,
     this.episodes,
   });
 
@@ -27,7 +25,7 @@ class SerieView extends StatelessWidget {
       crossAxisAlignment: .start,
       mainAxisAlignment: .start,
       children: [
-        SerieInformation(params: params, serie: serie, altImage: altImage),
+        SerieInformation(params: params, serie: serie),
         SerieActions(serie: serie, params: params),
 
         (serie.description != null)

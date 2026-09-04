@@ -8,13 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class SerieImage extends ConsumerWidget {
   final SeriePageParams params;
   final Serie serie;
-  final String? altImage;
-  const SerieImage({
-    super.key,
-    required this.params,
-    required this.serie,
-    this.altImage,
-  });
+  const SerieImage({super.key, required this.params, required this.serie});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,7 +24,7 @@ class SerieImage extends ConsumerWidget {
               sources: .new([
                 if (serie.cacheImage != null) .cache(serie.cacheImage!),
                 if (serie.image != null) .network(serie.image!),
-                if (altImage != null) .network(altImage!),
+                if (serie.altImage != null) .network(serie.altImage!),
               ]),
             ),
           ),

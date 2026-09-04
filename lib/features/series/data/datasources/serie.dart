@@ -26,6 +26,7 @@ abstract class SerieSource {
     required int schemaVersion,
     required String serverUuid,
     required String sourceId,
+    required String serieUrl,
   });
 }
 
@@ -52,6 +53,7 @@ class SerieSourceRemote implements SerieSource {
       schemaVersion: server.schemaVersion,
       serverUuid: server.uuid,
       sourceId: sourceId,
+      serieUrl: url,
     );
   }
 
@@ -77,6 +79,7 @@ class SerieSourceRemote implements SerieSource {
     required int schemaVersion,
     required String serverUuid,
     required String sourceId,
+    required String serieUrl,
   }) {
     switch (schemaVersion) {
       case 1:
@@ -84,6 +87,7 @@ class SerieSourceRemote implements SerieSource {
         return Serie(
           serverUuid: serverUuid,
           sourceId: sourceId,
+          serieUrl: serieUrl,
           name: deserializedSerie.name,
           image: deserializedSerie.image,
           description: deserializedSerie.description,

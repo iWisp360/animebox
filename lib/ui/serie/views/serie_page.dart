@@ -56,25 +56,7 @@ class _SeriePageState extends ConsumerState<SeriePage> {
       });
     });
 
-    final SeriePageParams(
-      :serie,
-      :serieUrl,
-      :serverUuid,
-      :sourceId,
-      :altImage,
-    ) = widget.params;
-
-    final provider = (serieUrl == null)
-        ? null
-        : animeSerieProvider(
-            serieUrl: serieUrl,
-            serverUuid: serverUuid,
-            sourceId: sourceId,
-          );
-
-    final serieQuery = (serie != null)
-        ? AsyncValue.data(serie)
-        : ref.watch(provider!);
+    final (:provider, :serieQuery) = _fetchSerie();
 
     return Scaffold(
       appBar: AppBar(
@@ -111,7 +93,6 @@ class _SeriePageState extends ConsumerState<SeriePage> {
                     params: widget.params,
                     serie: serie,
                     episodes: serieEpisodes,
-                    altImage: altImage,
                   ),
                 ),
               ),
@@ -129,5 +110,30 @@ class _SeriePageState extends ConsumerState<SeriePage> {
         ),
       ),
     );
+  }
+
+  ({AsyncValue<Serie> serieQuery, AnimeSerieProvider? provider}) _fetchSerie() {
+    final SeriePageParams(
+      :serie,
+      :serieUrl,
+      :serverUuid,
+      :sourceId,
+      :altImage,
+    ) = widget.params;
+
+    final provider = (serieUrl == null)
+        ? null
+        : animeSerieProvider(
+            serieUrl: serieUrl,
+            serverUuid: serverUuid,
+            sourceId: sourceId,
+            altImage: altImage,
+          );
+
+    final serieQuery = (serie != null)
+        ? AsyncValue.data(serie)
+        : ref.watch(provider!);
+
+    return (serieQuery: serieQuery, provider: provider);
   }
 }
