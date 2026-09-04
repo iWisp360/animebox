@@ -21,6 +21,10 @@ class SerieActions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final bool isLoading = ref
+        .watch(savedSeriesProvider)
+        .maybeWhen(orElse: () => true, data: (_) => false);
+
     final providedSource = ref.watch(animeSourceProvider(serie.sourceId));
 
     final source = providedSource.whenOrNull(data: (s) => s);
@@ -33,13 +37,16 @@ class SerieActions extends ConsumerWidget {
       children: [
         _ActionButton(
           enabled: serieState != null,
+          isLoading: isLoading,
           icon: const Icon(Icons.favorite_outlined),
-          title: (source == null)
+          title: source == null
               ? "Local Serie Only"
-              : (serieState == null)
+              : serieState == null
               ? "Add to Library"
               : "Remove from Library",
-          action: (source == null)
+          action: isLoading
+              ? null
+              : source == null
               ? null
               : (context) async {
                   try {
@@ -73,13 +80,15 @@ class SerieActions extends ConsumerWidget {
 
 class _ActionButton extends StatelessWidget {
   final Widget icon;
-  final String title;
+  final String? title;
   final bool enabled;
+  final bool isLoading;
   final Function(BuildContext context)? action;
   const _ActionButton({
     required this.icon,
-    required this.title,
     required this.enabled,
+    this.isLoading = false,
+    this.title,
     this.action,
   });
 
@@ -94,29 +103,38 @@ class _ActionButton extends StatelessWidget {
           child: SizedBox(
             width: 100,
             height: 70,
-            child: Column(
-              mainAxisAlignment: .center,
-              crossAxisAlignment: .center,
-              children: [
-                IconTheme(
-                  data: IconThemeData(
-                    color: enabled
-                        ? ColorScheme.of(context).primary
-                        : ColorScheme.of(context).onSurfaceVariant,
+            child: isLoading
+                ? const Center(
+                    child: SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : Column(
+                    mainAxisAlignment: .center,
+                    crossAxisAlignment: .center,
+                    children: [
+                      IconTheme(
+                        data: IconThemeData(
+                          color: enabled
+                              ? ColorScheme.of(context).primary
+                              : ColorScheme.of(context).onSurfaceVariant,
+                        ),
+                        child: icon,
+                      ),
+                      if (title != null)
+                        Text(
+                          title!,
+                          style: TextStyle(
+                            color: enabled
+                                ? ColorScheme.of(context).primary
+                                : ColorScheme.of(context).onSurfaceVariant,
+                          ),
+                          textAlign: .center,
+                        ),
+                    ],
                   ),
-                  child: icon,
-                ),
-                Text(
-                  title,
-                  style: TextStyle(
-                    color: enabled
-                        ? ColorScheme.of(context).primary
-                        : ColorScheme.of(context).onSurfaceVariant,
-                  ),
-                  textAlign: .center,
-                ),
-              ],
-            ),
           ),
         ),
       ),

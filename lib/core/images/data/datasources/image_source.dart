@@ -11,7 +11,7 @@ abstract class ImageSource<T, S> {
 
   FutureOr<T> fetchImage();
 
-  static ImageSource<Uint8List?, String> network(String source) =>
+  static ImageSource<Uint8List?, String?> network(String? source) =>
       NetworkImageSource(source);
 
   static ImageSource<File?, String> cache(String source) =>

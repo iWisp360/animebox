@@ -5,7 +5,7 @@ import 'package:animebox/core/images/data/repositories/image_format_repository_i
 import 'package:animebox/core/images/domain/repositories/image_format_repository.dart';
 import 'package:animebox/core/network/http_client.dart';
 
-class NetworkImageSource extends ImageSource<Uint8List?, String> {
+class NetworkImageSource extends ImageSource<Uint8List?, String?> {
   const NetworkImageSource(super.source);
 
   final ImageFormatRepository imageFormatRepository =
@@ -13,8 +13,9 @@ class NetworkImageSource extends ImageSource<Uint8List?, String> {
 
   @override
   Future<Uint8List?> fetchImage() async {
+    if (source == null) return null;
     try {
-      final response = await globalHttpClient.get(Uri.parse(source));
+      final response = await globalHttpClient.get(Uri.parse(source!));
       if (response.statusCode == 200) {
         final bytes = response.bodyBytes;
         if (imageFormatRepository.determineImageFormat(bytes) == .unknown) {
